@@ -1,5 +1,5 @@
 "use client";
-import Link from "next/link"; import {usePathname} from "next/navigation"; import {Menu,X,ChevronDown,ArrowRight} from "lucide-react"; import {useState} from "react"; import {motion,AnimatePresence} from "framer-motion";
+import Link from "next/link"; import Image from "next/image"; import {usePathname} from "next/navigation"; import {Menu,X,ChevronDown,ArrowRight} from "lucide-react"; import {useState} from "react"; import {motion,AnimatePresence} from "framer-motion";
 const basic=[["/","หน้าแรก"],["/about","เกี่ยวกับเรา"],["/projects","ผลงานและโครงการ"],["/news","ข่าวสาร"],["/downloads","ดาวน์โหลด"]];
 const groups=[
  ["เหล็กเสริมคอนกรีต",[["/products/round-bar","เหล็กเส้นกลม RB"],["/products/deformed-bar","เหล็กข้ออ้อย DB"],["/products/wire-mesh","Wire Mesh"]]],
@@ -11,7 +11,7 @@ export default function Header(){const p=usePathname(),[open,setOpen]=useState(f
 return <><div className="bg-[#202124] px-6 py-2 text-center text-[10px] font-bold tracking-[.18em] text-zinc-400">SUPARERK STEEL CO., LTD. • STEEL FOR CONSTRUCTION & INDUSTRY</div>
 <header className="sticky top-0 z-50 border-b border-black/5 bg-[#faf9f7]/95 backdrop-blur-xl" onMouseLeave={()=>setMega(false)}>
 <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
-<Link href="/" className="group flex items-center gap-3"><motion.div whileHover={{rotate:-4,scale:1.05}} className="grid h-11 w-11 place-items-center bg-[#8b352d] font-black text-white">SS</motion.div><div><b className="text-xl">SUPARERK <span className="text-[#8b352d]">STEEL</span></b><div className="text-[9px] font-bold tracking-[.2em] text-zinc-500">ศุภฤกษ์ สตีล จำกัด</div></div></Link>
+<Link href="/" className="group flex items-center gap-3"><motion.div whileHover={{scale:1.03}} className="relative h-14 w-20 overflow-hidden bg-white"><Image src="/suparerk-logo-main.jpg" alt="SUPARERK STEEL" fill sizes="80px" className="object-contain"/></motion.div><div><b className="text-xl">SUPARERK <span className="text-[#8b352d]">STEEL</span></b><div className="text-[9px] font-bold tracking-[.2em] text-zinc-500">ศุภฤกษ์ สตีล จำกัด</div></div></Link>
 <nav className="hidden h-full items-center gap-5 lg:flex">
 {basic.slice(0,2).map(([h,n])=><Nav key={h} h={h} n={n} active={p===h}/>)}
 <button onMouseEnter={()=>setMega(true)} onClick={()=>setMega(!mega)} className={"relative flex h-full items-center gap-1 text-sm font-black "+(p.startsWith("/products")||p.startsWith("/services")?"text-[#8b352d]":"hover:text-[#8b352d]")}>สินค้าและบริการ <ChevronDown size={15} className={"transition "+(mega?"rotate-180":"")}/>{(p.startsWith("/products")||p.startsWith("/services"))&&<motion.span layoutId="navline" className="absolute bottom-0 left-0 h-[3px] w-full bg-[#8b352d]"/>}</button>

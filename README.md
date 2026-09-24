@@ -1,24 +1,23 @@
-# SP Steel V5 — Product Catalog + Mega Menu
+# SP Steel V6 — Branches + Real Branding
 
-Adds:
-- Animated desktop mega-menu "สินค้าและบริการ"
-- Product categories and individual product pages
-- 13 product routes
-- Animated product hero, product information, specs, applications and gallery
-- Mobile product navigation
-- Keeps V4 Framer Motion animations and multi-page structure
+Includes:
+- User-provided SUPARERK STEEL logo assets
+- Real logo in header
+- Animated two-branch section on homepage
+- Suphan Buri and Kanchanaburi branch branding
+- Correct Google Maps links supplied by client
+- Contact page with both branches
+- Official Linktree and published call number 035-569-333
+- Footer branch information
+- Keeps V5 product mega menu/catalog and V4 motion
 
 Run:
-```bash
 npm install
+npm run build
 npm run dev
-```
 
-Examples:
-- /products
-- /products/deformed-bar
-- /products/h-beam
-- /products/wire-mesh
-- /services
-
-Replace image placeholders and provisional product/spec text with SUPARERK STEEL's verified product photos/catalog data before production.
+## V6.1
+- Preserve the supplied image logos.
+- Branch logos now use object-contain instead of object-cover.
+- Full square artwork is visible on homepage and contact cards.
+- Header logo also uses object-contain.
