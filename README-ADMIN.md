@@ -4,7 +4,7 @@
 
 - Next.js 14 App Router, React 18, TypeScript และ Tailwind CSS
 - `data/products.ts` เก็บแค็ตตาล็อก ขนาด และราคาตัวอย่างเริ่มต้น
-- `lib/prices.ts` อ่านราคาที่บันทึกทับข้อมูลเริ่มต้น โดยคำนวณราคาเริ่มต้นจากราคาต่ำสุดของทุกขนาด
+- `lib/prices.ts` ใช้ Neon PostgreSQL เมื่อมี `DATABASE_URL` และใช้ไฟล์ local เมื่อไม่มี โดยคำนวณราคาเริ่มต้นจากราคาต่ำสุดของทุกขนาด
 - `/`, `/products` และ `/products/[slug]` อ่านราคาฝั่งเซิร์ฟเวอร์ทุกครั้งที่เปิดหรือโหลดหน้าใหม่ ไม่ต้อง build ใหม่เมื่อแก้ราคา
 - `/admin/login` และ `/admin` เป็นหน้าล็อกอินและแก้ราคาสินค้า ค้นหาหรือกรองหมวดได้ บันทึกทีละสินค้า
 - หน้าเว็บที่ลูกค้าเปิดค้างไว้ต้องโหลดใหม่เพื่อเห็นราคาใหม่ ไม่มีระบบ push แบบเรียลไทม์
@@ -23,15 +23,27 @@ npm run dev
 
 สินค้าที่ยังไม่ได้แก้ไขใช้ราคาตัวอย่างเดิม 10/20/30/40 บาท ต้องตรวจสอบทุกรายการก่อนเปิดใช้งานจริง
 
-## การจัดเก็บและการติดตั้ง
+## การจัดเก็บบน Neon และ Vercel
 
-เวอร์ชันนี้รองรับ **Node.js server หนึ่ง instance พร้อมดิสก์ถาวร** เก็บข้อมูลนอก public ที่ `storage/prices.json` ซึ่งไม่เข้า Git หากต้องการใช้ไดเรกทอรีอื่นกำหนด `PRICE_DATA_DIR` เป็น absolute path และให้บัญชีที่รันแอปมีสิทธิ์อ่าน/เขียน สำรองไฟล์นี้พร้อมการสำรองข้อมูลของเซิร์ฟเวอร์ ห้ามลบหรือแทนที่ไดเรกทอรีนี้ระหว่าง deploy
+เชื่อม Neon จาก Vercel Marketplace โดยใช้ Custom Prefix เป็น `DATABASE` เพื่อให้ได้ตัวแปร `DATABASE_URL` แล้วตั้งตัวแปรแอดมิน `ADMIN_USERNAME`, `ADMIN_PASSWORD_HASH` และ `ADMIN_SESSION_SECRET` ใน Vercel สำหรับ Production/Preview ตามที่ต้องการ จากนั้น Redeploy
 
-**ห้ามใช้ file storage นี้กับ Vercel/serverless หรือหลาย instance** ต้องเปลี่ยน `lib/prices.ts` เป็นฐานข้อมูลร่วม เช่น PostgreSQL ก่อนนำไปใช้ในสภาพแวดล้อมดังกล่าว รวมถึงย้าย login rate limit ไปยัง shared store หากมีหลาย process
+เมื่อแอปเชื่อมฐานข้อมูลครั้งแรก ระบบสร้างตาราง `sp_price_state` และ `sp_product_prices` อัตโนมัติ และใส่ราคาตั้งต้นจาก `data/price-seed.json` เฉพาะตอนที่สินค้านั้นยังไม่มีข้อมูล การ deploy ครั้งต่อไปจะไม่เขียนทับราคาที่แอดมินบันทึกไว้
+
+สามารถตรวจข้อมูลผ่าน Neon SQL Editor:
+
+```sql
+SELECT product_slug, prices, updated_at
+FROM sp_product_prices
+ORDER BY product_slug;
+```
+
+## การจัดเก็บบนเซิร์ฟเวอร์ทั่วไปหรือ local
+
+หากไม่มี `DATABASE_URL` ระบบใช้ **Node.js server หนึ่ง instance พร้อมดิสก์ถาวร** และเก็บข้อมูลนอก public ที่ `storage/prices.json` ซึ่งไม่เข้า Git หากต้องการใช้ไดเรกทอรีอื่นกำหนด `PRICE_DATA_DIR` เป็น absolute path และให้บัญชีที่รันแอปมีสิทธิ์อ่าน/เขียน สำรองไฟล์นี้พร้อมการสำรองข้อมูลของเซิร์ฟเวอร์ ห้ามลบหรือแทนที่ไดเรกทอรีนี้ระหว่าง deploy
 
 การบันทึกใช้ lock และเขียนไฟล์ชั่วคราวแล้ว rename เพื่อลดโอกาสข้อมูลเสีย มี revision ป้องกันการเขียนทับจากข้อมูลเก่า หากเกิดข้อขัดแย้ง ให้โหลดข้อมูลล่าสุดแล้วแก้ใหม่ หาก process หยุดกลางการบันทึกและเหลือ `prices.lock` ให้หยุดเซิร์ฟเวอร์ ตรวจสอบว่าไม่มี process อื่นเขียนข้อมูล แล้วจึงลบเฉพาะ lock ดังกล่าวและเปิดเซิร์ฟเวอร์ใหม่ ระบบจะไม่ย้อนกลับไปแสดงราคาตัวอย่างเงียบ ๆ เมื่อไฟล์ข้อมูลเสีย
 
-Production ใช้ `npm run build` และ `npm start` หลัง reverse proxy ที่ให้บริการ HTTPS เพราะ session cookie ใช้ Secure ใน production อย่าใช้ static export
+Production นอก Vercel ใช้ `npm run build` และ `npm start` หลัง reverse proxy ที่ให้บริการ HTTPS เพราะ session cookie ใช้ Secure ใน production อย่าใช้ static export
 
 ## การยืนยันตัวตน
 

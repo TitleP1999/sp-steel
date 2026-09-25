@@ -8,7 +8,7 @@ import { requireAdmin } from "../../lib/admin-session";
 import { PriceError, savePrices } from "../../lib/prices";
 
 export async function login(_previous: { error: string }, form: FormData) {
-  if (!authConfigured()) return { error: "ยังไม่ได้ตั้งค่าบัญชีแอดมิน กรุณารัน npm run admin:setup บนเซิร์ฟเวอร์" };
+  if (!authConfigured()) return { error: "ยังไม่ได้ตั้งค่าบัญชีแอดมิน กรุณาตั้งค่า ADMIN_USERNAME, ADMIN_PASSWORD_HASH และ ADMIN_SESSION_SECRET บนเซิร์ฟเวอร์" };
   const result = await checkCredentials(String(form.get("username") || ""), String(form.get("password") || ""));
   if (result !== "ok") return { error: result === "limited" ? "พยายามเข้าสู่ระบบหลายครั้งเกินไป กรุณารอ 15 นาที" : "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง" };
   cookies().set(SESSION_COOKIE, createSession(), { httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "strict", path: "/", maxAge: SESSION_SECONDS });
