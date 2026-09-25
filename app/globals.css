@@ -8,3 +8,24 @@
 ::selection{background:#8b352d;color:white}
 a,button{-webkit-tap-highlight-color:transparent}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+@layer base {
+  html { scroll-padding-top: 6rem; }
+  body { overflow-wrap: break-word; }
+  main { min-width: 0; }
+  input, textarea, select { max-width: 100%; font: inherit; }
+  a, button, summary { touch-action: manipulation; }
+  :focus-visible { outline: 3px solid #c46b60; outline-offset: 4px; }
+  header :focus-visible { outline-color: white; }
+}
+.mobile-navigation {
+  max-height: calc(100vh - 6rem);
+  max-height: calc(100dvh - 6rem);
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}
+@media (min-width: 640px) {
+  .mobile-navigation { max-height: calc(100dvh - 7rem); }
+}
+@media (hover: none) {
+  .card:hover { transform: none; box-shadow: none; }
+}

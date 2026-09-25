@@ -17,11 +17,11 @@ const brands = [
 export default function BrandMarquee() {
   const loop = [...brands, ...brands];
   return (
-    <section className="overflow-hidden border-y border-black/5 bg-[#f7f5f2] py-20">
-      <div className="mx-auto max-w-7xl px-6">
+    <section className="overflow-hidden border-y border-black/5 bg-[#f7f5f2] py-12 sm:py-16 lg:py-20">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <Reveal>
           <p className="font-black tracking-[.18em] text-[#8b352d]">OUR BRANDS</p>
-          <h2 className="mt-3 text-4xl font-black sm:text-5xl">แบรนด์สินค้าที่เราจัดจำหน่าย</h2>
+          <h2 className="mt-3 text-3xl font-black sm:text-4xl lg:text-5xl">แบรนด์สินค้าที่เราจัดจำหน่าย</h2>
           <p className="mt-4 max-w-2xl leading-7 text-zinc-600">แบรนด์สินค้าเหล็กและวัสดุที่มีให้เลือกสำหรับงานก่อสร้างและงานอุตสาหกรรม</p>
         </Reveal>
       </div>
