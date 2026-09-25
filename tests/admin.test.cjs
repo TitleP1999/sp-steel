@@ -9,6 +9,7 @@ require.extensions['.ts'] = (module, file) => module._compile(ts.transpileModule
 const auth = require('../lib/admin-auth.ts');
 const store = require('../lib/prices.ts');
 const newsStore = require('../lib/news.ts');
+const projectStore = require('../lib/projects.ts');
 const quotes = require('../lib/quote-requests.ts');
 
 test('admin credentials, signed sessions, rotation and throttling', async () => {
@@ -82,6 +83,20 @@ test('news configuration persists, validates links and rejects stale or broken d
     fs.writeFileSync(path.join(directory, 'news.json'), '{broken');
     await assert.rejects(require('../lib/news.ts').getNews());
   } finally { fs.rmSync(directory, { recursive: true, force: true }); delete process.env.NEWS_DATA_DIR; }
+});
+
+test('project configuration persists, validates links and rejects stale data', async () => {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'sp-steel-project-test-'));
+  process.env.PROJECT_DATA_DIR = directory;
+  try {
+    const initial = await projectStore.getProjects();
+    const items = [{ id: 'warehouse-1', title: 'คลังสินค้า', summary: 'จัดส่งเหล็กโครงสร้าง', location: 'สุพรรณบุรี', completedAt: '2026-09-25', href: '/contact', imageUrl: '/warehouse-branch-1-v1.png', published: true }];
+    const revision = await projectStore.saveProjects(items, initial.revision);
+    assert.deepEqual((await projectStore.getProjects()).items, items);
+    await assert.rejects(projectStore.saveProjects([{ ...items[0], href: 'javascript:alert(1)' }], revision));
+    await assert.rejects(projectStore.saveProjects([{ ...items[0], imageUrl: '//attacker.invalid/a.jpg' }], revision));
+    await assert.rejects(projectStore.saveProjects(items, initial.revision), /หน้าต่างอื่น/);
+  } finally { fs.rmSync(directory, { recursive: true, force: true }); delete process.env.PROJECT_DATA_DIR; }
 });
 
 test('quote request validation accepts contact details and rejects malformed or oversized input', () => {
