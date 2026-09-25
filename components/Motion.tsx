@@ -1,6 +1,7 @@
 "use client";
 import {motion, useScroll, useTransform} from "framer-motion";
 import {ReactNode, useRef} from "react";
+import Image from "next/image";
 
 export function Reveal({children,delay=0,className=""}:{children:ReactNode,delay?:number,className?:string}){
  return <motion.div className={className} initial={{opacity:0,y:34}} whileInView={{opacity:1,y:0}}
@@ -15,12 +16,21 @@ export function Item({children,className=""}:{children:ReactNode,className?:stri
 }
 export function ParallaxPanel(){
  const ref=useRef<HTMLDivElement>(null); const {scrollYProgress}=useScroll({target:ref,offset:["start end","end start"]});
- const y=useTransform(scrollYProgress,[0,1],[45,-45]);
- return <div ref={ref} className="relative min-h-[300px] sm:min-h-[410px] overflow-hidden border border-white/10 bg-[#202124]">
-  <motion.div style={{y}} className="steel absolute -inset-16"/>
-  <div className="absolute inset-0 bg-gradient-to-tr from-black/75 via-black/25 to-[#8b352d]/35"/>
-  <motion.div initial={{opacity:0,scale:.92}} animate={{opacity:1,scale:1}} transition={{duration:1,delay:.35}} className="absolute inset-0 grid place-items-center p-5 text-center sm:p-10">
-   <div><div className="mx-auto h-28 w-28 border border-[#c46b60]/60 p-3"><div className="grid h-full place-items-center bg-black/30 text-3xl sm:text-4xl font-black text-[#d28a80]">SS</div></div><p className="mt-7 text-2xl font-black tracking-wide">STEEL FOR EVERY STRUCTURE</p><p className="mt-2 text-sm text-zinc-400">SUPARERK STEEL • EST. 2020</p></div>
+ const y=useTransform(scrollYProgress,[0,1],[24,-24]);
+ return <div ref={ref} className="relative min-h-[300px] overflow-hidden border border-white/10 bg-[#202124] sm:min-h-[410px]">
+  <motion.div style={{y}} className="absolute -inset-y-8 inset-x-0">
+   <div className="absolute inset-0 [clip-path:polygon(0_0,62%_0,48%_100%,0_100%)]">
+    <Image src="/warehouse-branch-1-v1.png" alt="ภาพตัวอย่างโกดังเหล็กสาขาที่ 1" fill priority quality={95} sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover"/>
+   </div>
+   <div className="absolute inset-0 [clip-path:polygon(62%_0,100%_0,100%_100%,48%_100%)]">
+    <Image src="/warehouse-branch-2-v1.png" alt="ภาพตัวอย่างโกดังเหล็กสาขาที่ 2" fill priority quality={95} sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover"/>
+   </div>
+  </motion.div>
+  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-black/15"/>
+  <div className="pointer-events-none absolute inset-y-0 left-[55%] w-px -skew-x-[12deg] bg-white/50 shadow-[0_0_20px_rgba(0,0,0,.7)]"/>
+  <motion.div initial={{opacity:0,y:18}} animate={{opacity:1,y:0}} transition={{duration:.8,delay:.35}} className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-5 sm:p-7">
+   <div><p className="text-[10px] font-black tracking-[.2em] text-[#e8a49b]">WAREHOUSE 01</p><p className="mt-1 text-lg font-black sm:text-2xl">โกดังสาขาที่ 1</p></div>
+   <div className="text-right"><p className="text-[10px] font-black tracking-[.2em] text-[#e8a49b]">WAREHOUSE 02</p><p className="mt-1 text-lg font-black sm:text-2xl">โกดังสาขาที่ 2</p></div>
   </motion.div>
  </div>
 }
