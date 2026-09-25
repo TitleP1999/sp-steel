@@ -61,8 +61,8 @@ export async function createQuoteRequest(input: ReturnType<typeof validateQuoteR
   await ensureSchema();
   const result = await database().query(
     `INSERT INTO sp_quote_requests (id, customer_name, phone, product, details)
-     SELECT $1, $2, $3, $4, $5
-     WHERE (SELECT COUNT(*) FROM sp_quote_requests WHERE phone = $3 AND created_at > NOW() - INTERVAL '15 minutes') < 3
+     SELECT $1::uuid, $2::varchar(100), $3::varchar(30), $4::varchar(200), $5::text
+     WHERE (SELECT COUNT(*) FROM sp_quote_requests WHERE phone = $3::varchar(30) AND created_at > NOW() - INTERVAL '15 minutes') < 3
      RETURNING id`,
     [randomUUID(), input.name, input.phone, input.product, input.details]
   );
