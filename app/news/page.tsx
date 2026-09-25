@@ -1,1 +1,28 @@
-import PageHero from "../../components/PageHero"; export default function News(){return <main><PageHero eyebrow="NEWS & UPDATE" title="ข่าวสาร" desc="ข่าวสาร กิจกรรม โปรโมชั่น และบทความจาก SUPARERK STEEL"/><section className="mx-auto max-w-7xl px-4 sm:px-6 py-12 sm:py-16 lg:py-20"><div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{[1,2,3].map(x=><article key={x} className="border bg-white p-5 sm:p-7"><span className="text-xs font-black text-[#8b352d]">NEWS</span><h2 className="mt-3 text-xl font-black">พื้นที่สำหรับข่าวสาร #{x}</h2><p className="mt-3 leading-7 text-zinc-500">สามารถเพิ่มข่าวบริษัท โปรโมชั่น หรือบทความเกี่ยวกับเหล็กได้ที่นี่</p></article>)}</div></section></main>}
+import Link from "next/link";
+import PageHero from "../../components/PageHero";
+import { getNews } from "../../lib/news";
+
+export const dynamic = "force-dynamic";
+
+function formatDate(value: string) {
+  return new Date(`${value}T00:00:00+07:00`).toLocaleDateString("th-TH", { day: "numeric", month: "long", year: "numeric" });
+}
+
+function NewsLink({ href, children }: { href: string; children: React.ReactNode }) {
+  if (/^https?:\/\//i.test(href)) return <a href={href} target="_blank" rel="noopener noreferrer" className="mt-5 inline-block font-bold text-[#8b352d] underline">{children}</a>;
+  return <Link href={href} className="mt-5 inline-block font-bold text-[#8b352d] underline">{children}</Link>;
+}
+
+export default async function News() {
+  const { items } = await getNews();
+  const visible = items.filter(item => item.published).sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
+  return <main><PageHero eyebrow="NEWS & UPDATE" title="ข่าวสาร" desc="ข่าวสาร กิจกรรม โปรโมชั่น และบทความจาก SUPARERK STEEL"/><section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:py-20">
+    {visible.length ? <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{visible.map(item => <article key={item.id} className="border bg-white p-5 sm:p-7">
+      {item.imageUrl && <img src={item.imageUrl} alt={item.title} className="-mx-5 -mt-5 mb-5 aspect-[16/9] w-[calc(100%+2.5rem)] object-cover sm:-mx-7 sm:-mt-7 sm:mb-7 sm:w-[calc(100%+3.5rem)]" />}
+      <div className="flex items-center justify-between gap-3 text-xs font-black text-[#8b352d]"><span>{item.category || "NEWS"}</span><time dateTime={item.publishedAt} className="font-normal text-zinc-500">{formatDate(item.publishedAt)}</time></div>
+      <h2 className="mt-3 text-xl font-black">{item.title}</h2>
+      {item.summary && <p className="mt-3 leading-7 text-zinc-500">{item.summary}</p>}
+      {item.href && <NewsLink href={item.href}>อ่านเพิ่มเติม →</NewsLink>}
+    </article>)}</div> : <div className="border bg-white px-6 py-16 text-center"><h2 className="text-2xl font-black">ยังไม่มีข่าวสาร</h2><p className="mt-3 text-zinc-500">กรุณาติดตามข่าวสารและกิจกรรมจาก SUPARERK STEEL</p></div>}
+  </section></main>;
+}

@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache";
 import { authConfigured, checkCredentials, createSession, SESSION_COOKIE, SESSION_SECONDS } from "../../lib/admin-auth";
 import { requireAdmin } from "../../lib/admin-session";
 import { PriceError, savePrices } from "../../lib/prices";
+import { NewsError, saveNews } from "../../lib/news";
 
 export async function login(_previous: { error: string }, form: FormData) {
   if (!authConfigured()) return { error: "ยังไม่ได้ตั้งค่าบัญชีแอดมิน กรุณาตั้งค่า ADMIN_USERNAME, ADMIN_PASSWORD_HASH และ ADMIN_SESSION_SECRET บนเซิร์ฟเวอร์" };
@@ -30,5 +31,19 @@ export async function updatePrices(slug: string, prices: unknown, revision: stri
     return { error: "บันทึกไม่สำเร็จ กรุณาลองใหม่ หรือติดต่อผู้ดูแลเซิร์ฟเวอร์" };
   }
   revalidatePath("/", "layout");
+  return { revision: nextRevision };
+}
+
+export async function updateNews(items: unknown, revision: string): Promise<{ error?: string; revision?: string }> {
+  requireAdmin();
+  let nextRevision: string;
+  try { nextRevision = await saveNews(items, revision); }
+  catch (error) {
+    if (error instanceof NewsError) return { error: error.message };
+    console.error("News storage write failed", error);
+    return { error: "บันทึกข่าวสารไม่สำเร็จ กรุณาลองใหม่ หรือติดต่อผู้ดูแลเซิร์ฟเวอร์" };
+  }
+  revalidatePath("/news");
+  revalidatePath("/admin");
   return { revision: nextRevision };
 }

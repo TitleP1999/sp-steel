@@ -8,6 +8,7 @@ const ts = require('typescript');
 require.extensions['.ts'] = (module, file) => module._compile(ts.transpileModule(fs.readFileSync(file, 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020, esModuleInterop: true } }).outputText, file);
 const auth = require('../lib/admin-auth.ts');
 const store = require('../lib/prices.ts');
+const newsStore = require('../lib/news.ts');
 
 test('admin credentials, signed sessions, rotation and throttling', async () => {
   const salt = randomBytes(16).toString('hex');
@@ -61,4 +62,23 @@ test('prices persist, starting price is the minimum, invalid and conflicting wri
     await assert.rejects(store.savePrices(product.slug, [1,2,3,4], revision));
     assert.equal(fs.readFileSync(path.join(directory,'prices.json'),'utf8'), '{broken');
   } finally { fs.rmSync(directory, { recursive: true, force: true }); delete process.env.PRICE_DATA_DIR; }
+});
+
+test('news configuration persists, validates links and rejects stale or broken data', async () => {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'sp-steel-news-test-'));
+  process.env.NEWS_DATA_DIR = directory;
+  try {
+    const initial = await newsStore.getNews();
+    assert.deepEqual(initial.items, []);
+    const items = [{ id: 'sale-1', title: 'โปรโมชั่นเหล็ก', summary: 'รายละเอียดโปรโมชั่น', category: 'โปรโมชั่น', publishedAt: '2026-09-25', href: '/contact', imageUrl: '/news/promo.jpg', published: true }];
+    const revision = await newsStore.saveNews(items, initial.revision);
+    assert.deepEqual((await newsStore.getNews()).items, items);
+    await assert.rejects(newsStore.saveNews([{ ...items[0], href: 'javascript:alert(1)' }], revision));
+    await assert.rejects(newsStore.saveNews([{ ...items[0], imageUrl: 'javascript:alert(1)' }], revision));
+    await assert.rejects(newsStore.saveNews(items, initial.revision), /หน้าต่างอื่น/);
+    delete require.cache[require.resolve('../lib/news.ts')];
+    assert.deepEqual((await require('../lib/news.ts').getNews()).items, items);
+    fs.writeFileSync(path.join(directory, 'news.json'), '{broken');
+    await assert.rejects(require('../lib/news.ts').getNews());
+  } finally { fs.rmSync(directory, { recursive: true, force: true }); delete process.env.NEWS_DATA_DIR; }
 });
