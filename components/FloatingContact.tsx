@@ -1,6 +1,6 @@
 "use client";
 import {useState} from "react"; import {MessageCircle,X,Facebook} from "lucide-react"; import {AnimatePresence,motion} from "framer-motion";
-const LINE="https://lin.ee/Yurg5Hy"; const FACEBOOK="https://www.facebook.com/SuparerkSteel/";
+const LINE="https://lin.ee/Yurg5Hy"; const FACEBOOK="https://www.facebook.com/SuparerkSteelSuphanburi";
 export default function FloatingContact(){const [open,setOpen]=useState(false);return <div className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-4 z-[60] flex flex-col items-center gap-3">
 <AnimatePresence>{open&&<motion.div initial={{opacity:0,y:20,scale:.9}} animate={{opacity:1,y:0,scale:1}} exit={{opacity:0,y:15,scale:.9}} className="flex flex-col gap-3">
 <a href={LINE} target="_blank" rel="noreferrer" aria-label="LINE Official Account" className="grid h-14 w-14 place-items-center rounded-full bg-[#06C755] text-white shadow-xl transition hover:-translate-y-1"><MessageCircle size={28} fill="currentColor"/></a>
