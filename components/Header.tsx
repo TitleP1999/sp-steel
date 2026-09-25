@@ -59,9 +59,9 @@ export default function Header() {
         </Link>
         <nav aria-label="เมนูหลัก" className="hidden h-full items-center gap-2 md:flex lg:gap-3 xl:gap-5">
           {basic.slice(0, 2).map(([href, label]) => <Nav key={href} href={href} label={label} active={pathname === href} />)}
-          <button ref={catalogToggle} aria-expanded={mega} aria-controls="desktop-catalog" onClick={() => setMega(!mega)} className="flex h-full items-center gap-1 whitespace-nowrap text-xs font-black xl:text-sm">สินค้าและบริการ <ChevronDown size={15} className={mega ? "rotate-180" : ""} /></button>
+          <button ref={catalogToggle} aria-expanded={mega} aria-controls="desktop-catalog" onClick={() => setMega(!mega)} className="flex h-full items-center gap-1 whitespace-nowrap border-b-[3px] border-transparent pt-[3px] text-xs font-black leading-none xl:text-sm">สินค้าและบริการ <ChevronDown size={15} className={mega ? "rotate-180" : ""} /></button>
           {basic.slice(2).map(([href, label]) => <Nav key={href} href={href} label={label} active={pathname === href} />)}
-          <Link href="/contact" aria-current={pathname === "/contact" ? "page" : undefined} className="whitespace-nowrap bg-[#8b352d] px-3 py-2.5 text-xs font-black text-white hover:bg-[#742c26] xl:px-5 xl:py-3 xl:text-sm">ติดต่อเรา</Link>
+          <Link href="/contact" aria-current={pathname === "/contact" ? "page" : undefined} className="inline-flex items-center whitespace-nowrap bg-[#8b352d] px-3 py-2.5 text-xs font-black leading-none text-white hover:bg-[#742c26] xl:px-5 xl:py-3 xl:text-sm">ติดต่อเรา</Link>
         </nav>
         <button ref={toggle} type="button" aria-label={open ? "ปิดเมนู" : "เปิดเมนู"} aria-expanded={open} aria-controls="mobile-navigation" onClick={() => setOpen(!open)} className="grid h-11 w-11 shrink-0 place-items-center rounded border border-zinc-200 hover:bg-zinc-100 md:hidden">{open ? <X /> : <Menu />}</button>
       </div>
@@ -88,5 +88,5 @@ export default function Header() {
 }
 
 function Nav({ href, label, active }: { href: string; label: string; active: boolean }) {
-  return <Link href={href} aria-current={active ? "page" : undefined} className={`flex h-full items-center whitespace-nowrap border-b-[3px] text-xs font-black xl:text-sm ${active ? "border-[#8b352d] text-[#8b352d]" : "border-transparent text-[#8b352d] hover:border-[#8b352d]/40"}`}>{label}</Link>;
+  return <Link href={href} aria-current={active ? "page" : undefined} className={`flex h-full items-center whitespace-nowrap border-b-[3px] pt-[3px] text-xs font-black leading-none xl:text-sm ${active ? "border-[#8b352d] text-[#8b352d]" : "border-transparent text-[#8b352d] hover:border-[#8b352d]/40"}`}>{label}</Link>;
 }
