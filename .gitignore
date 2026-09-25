@@ -5,3 +5,7 @@ node_modules/
 .env*
 .next-backup-*/
 dev-server*.log
+
+# Persistent server data and local test output
+storage/
+.test-output/

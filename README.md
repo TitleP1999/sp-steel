@@ -1,5 +1,7 @@
 # SUPARERK STEEL V7
 
+ระบบหลังบ้านจัดการราคา: อ่านวิธีสร้างบัญชีแอดมิน การจัดเก็บราคา และข้อกำหนด deployment ใน [README-ADMIN.md](README-ADMIN.md)
+
 V7 additions:
 - Tamarind-red #8B352D header/navigation
 - Expanded steel catalog based on the broad category coverage requested by the client
