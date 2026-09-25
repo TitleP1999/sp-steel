@@ -54,14 +54,14 @@ export default function Header() {
       onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget)) { setOpen(false); setMega(false); } }}>
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-4 sm:h-20 sm:px-6">
         <Link href="/" onClick={() => { setOpen(false); setMega(false); }} className="flex min-w-0 items-center gap-2 sm:gap-3">
-          <div className="relative h-10 w-14 shrink-0 overflow-hidden bg-white sm:h-14 sm:w-20 md:h-10 md:w-14 xl:h-14 xl:w-20"><Image src="/suparerk-logo-main.jpg" alt="SUPARERK STEEL" fill sizes="(min-width: 1280px) 80px, 56px" className="scale-[.9] object-contain" /></div>
-          <div><b className="whitespace-nowrap text-sm text-[#8b352d] sm:text-xl md:text-sm xl:text-xl">SUPARERK <span>STEEL</span></b><div className="text-[9px] font-bold tracking-widest text-[#8b352d] md:hidden xl:block">ศุภฤกษ์ สตีล จำกัด</div></div>
+          <div className="relative h-10 w-14 shrink-0 overflow-hidden bg-white sm:h-14 sm:w-20 md:h-12 md:w-16 xl:h-14 xl:w-20"><Image src="/suparerk-logo-main.jpg" alt="SUPARERK STEEL" fill sizes="(min-width: 1280px) 80px, (min-width: 768px) 64px, 56px" className="scale-[.9] object-contain" /></div>
+          <div><b className="whitespace-nowrap text-sm text-[#8b352d] sm:text-xl md:text-lg xl:text-xl">SUPARERK <span>STEEL</span></b><div className="text-[9px] font-bold tracking-widest text-[#8b352d]">ศุภฤกษ์ สตีล จำกัด</div></div>
         </Link>
-        <nav aria-label="เมนูหลัก" className="hidden h-full items-center gap-1 md:flex lg:gap-2 xl:gap-5">
+        <nav aria-label="เมนูหลัก" className="hidden h-full items-center gap-2 md:flex lg:gap-3 xl:gap-5">
           {basic.slice(0, 2).map(([href, label]) => <Nav key={href} href={href} label={label} active={pathname === href} />)}
-          <button ref={catalogToggle} aria-expanded={mega} aria-controls="desktop-catalog" onClick={() => setMega(!mega)} className="flex h-full items-center gap-0.5 whitespace-nowrap text-[10px] font-black lg:gap-1 lg:text-xs xl:text-sm">สินค้าและบริการ <ChevronDown size={15} className={mega ? "rotate-180" : ""} /></button>
+          <button ref={catalogToggle} aria-expanded={mega} aria-controls="desktop-catalog" onClick={() => setMega(!mega)} className="flex h-full items-center gap-1 whitespace-nowrap text-xs font-black xl:text-sm">สินค้าและบริการ <ChevronDown size={15} className={mega ? "rotate-180" : ""} /></button>
           {basic.slice(2).map(([href, label]) => <Nav key={href} href={href} label={label} active={pathname === href} />)}
-          <Link href="/contact" aria-current={pathname === "/contact" ? "page" : undefined} className="whitespace-nowrap bg-[#8b352d] px-2 py-2.5 text-[10px] font-black text-white hover:bg-[#742c26] lg:px-3 lg:text-xs xl:px-5 xl:py-3 xl:text-sm">ติดต่อเรา</Link>
+          <Link href="/contact" aria-current={pathname === "/contact" ? "page" : undefined} className="whitespace-nowrap bg-[#8b352d] px-3 py-2.5 text-xs font-black text-white hover:bg-[#742c26] xl:px-5 xl:py-3 xl:text-sm">ติดต่อเรา</Link>
         </nav>
         <button ref={toggle} type="button" aria-label={open ? "ปิดเมนู" : "เปิดเมนู"} aria-expanded={open} aria-controls="mobile-navigation" onClick={() => setOpen(!open)} className="grid h-11 w-11 shrink-0 place-items-center rounded border border-zinc-200 hover:bg-zinc-100 md:hidden">{open ? <X /> : <Menu />}</button>
       </div>
@@ -88,5 +88,5 @@ export default function Header() {
 }
 
 function Nav({ href, label, active }: { href: string; label: string; active: boolean }) {
-  return <Link href={href} aria-current={active ? "page" : undefined} className={`flex h-full items-center whitespace-nowrap border-b-[3px] text-[10px] font-black lg:text-xs xl:text-sm ${active ? "border-[#8b352d] text-[#8b352d]" : "border-transparent text-[#8b352d] hover:border-[#8b352d]/40"}`}>{label}</Link>;
+  return <Link href={href} aria-current={active ? "page" : undefined} className={`flex h-full items-center whitespace-nowrap border-b-[3px] text-xs font-black xl:text-sm ${active ? "border-[#8b352d] text-[#8b352d]" : "border-transparent text-[#8b352d] hover:border-[#8b352d]/40"}`}>{label}</Link>;
 }
