@@ -8,6 +8,7 @@ const ts = require('typescript');
 require.extensions['.ts'] = (module, file) => module._compile(ts.transpileModule(fs.readFileSync(file, 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020, esModuleInterop: true } }).outputText, file);
 const auth = require('../lib/admin-auth.ts');
 const store = require('../lib/prices.ts');
+const quotes = require('../lib/quote-requests.ts');
 
 test('admin credentials, signed sessions, rotation and throttling', async () => {
   const salt = randomBytes(16).toString('hex');
@@ -61,4 +62,21 @@ test('prices persist, starting price is the minimum, invalid and conflicting wri
     await assert.rejects(store.savePrices(product.slug, [1,2,3,4], revision));
     assert.equal(fs.readFileSync(path.join(directory,'prices.json'),'utf8'), '{broken');
   } finally { fs.rmSync(directory, { recursive: true, force: true }); delete process.env.PRICE_DATA_DIR; }
+});
+
+test('quote request validation accepts contact details and rejects malformed or oversized input', () => {
+  const valid = new FormData();
+  valid.set('name', 'บริษัท ทดสอบ จำกัด');
+  valid.set('phone', '081-234-5678');
+  valid.set('product', 'เหล็กตัวซี 10 เส้น');
+  valid.set('details', 'จัดส่งสุพรรณบุรี');
+  assert.deepEqual(quotes.validateQuoteRequest(valid), {
+    name: 'บริษัท ทดสอบ จำกัด', phone: '081-234-5678', product: 'เหล็กตัวซี 10 เส้น', details: 'จัดส่งสุพรรณบุรี'
+  });
+  for (const [field, value] of [['name','x'], ['phone','123'], ['phone','081-ABC-1234'], ['product','x'], ['details','x'.repeat(2001)]]) {
+    const form = new FormData();
+    for (const [key, entry] of valid.entries()) form.set(key, entry);
+    form.set(field, value);
+    assert.throws(() => quotes.validateQuoteRequest(form), quotes.QuoteRequestError);
+  }
 });

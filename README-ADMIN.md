@@ -7,6 +7,7 @@
 - `lib/prices.ts` ใช้ Neon PostgreSQL เมื่อมี `DATABASE_URL` และใช้ไฟล์ local เมื่อไม่มี โดยคำนวณราคาเริ่มต้นจากราคาต่ำสุดของทุกขนาด
 - `/`, `/products` และ `/products/[slug]` อ่านราคาฝั่งเซิร์ฟเวอร์ทุกครั้งที่เปิดหรือโหลดหน้าใหม่ ไม่ต้อง build ใหม่เมื่อแก้ราคา
 - `/admin/login` และ `/admin` เป็นหน้าล็อกอินและแก้ราคาสินค้า ค้นหาหรือกรองหมวดได้ บันทึกทีละสินค้า
+- ฟอร์มขอใบเสนอราคาที่ `/contact` บันทึกในตาราง `sp_quote_requests` และแสดงรายการล่าสุดใน `/admin`
 - หน้าเว็บที่ลูกค้าเปิดค้างไว้ต้องโหลดใหม่เพื่อเห็นราคาใหม่ ไม่มีระบบ push แบบเรียลไทม์
 
 ## เริ่มใช้งาน
@@ -35,6 +36,10 @@ npm run dev
 SELECT product_slug, prices, updated_at
 FROM sp_product_prices
 ORDER BY product_slug;
+
+SELECT customer_name, phone, product, details, status, created_at
+FROM sp_quote_requests
+ORDER BY created_at DESC;
 ```
 
 ## การจัดเก็บบนเซิร์ฟเวอร์ทั่วไปหรือ local
