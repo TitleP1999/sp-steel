@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Menu, X, ChevronDown, ArrowRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { categories, products } from "../data/products";
@@ -11,6 +11,7 @@ const basic = [["/", "หน้าแรก"], ["/about", "เกี่ยวก
 
 export default function Header() {
   const pathname = usePathname();
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [mega, setMega] = useState(false);
   const toggle = useRef<HTMLButtonElement>(null);
@@ -44,14 +45,13 @@ export default function Header() {
   }, [open, mega]);
 
   const mobileLink = (href: string, label: string) => (
-    <Link key={href} href={href} onClick={() => setOpen(false)} aria-current={pathname === href ? "page" : undefined}
+    <Link key={href} href={href} onClick={event => { event.preventDefault(); router.push(href); setOpen(false); }} aria-current={pathname === href ? "page" : undefined}
       className={`flex min-h-12 items-center rounded px-3 py-3 text-sm font-bold ${pathname === href ? "bg-[#8b352d]/10 text-[#8b352d]" : "hover:bg-zinc-100"}`}>{label}</Link>
   );
 
   return <>
     <div className="bg-[#202124] px-4 py-2 text-center text-[9px] font-bold leading-4 tracking-widest text-zinc-400 sm:text-[10px]">SUPARERK STEEL CO., LTD.<span className="hidden sm:inline"> • STEEL FOR CONSTRUCTION & INDUSTRY</span></div>
-    <header ref={header} className="sticky top-0 z-[80] border-b border-zinc-200 bg-white text-[#8b352d] shadow-sm"
-      onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget)) { setOpen(false); setMega(false); } }}>
+    <header ref={header} className="sticky top-0 z-[80] border-b border-zinc-200 bg-white text-[#8b352d] shadow-sm">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-4 sm:h-20 sm:px-6">
         <Link href="/" onClick={() => { setOpen(false); setMega(false); }} className="flex min-w-0 items-center gap-2 sm:gap-3">
           <div className="relative h-10 w-14 shrink-0 overflow-hidden bg-white sm:h-14 sm:w-20 md:h-12 md:w-16 xl:h-14 xl:w-20"><Image src="/suparerk-logo-main.jpg" alt="SUPARERK STEEL" fill sizes="(min-width: 1280px) 80px, (min-width: 768px) 64px, 56px" className="scale-[.9] object-contain" /></div>
@@ -74,13 +74,13 @@ export default function Header() {
       {open && <nav id="mobile-navigation" aria-label="เมนูหลักบนมือถือ" className="mobile-navigation absolute inset-x-0 top-full overflow-y-auto overscroll-contain border-t border-zinc-200 bg-white px-4 py-3 shadow-xl md:hidden">
         <div className="mx-auto max-w-3xl space-y-1">
           {basic.slice(0, 2).map(([href, label]) => mobileLink(href, label))}
-          <details className="rounded border border-zinc-200" open={pathname.startsWith("/products")}>
+          <details className="rounded border border-zinc-200">
             <summary className="cursor-pointer px-3 py-4 text-sm font-bold">สินค้าเหล็ก</summary>
             <div className="px-2 pb-2">{mobileLink("/products", "ดูสินค้าทั้งหมด")}{categories.map(category => <details key={category} className="border-t border-zinc-200"><summary className="cursor-pointer px-3 py-4 text-sm text-[#8b352d]">{category}</summary><div className="pl-3">{products.filter(product => product.category === category).map(product => mobileLink(`/products/${product.slug}`, product.name))}</div></details>)}</div>
           </details>
           {mobileLink("/services", "บริการของเรา")}
           {basic.slice(2).map(([href, label]) => mobileLink(href, label))}
-          <Link href="/contact" onClick={() => setOpen(false)} aria-current={pathname === "/contact" ? "page" : undefined} className="!mt-3 flex min-h-12 items-center justify-center gap-2 rounded bg-[#8b352d] px-4 py-3 font-black text-white hover:bg-[#742c26]">ติดต่อเรา / ขอใบเสนอราคา <ArrowRight size={18} /></Link>
+          <Link href="/contact" onClick={event => { event.preventDefault(); router.push("/contact"); setOpen(false); }} aria-current={pathname === "/contact" ? "page" : undefined} className="!mt-3 flex min-h-12 items-center justify-center gap-2 rounded bg-[#8b352d] px-4 py-3 font-black text-white hover:bg-[#742c26]">ติดต่อเรา / ขอใบเสนอราคา <ArrowRight size={18} /></Link>
         </div>
       </nav>}
     </header>
