@@ -1,8 +1,8 @@
 export type Product={
  slug:string; code:string; name:string; en:string; category:string;
- short:string; description:string; uses:string[]; specs:string[]; image:string;
+ short:string; description:string; uses:string[]; specs:string[]; image:string; price:number;
 };
-export const products:Product[]=[
+const productCatalog:Omit<Product,"price">[]=[
  {slug:"hot-rolled-coil",code:"HRC",name:"เหล็กม้วนรีดร้อน",en:"Hot Rolled Steel Coil",category:"เหล็กม้วนวัตถุดิบ",short:"เหล็กม้วนวัตถุดิบสำหรับงานผลิตและแปรรูป",description:"เหล็กม้วนรีดร้อนสำหรับงานผลิต งานขึ้นรูป และการแปรรูปในภาคอุตสาหกรรม",uses:["งานแปรรูป","งานโครงสร้าง","งานผลิตชิ้นส่วน","อุตสาหกรรม"],specs:["สอบถามเกรดและขนาดกับฝ่ายขาย","ตรวจสอบสต๊อกก่อนสั่งซื้อ","เลือกตามลักษณะการใช้งาน"],image:"/products/hot-rolled-coil.webp"},
  {slug:"cold-rolled-coil",code:"CRC",name:"เหล็กม้วนรีดเย็น",en:"Cold Rolled Steel Coil",category:"เหล็กม้วนวัตถุดิบ",short:"ผิวเรียบสำหรับงานขึ้นรูปและงานผลิต",description:"เหล็กม้วนรีดเย็นเหมาะกับงานที่ต้องการผิวเรียบและความสม่ำเสมอสำหรับการขึ้นรูป",uses:["งานขึ้นรูป","ชิ้นส่วนอุตสาหกรรม","งานผลิต","งานโลหะแผ่น"],specs:["มีหลายความหนา","สอบถามเกรดกับฝ่ายขาย","เลือกตามกระบวนการผลิต"],image:"/products/cold-rolled-coil.webp"},
  {slug:"galvanized-coil",code:"GI",name:"เหล็กม้วนสังกะสี",en:"Galvanized Steel Coil",category:"เหล็กม้วนวัตถุดิบ",short:"เหล็กม้วนเคลือบสังกะสีสำหรับงานที่ต้องการทนการกัดกร่อน",description:"เหล็กม้วนเคลือบสังกะสีสำหรับงานผลิตและขึ้นรูปที่ต้องการการป้องกันการกัดกร่อนเพิ่มเติม",uses:["งานหลังคา","งานขึ้นรูป","งานภายนอก","งานอุตสาหกรรม"],specs:["ผิวเคลือบสังกะสี","หลายความหนา","สอบถามรายละเอียดกับฝ่ายขาย"],image:"/products/galvanized-coil.webp"},
@@ -27,5 +27,6 @@ export const products:Product[]=[
  {slug:"deformed-bar",code:"DB",name:"เหล็กข้ออ้อย",en:"Deformed Bar",category:"เหล็กเสริมคอนกรีต",short:"เหล็กเสริมกำลังสำหรับโครงสร้างคอนกรีต",description:"ผิวเหล็กมีบั้งเพื่อเพิ่มแรงยึดเกาะกับคอนกรีต ใช้ในงานฐานราก เสา คาน และพื้น",uses:["ฐานราก","เสาและคาน","พื้นคอนกรีต","งานโครงสร้าง"],specs:["มีหลายขนาด","เหมาะกับงานโครงสร้าง","สอบถามเกรดและมาตรฐาน"],image:"/products/deformed-bar.webp"},
  {slug:"wire-mesh",code:"MESH",name:"ไวร์เมช",en:"Welded Wire Mesh",category:"เหล็กเสริมคอนกรีต",short:"ตะแกรงเหล็กสำเร็จรูปสำหรับพื้นและงานคอนกรีต",description:"ตะแกรงเหล็กเชื่อมสำเร็จรูป ช่วยลดขั้นตอนการผูกเหล็กหน้างาน เหมาะกับงานพื้นและคอนกรีต",uses:["พื้นคอนกรีต","ถนน","ลาน","งานสำเร็จรูป"],specs:["หลายขนาดช่อง","หลายขนาดลวด","สอบถามขนาดแผ่นและสต๊อก"],image:"/products/wire-mesh.webp"}
 ];
+export const products:Product[]=productCatalog.map(product=>({...product,price:100}));
 export const categories=["เหล็กม้วนวัตถุดิบ","เหล็กรูปพรรณขึ้นรูปเย็น","เหล็กรูปพรรณรีดร้อน","เหล็กแผ่น","เหล็กเสริมคอนกรีต"];
 export function getProduct(slug:string){return products.find(p=>p.slug===slug)}
