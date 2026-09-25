@@ -1,1 +1,1 @@
-const nextConfig={}; export default nextConfig;
+const nextConfig={distDir:process.env.NODE_ENV === "production" ? ".next-build" : ".next"}; export default nextConfig;

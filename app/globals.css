@@ -1,5 +1,6 @@
+@font-face{font-family:"Prompt";font-style:normal;font-weight:400;font-display:swap;src:url("/fonts/Prompt-Regular.ttf") format("truetype")} @font-face{font-family:"Prompt";font-style:normal;font-weight:700;font-display:swap;src:url("/fonts/Prompt-Bold.ttf") format("truetype")} @font-face{font-family:"Prompt";font-style:normal;font-weight:900;font-display:swap;src:url("/fonts/Prompt-Black.ttf") format("truetype")}
 @tailwind base;@tailwind components;@tailwind utilities;
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#faf9f7;color:#191919;font-family:Arial,"Noto Sans Thai",sans-serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#faf9f7;color:#191919;font-family:"Prompt",sans-serif}
 .gridbg{background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);background-size:44px 44px}
 .steel{background:repeating-linear-gradient(135deg,#202020 0,#202020 9px,#252525 9px,#252525 18px)}
 .card{transition:.25s}.card:hover{transform:translateY(-5px);box-shadow:0 20px 45px rgba(0,0,0,.12)}
