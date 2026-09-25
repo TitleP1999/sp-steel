@@ -1,23 +1,23 @@
-# SP Steel V6 — Branches + Real Branding
+# SUPARERK STEEL V7
 
-Includes:
-- User-provided SUPARERK STEEL logo assets
-- Real logo in header
-- Animated two-branch section on homepage
-- Suphan Buri and Kanchanaburi branch branding
-- Correct Google Maps links supplied by client
-- Contact page with both branches
-- Official Linktree and published call number 035-569-333
-- Footer branch information
-- Keeps V5 product mega menu/catalog and V4 motion
+V7 additions:
+- Tamarind-red #8B352D header/navigation
+- Expanded steel catalog based on the broad category coverage requested by the client
+- 23 product pages across coils, cold-formed sections, hot-rolled sections, plates, and reinforcing steel
+- Catalog-style product imagery (remote image references; replace with owned supplier/company photos for production when available)
+- Rebuilt product mega menu
+- Floating LINE + Facebook contact controls
+- Embedded Google Maps on Contact page for both branches, plus external direction buttons
+- Existing V6.1 branding, branch logos, motion, responsive layout retained
+
+Official contact links used:
+- Facebook: https://www.facebook.com/SuparerkSteel/
+- LINE: https://lin.ee/Yurg5Hy
+- Linktree: https://linktr.ee/suparerksteel
 
 Run:
+```bash
 npm install
 npm run build
 npm run dev
-
-## V6.1
-- Preserve the supplied image logos.
-- Branch logos now use object-contain instead of object-cover.
-- Full square artwork is visible on homepage and contact cards.
-- Header logo also uses object-contain.
+```
