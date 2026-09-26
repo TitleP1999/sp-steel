@@ -7,7 +7,6 @@ import { authConfigured, checkCredentials, createSession, SESSION_COOKIE, SESSIO
 import { requireAdmin } from "../../lib/admin-session";
 import { PriceError, savePrices } from "../../lib/prices";
 import { NewsError, saveNews } from "../../lib/news";
-import { ProjectError, saveProjects } from "../../lib/projects";
 import { ReviewError, saveReviews } from "../../lib/reviews";
 
 export async function login(_previous: { error: string }, form: FormData) {
@@ -48,20 +47,6 @@ export async function updateNews(items: unknown, revision: string): Promise<{ er
   revalidatePath("/news");
   revalidatePath("/admin");
   return { revision: nextRevision };
-}
-
-export async function updateProjects(items: unknown, revision: string): Promise<{ error?: string; revision?: string }> {
-  requireAdmin();
-  try {
-    const nextRevision = await saveProjects(items, revision);
-    revalidatePath("/projects");
-    revalidatePath("/admin");
-    return { revision: nextRevision };
-  } catch (error) {
-    if (error instanceof ProjectError) return { error: error.message };
-    console.error("Project storage write failed", error);
-    return { error: "บันทึกผลงานไม่สำเร็จ กรุณาลองใหม่ หรือติดต่อผู้ดูแลเซิร์ฟเวอร์" };
-  }
 }
 
 export async function updateReviews(items: unknown, revision: string): Promise<{ error?: string; revision?: string }> {

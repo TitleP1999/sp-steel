@@ -7,7 +7,7 @@ import { Menu, X, ChevronDown, ArrowRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { categories, products } from "../data/products";
 
-const basic = [["/", "หน้าแรก"], ["/about", "เกี่ยวกับเรา"], ["/projects", "ผลงานและโครงการ"], ["/news", "ข่าวสาร"]];
+const basic = [["/", "หน้าแรก"], ["/about", "เกี่ยวกับเรา"], ["/news", "ข่าวสาร"]];
 const LINE_URL = "https://lin.ee/Yurg5Hy";
 
 export default function Header() {
