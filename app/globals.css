@@ -30,3 +30,7 @@ a,button{-webkit-tap-highlight-color:transparent}
 @media (hover: none) {
   .card:hover { transform: none; box-shadow: none; }
 }
+
+button[class*="bg-"]:not(.rounded-full), button[class*="rounded"]:not(.rounded-full), a[class*="bg-"]:not(.rounded-full) { border-radius: 24px; }
+img:not(.home-hero-background):not(.brand-marquee-image) { border-radius: 24px; }
+article, .group.relative.h-full.overflow-hidden.border { border-radius: 24px; }

@@ -17,7 +17,7 @@ export function Item({children,className=""}:{children:ReactNode,className?:stri
 export function ParallaxPanel(){
  const ref=useRef<HTMLDivElement>(null); const {scrollYProgress}=useScroll({target:ref,offset:["start end","end start"]});
  const y=useTransform(scrollYProgress,[0,1],[24,-24]);
- return <div ref={ref} className="relative min-h-[300px] overflow-hidden border border-white/10 bg-[#202124] sm:min-h-[410px]">
+ return <div ref={ref} className="relative min-h-[300px] overflow-hidden rounded-3xl border border-white/10 bg-[#202124] sm:min-h-[410px]">
   <motion.div style={{y}} className="absolute -inset-y-8 inset-x-0">
    <div className="absolute inset-0 [clip-path:polygon(0_0,62%_0,48%_100%,0_100%)]">
     <Image src="/warehouse-branch-1-v1.png" alt="ภาพตัวอย่างโกดังเหล็กสาขาที่ 1" fill priority quality={95} sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover"/>

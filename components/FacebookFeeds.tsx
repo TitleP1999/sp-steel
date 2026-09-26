@@ -50,13 +50,13 @@ export default function FacebookFeeds() {
 
         <div className="mt-12 grid gap-7 lg:grid-cols-2">
           {pages.map((page, index) => (
-            <article key={page.branch} className="overflow-hidden border border-zinc-200 bg-[#faf9f7] shadow-sm">
+            <article key={page.branch} className="overflow-hidden rounded-3xl border border-zinc-200 bg-[#faf9f7] shadow-sm">
               <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center border-b border-zinc-200 px-5 py-4 sm:px-6">
                 <div>
                   <p className="text-xs font-black tracking-[.16em] text-[#8b352d]">FACEBOOK</p>
                   <h3 className="mt-1 text-xl font-black">สาขา{page.branch}</h3>
                 </div>
-                <a href={page.url} target="_blank" rel="noreferrer" className="shrink-0 bg-[#8b352d] px-4 py-3 text-sm font-black text-white transition hover:bg-[#67251f]">เปิด Facebook ↗</a>
+                <a href={page.url} target="_blank" rel="noreferrer" className="shrink-0 rounded-3xl bg-[#8b352d] px-4 py-3 text-sm font-black text-white transition hover:bg-[#67251f]">เปิด Facebook ↗</a>
               </div>
 
               <div ref={index === 0 ? feed : undefined} className="flex min-h-[620px] justify-center overflow-hidden bg-white py-3">
