@@ -11,13 +11,18 @@ const directory = () => process.env.PRICE_DATA_DIR || path.join(process.cwd(), "
 const filename = () => path.join(directory(), "prices.json");
 const useDatabase = () => Boolean(process.env.DATABASE_URL) && !process.env.PRICE_DATA_DIR;
 
-const databaseState = globalThis as typeof globalThis & { priceSchemaPromise?: Promise<void> };
+const PRICE_SCHEMA_VERSION = 2;
+const databaseState = globalThis as typeof globalThis & { priceSchemaPromise?: Promise<void>; priceSchemaVersion?: number };
 function database() {
   if (!process.env.DATABASE_URL) throw new Error("DATABASE_URL is not configured");
   return neon(process.env.DATABASE_URL);
 }
 
 async function ensureDatabase() {
+  if (databaseState.priceSchemaVersion !== PRICE_SCHEMA_VERSION) {
+    databaseState.priceSchemaPromise = undefined;
+    databaseState.priceSchemaVersion = PRICE_SCHEMA_VERSION;
+  }
   if (!databaseState.priceSchemaPromise) databaseState.priceSchemaPromise = (async () => {
     const sql = database();
     await sql.query(`CREATE TABLE IF NOT EXISTS sp_price_state (
@@ -45,6 +50,7 @@ async function ensureDatabase() {
     }
   })().catch(error => {
     databaseState.priceSchemaPromise = undefined;
+    databaseState.priceSchemaVersion = undefined;
     throw error;
   });
   await databaseState.priceSchemaPromise;
