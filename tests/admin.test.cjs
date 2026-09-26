@@ -10,6 +10,8 @@ const auth = require('../lib/admin-auth.ts');
 const store = require('../lib/prices.ts');
 const newsStore = require('../lib/news.ts');
 const quotes = require('../lib/quote-requests.ts');
+const specifications = require('../lib/product-specifications.ts');
+const { products } = require('../data/products.ts');
 
 test('admin credentials, signed sessions, rotation and throttling', async () => {
   const salt = randomBytes(16).toString('hex');
@@ -99,4 +101,13 @@ test('quote request validation accepts contact details and rejects malformed or 
     form.set(field, value);
     assert.throws(() => quotes.validateQuoteRequest(form), quotes.QuoteRequestError);
   }
+});
+
+test('product specification tables provide standard and calculated weights', () => {
+  const cChannel = specifications.getProductSpecifications(products.find(product => product.slug === 'c-channel'));
+  assert.equal(cChannel[0].weight, '1.63 กก./ม.');
+  assert.equal(cChannel[2].weight, '4.06 กก./ม.');
+  const roundBar = specifications.getProductSpecifications(products.find(product => product.slug === 'round-bar'));
+  assert.equal(roundBar[0].weight, '0.22 กก./ม.');
+  assert.match(roundBar[0].basis, /ค่าประมาณ/);
 });
