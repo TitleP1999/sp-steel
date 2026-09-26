@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from "react";
 import { categories, products } from "../data/products";
 
 const basic = [["/", "หน้าแรก"], ["/about", "เกี่ยวกับเรา"], ["/projects", "ผลงานและโครงการ"], ["/news", "ข่าวสาร"]];
+const LINE_URL = "https://lin.ee/Yurg5Hy";
 
 export default function Header() {
   const pathname = usePathname();
@@ -61,7 +62,8 @@ export default function Header() {
           {basic.slice(0, 2).map(([href, label]) => <Nav key={href} href={href} label={label} active={pathname === href} />)}
           <button ref={catalogToggle} aria-expanded={mega} aria-controls="desktop-catalog" onClick={() => setMega(!mega)} className="flex h-full items-center gap-1 whitespace-nowrap border-b-[3px] border-transparent pt-[3px] text-xs font-black leading-none xl:text-sm">สินค้าและบริการ <ChevronDown size={15} className={mega ? "rotate-180" : ""} /></button>
           {basic.slice(2).map(([href, label]) => <Nav key={href} href={href} label={label} active={pathname === href} />)}
-          <Link href="/contact" aria-current={pathname === "/contact" ? "page" : undefined} className="inline-flex items-center whitespace-nowrap bg-[#8b352d] px-3 py-2.5 text-xs font-black leading-none text-white hover:bg-[#742c26] xl:px-5 xl:py-3 xl:text-sm">ติดต่อเรา</Link>
+          <Nav href="/contact" label="ติดต่อเรา" active={pathname === "/contact"} />
+          <a href={LINE_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 whitespace-nowrap bg-[#8b352d] px-3 py-2.5 text-[11px] font-black leading-none text-white hover:bg-[#742c26] xl:px-4 xl:py-3 xl:text-sm"><Image src="/line-logo.svg" alt="" width={20} height={20} className="shrink-0" />ขอใบเสนอราคาทางไลน์</a>
         </nav>
         <button ref={toggle} type="button" aria-label={open ? "ปิดเมนู" : "เปิดเมนู"} aria-expanded={open} aria-controls="mobile-navigation" onClick={() => setOpen(!open)} className="grid h-11 w-11 shrink-0 place-items-center rounded border border-zinc-200 hover:bg-zinc-100 md:hidden">{open ? <X /> : <Menu />}</button>
       </div>
@@ -80,7 +82,8 @@ export default function Header() {
           </details>
           {mobileLink("/services", "บริการของเรา")}
           {basic.slice(2).map(([href, label]) => mobileLink(href, label))}
-          <Link href="/contact" onClick={event => { event.preventDefault(); router.push("/contact"); setOpen(false); }} aria-current={pathname === "/contact" ? "page" : undefined} className="!mt-3 flex min-h-12 items-center justify-center gap-2 rounded bg-[#8b352d] px-4 py-3 font-black text-white hover:bg-[#742c26]">ติดต่อเรา / ขอใบเสนอราคา <ArrowRight size={18} /></Link>
+          {mobileLink("/contact", "ติดต่อเรา")}
+          <a href={LINE_URL} target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)} className="!mt-3 flex min-h-12 items-center justify-center gap-2 rounded bg-[#8b352d] px-4 py-3 font-black text-white hover:bg-[#742c26]"><Image src="/line-logo.svg" alt="" width={22} height={22} />ขอใบเสนอราคาทางไลน์</a>
         </div>
       </nav>}
     </header>
