@@ -12,6 +12,7 @@ const newsStore = require('../lib/news.ts');
 const quotes = require('../lib/quote-requests.ts');
 const specifications = require('../lib/product-specifications.ts');
 const { products } = require('../data/products.ts');
+const { productStandards } = require('../lib/product-standards.ts');
 
 test('admin credentials, signed sessions, rotation and throttling', async () => {
   const salt = randomBytes(16).toString('hex');
@@ -110,4 +111,5 @@ test('product specification tables provide standard and calculated weights', () 
   const roundBar = specifications.getProductSpecifications(products.find(product => product.slug === 'round-bar'));
   assert.equal(roundBar[0].weight, '0.22 กก./ม.');
   assert.match(roundBar[0].basis, /ค่าประมาณ/);
+  assert.deepEqual(products.filter(product => !productStandards[product.slug]).map(product => product.slug), []);
 });
