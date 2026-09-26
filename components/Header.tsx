@@ -68,6 +68,7 @@ export default function Header() {
         </nav>
         <button ref={toggle} type="button" aria-label={open ? "ปิดเมนู" : "เปิดเมนู"} aria-expanded={open} aria-controls="mobile-navigation" onClick={() => setOpen(!open)} className="grid h-11 w-11 shrink-0 place-items-center rounded border border-zinc-200 hover:bg-zinc-100 md:hidden">{open ? <X /> : <Menu />}</button>
       </div>
+      <a href={LINE_URL} target="_blank" rel="noopener noreferrer" className="flex min-h-11 items-center justify-center gap-2 bg-[#8b352d] px-4 py-2 text-sm font-black text-white hover:bg-[#742c26] md:hidden"><Image src="/line-logo.svg" alt="" width={22} height={22} />ขอใบเสนอราคาทางไลน์</a>
       {mega && <nav id="desktop-catalog" aria-label="สินค้าและบริการ" className="absolute inset-x-0 top-full hidden max-h-[calc(100dvh-5rem)] overflow-y-auto border-y bg-white text-[#202124] shadow-2xl md:block">
         <div className="mx-auto max-w-7xl px-6 py-8" onClick={event => { if ((event.target as HTMLElement).closest("a")) setMega(false); }}>
           <div className="mb-6 flex items-center justify-between border-b pb-5"><h2 className="text-2xl font-black">สินค้าเหล็กครบทุกหมวด</h2><div className="flex gap-6 font-bold text-[#8b352d]"><Link href="/products">สินค้าทั้งหมด →</Link><Link href="/services">บริการ →</Link></div></div>
@@ -85,7 +86,6 @@ export default function Header() {
           {basic.slice(2).map(([href, label]) => mobileLink(href, label))}
           {mobileLink("/contact", "ติดต่อเรา")}
           {mobileLink("/reviews", "รีวิวจากลูกค้า")}
-          <a href={LINE_URL} target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)} className="!mt-3 flex min-h-12 items-center justify-center gap-2 rounded bg-[#8b352d] px-4 py-3 font-black text-white hover:bg-[#742c26]"><Image src="/line-logo.svg" alt="" width={22} height={22} />ขอใบเสนอราคาทางไลน์</a>
         </div>
       </nav>}
     </header>
