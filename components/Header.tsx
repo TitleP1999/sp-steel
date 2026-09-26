@@ -52,7 +52,7 @@ export default function Header() {
 
   return <>
     <div className="bg-[#202124] px-4 py-2 text-center text-[9px] font-bold leading-4 tracking-widest text-zinc-400 sm:text-[10px]">SUPARERK STEEL CO., LTD.<span className="hidden sm:inline"> • STEEL FOR CONSTRUCTION & INDUSTRY</span></div>
-    <a href={LINE_URL} target="_blank" rel="noopener noreferrer" className="flex min-h-11 items-center justify-center gap-2 bg-[#8b352d] px-4 py-2 text-sm font-black text-white hover:bg-[#742c26] md:hidden"><Image src="/line-logo.svg" alt="" width={22} height={22} />ขอใบเสนอราคาทางไลน์</a>
+    <a href={LINE_URL} target="_blank" rel="noopener noreferrer" className="mx-4 my-2 flex min-h-11 items-center justify-center gap-2 rounded-2xl bg-[#06C755] px-4 py-2 text-sm font-black text-white shadow-md transition hover:bg-[#05b34a] md:hidden"><Image src="/line-logo.svg" alt="" width={22} height={22} />ขอใบเสนอราคาผ่าน LINE</a>
     <header ref={header} className="sticky top-0 z-[80] border-b border-zinc-200 bg-white text-[#8b352d] shadow-sm">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-4 sm:h-20 sm:px-6">
         <Link href="/" onClick={() => { setOpen(false); setMega(false); }} className="flex min-w-0 items-center gap-2 sm:gap-3">
@@ -66,7 +66,7 @@ export default function Header() {
           {basic.slice(2).map(([href, label]) => <Nav key={href} href={href} label={label} active={pathname === href} />)}
           <Nav href="/contact" label="ติดต่อเรา" active={pathname === "/contact"} />
           <Nav href="/reviews" label="รีวิวจากลูกค้า" active={pathname === "/reviews"} />
-          <a href={LINE_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 whitespace-nowrap bg-[#8b352d] px-3 py-2.5 text-[11px] font-black leading-none text-white hover:bg-[#742c26] xl:px-4 xl:py-3 xl:text-sm"><Image src="/line-logo.svg" alt="" width={20} height={20} className="shrink-0" />ขอใบเสนอราคาทางไลน์</a>
+          <a href={LINE_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-xl bg-[#06C755] px-3 py-2.5 text-[10px] font-black leading-none text-white shadow-sm transition hover:bg-[#05b34a] xl:px-4 xl:py-3 xl:text-xs"><Image src="/line-logo.svg" alt="" width={20} height={20} className="shrink-0" />ขอใบเสนอราคาผ่าน LINE</a>
         </nav>
         <button ref={toggle} type="button" aria-label={open ? "ปิดเมนู" : "เปิดเมนู"} aria-expanded={open} aria-controls="mobile-navigation" onClick={() => setOpen(!open)} className="grid h-11 w-11 shrink-0 place-items-center rounded border border-zinc-200 hover:bg-zinc-100 md:hidden">{open ? <X /> : <Menu />}</button>
       </div>
