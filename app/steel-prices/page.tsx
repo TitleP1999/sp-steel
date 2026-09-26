@@ -33,7 +33,7 @@ export default async function SteelPricesPage() {
         </div>
 
         <div className="bg-[#8b352d] px-4 py-9 text-white sm:px-7 lg:px-10 lg:py-12 xl:px-14">
-          <div className="mb-7 flex flex-wrap items-end justify-between gap-4"><div><p className="text-xs font-black tracking-[.18em] text-[#efb4ae]">STEEL MARKET BOARD</p><h2 className="mt-2 text-2xl font-black sm:text-3xl">สรุปราคาเหล็กวันนี้</h2></div><a href="https://lin.ee/Yurg5Hy" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center justify-center gap-2 rounded bg-white px-4 py-2 text-sm font-black text-[#8b352d] hover:bg-zinc-100"><Image src="/line-logo.svg" alt="" width={21} height={21} />ขอใบเสนอราคา</a></div>
+          <div className="mb-7"><p className="text-xs font-black tracking-[.18em] text-[#efb4ae]">STEEL MARKET BOARD</p><h2 className="mt-2 text-2xl font-black sm:text-3xl">สรุปราคาเหล็กวันนี้</h2></div>
           <div className="hidden grid-cols-[1fr_150px_150px] px-5 pb-3 text-sm font-bold text-[#efc8c4] md:grid"><span>รายการ</span><span className="text-right">ราคาเริ่มต้น</span><span className="text-right">% เปลี่ยนแปลง</span></div>
           <div className="space-y-3">{featured.map(product => {
           const change = product.changePercent;
