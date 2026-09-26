@@ -25,9 +25,11 @@ export default async function SteelPricesPage() {
   return <main>
     <section className="overflow-hidden border-y border-black/10 bg-zinc-100">
       <div className="mx-auto grid max-w-[1600px] lg:min-h-[720px] lg:grid-cols-[minmax(340px,.72fr)_minmax(0,1.55fr)]">
-        <div className="relative flex min-h-[620px] flex-col overflow-hidden bg-[#f6f4f1] px-6 pb-0 pt-12 sm:px-10 lg:min-h-0 lg:px-12 lg:pt-16 xl:px-16">
-          <div className="relative z-10"><p className="text-xs font-black tracking-[.2em] text-[#8b352d]">DAILY STEEL PRICE</p><h1 className="mt-3 text-4xl font-black leading-tight text-[#17181a] sm:text-5xl">ราคาเหล็กวันนี้</h1><p className="mt-3 text-xl font-black text-[#8b352d]">ตารางอัปเดตราคารวม</p><p className="mt-3 text-sm leading-6 text-zinc-500">อัปเดตล่าสุด<br/><strong className="text-zinc-800">{formatUpdatedAt(updatedAt)}</strong></p></div>
-          <div className="relative mt-auto h-[360px] sm:h-[430px] lg:h-auto lg:flex-1"><Image src="/steel-price-board-hero.png" alt="เหล็กก่อสร้างหลายประเภท" fill priority sizes="(max-width: 1024px) 100vw, 38vw" className="object-contain object-bottom" /></div>
+        <div className="relative flex min-h-[620px] flex-col overflow-hidden bg-[#f6f4f1] px-6 pt-12 sm:px-10 lg:min-h-0 lg:px-12 lg:pt-16 xl:px-16">
+          <Image src="/steel-price-board-hero.png" alt="เหล็กก่อสร้างหลายประเภท" fill priority sizes="(max-width: 1024px) 100vw, 38vw" className="scale-110 object-cover object-[center_58%]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#f6f4f1] via-[#f6f4f1]/75 to-[#f6f4f1]/5" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#f6f4f1]/60 via-transparent to-transparent" />
+          <div className="relative z-10"><p className="text-xs font-black tracking-[.2em] text-[#8b352d]">DAILY STEEL PRICE</p><h1 className="mt-3 text-4xl font-black leading-tight text-[#17181a] sm:text-5xl">ราคาเหล็กวันนี้</h1><p className="mt-3 text-xl font-black text-[#8b352d]">ตารางอัปเดตราคารวม</p><p className="mt-3 text-sm leading-6 text-zinc-600">อัปเดตล่าสุด<br/><strong className="text-zinc-900">{formatUpdatedAt(updatedAt)}</strong></p></div>
         </div>
 
         <div className="bg-[#8b352d] px-4 py-9 text-white sm:px-7 lg:px-10 lg:py-12 xl:px-14">
