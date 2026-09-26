@@ -5,7 +5,7 @@ import { neon } from "@neondatabase/serverless";
 import { products } from "../data/products";
 import priceSeed from "../data/price-seed.json";
 
-type PriceData = { revision: string; updatedAt: string | null; prices: Record<string, number[]> };
+type PriceData = { revision: string; updatedAt: string | null; prices: Record<string, number[]>; previousPrices: Record<string, number[]> };
 export class PriceError extends Error {}
 const directory = () => process.env.PRICE_DATA_DIR || path.join(process.cwd(), "storage");
 const filename = () => path.join(directory(), "prices.json");
@@ -28,8 +28,10 @@ async function ensureDatabase() {
     await sql.query(`CREATE TABLE IF NOT EXISTS sp_product_prices (
       product_slug TEXT PRIMARY KEY,
       prices JSONB NOT NULL,
+      previous_prices JSONB,
       updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     )`);
+    await sql.query("ALTER TABLE sp_product_prices ADD COLUMN IF NOT EXISTS previous_prices JSONB");
     await sql.query(
       "INSERT INTO sp_price_state (id, revision, updated_at) VALUES (1, $1, NULL) ON CONFLICT (id) DO NOTHING",
       [randomUUID()]
@@ -61,13 +63,15 @@ async function readData(): Promise<PriceData> {
   let raw: string;
   try { raw = await readFile(filename(), "utf8"); }
   catch (error) {
-    if ((error as NodeJS.ErrnoException).code === "ENOENT") return { revision: "initial", updatedAt: null, prices: {} };
+    if ((error as NodeJS.ErrnoException).code === "ENOENT") return { revision: "initial", updatedAt: null, prices: {}, previousPrices: {} };
     throw error;
   }
   const data = JSON.parse(raw) as PriceData;
   if (!data || typeof data.revision !== "string" || typeof data.updatedAt !== "string" || !data.prices || typeof data.prices !== "object" || Array.isArray(data.prices)) throw new Error("Invalid price storage");
   for (const [slug, values] of Object.entries(data.prices)) validatePrices(slug, values);
-  return data;
+  const previousPrices = data.previousPrices && typeof data.previousPrices === "object" && !Array.isArray(data.previousPrices) ? data.previousPrices : {};
+  for (const [slug, values] of Object.entries(previousPrices)) validatePrices(slug, values);
+  return { ...data, previousPrices };
 }
 
 async function readDatabase(): Promise<PriceData> {
@@ -75,15 +79,17 @@ async function readDatabase(): Promise<PriceData> {
   const sql = database();
   const [state, rows] = await Promise.all([
     sql.query("SELECT revision::text AS revision, updated_at FROM sp_price_state WHERE id = 1"),
-    sql.query("SELECT product_slug, prices FROM sp_product_prices")
+    sql.query("SELECT product_slug, prices, previous_prices FROM sp_product_prices")
   ]);
   if (!state[0]) throw new Error("Price database state is missing");
   const prices: Record<string, number[]> = {};
-  for (const row of rows as Array<{ product_slug: string; prices: unknown }>) {
+  const previousPrices: Record<string, number[]> = {};
+  for (const row of rows as Array<{ product_slug: string; prices: unknown; previous_prices: unknown }>) {
     prices[row.product_slug] = validatePrices(row.product_slug, row.prices);
+    if (row.previous_prices) previousPrices[row.product_slug] = validatePrices(row.product_slug, row.previous_prices);
   }
   const updatedAt = state[0].updated_at ? new Date(String(state[0].updated_at)).toISOString() : null;
-  return { revision: String(state[0].revision), updatedAt, prices };
+  return { revision: String(state[0].revision), updatedAt, prices, previousPrices };
 }
 
 async function getData() {
@@ -94,7 +100,11 @@ export async function getCatalog() {
   const data = await getData();
   return { revision: data.revision, updatedAt: data.updatedAt, unpricedCount: products.filter(product => !Object.hasOwn(data.prices, product.slug)).length, products: products.map(product => {
     const options = product.options.map((option, index) => ({ ...option, price: data.prices[product.slug]?.[index] ?? option.price }));
-    return { ...product, options, price: Math.min(...options.map(option => option.price)) };
+    const price = Math.min(...options.map(option => option.price));
+    const previous = data.previousPrices[product.slug];
+    const previousPrice = previous?.length ? Math.min(...previous) : null;
+    const changePercent = previousPrice && previousPrice > 0 ? ((price - previousPrice) / previousPrice) * 100 : null;
+    return { ...product, options, price, changePercent };
   }) };
 }
 
@@ -112,7 +122,7 @@ export async function savePrices(slug: string, values: unknown, revision: string
       ), saved AS (
         INSERT INTO sp_product_prices (product_slug, prices, updated_at)
         SELECT $3, $4::jsonb, NOW() FROM changed
-        ON CONFLICT (product_slug) DO UPDATE SET prices = EXCLUDED.prices, updated_at = NOW()
+        ON CONFLICT (product_slug) DO UPDATE SET previous_prices = sp_product_prices.prices, prices = EXCLUDED.prices, updated_at = NOW()
         RETURNING product_slug
       )
       SELECT product_slug FROM saved`,
@@ -133,6 +143,7 @@ export async function savePrices(slug: string, values: unknown, revision: string
   try {
     const data = await readData();
     if (data.revision !== revision) throw new PriceError("ข้อมูลถูกแก้ไขจากหน้าต่างอื่นแล้ว กรุณาโหลดข้อมูลล่าสุดก่อนแก้ไขอีกครั้ง");
+    if (data.prices[slug]) data.previousPrices[slug] = [...data.prices[slug]];
     data.prices[slug] = prices;
     data.revision = randomUUID();
     data.updatedAt = new Date().toISOString();
