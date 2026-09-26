@@ -51,8 +51,8 @@ export default function Header() {
   );
 
   return <>
-    <a href={LINE_URL} target="_blank" rel="noopener noreferrer" className="flex min-h-11 items-center justify-center gap-2 bg-[#8b352d] px-4 py-2 text-sm font-black text-white hover:bg-[#742c26] md:hidden"><Image src="/line-logo.svg" alt="" width={22} height={22} />ขอใบเสนอราคาทางไลน์</a>
     <div className="bg-[#202124] px-4 py-2 text-center text-[9px] font-bold leading-4 tracking-widest text-zinc-400 sm:text-[10px]">SUPARERK STEEL CO., LTD.<span className="hidden sm:inline"> • STEEL FOR CONSTRUCTION & INDUSTRY</span></div>
+    <a href={LINE_URL} target="_blank" rel="noopener noreferrer" className="flex min-h-11 items-center justify-center gap-2 bg-[#8b352d] px-4 py-2 text-sm font-black text-white hover:bg-[#742c26] md:hidden"><Image src="/line-logo.svg" alt="" width={22} height={22} />ขอใบเสนอราคาทางไลน์</a>
     <header ref={header} className="sticky top-0 z-[80] border-b border-zinc-200 bg-white text-[#8b352d] shadow-sm">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-4 sm:h-20 sm:px-6">
         <Link href="/" onClick={() => { setOpen(false); setMega(false); }} className="flex min-w-0 items-center gap-2 sm:gap-3">
