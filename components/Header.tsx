@@ -62,6 +62,7 @@ export default function Header() {
         <nav aria-label="เมนูหลัก" className="hidden h-full items-center gap-2 md:flex lg:gap-3 xl:gap-5">
           {basic.slice(0, 2).map(([href, label]) => <Nav key={href} href={href} label={label} active={pathname === href} />)}
           <button ref={catalogToggle} aria-expanded={mega} aria-controls="desktop-catalog" onClick={() => setMega(!mega)} className="flex h-full items-center gap-1 whitespace-nowrap border-b-[3px] border-transparent pt-[3px] text-xs font-black leading-none xl:text-sm">สินค้าและบริการ <ChevronDown size={15} className={mega ? "rotate-180" : ""} /></button>
+          <Nav href="/steel-prices" label="ราคาเหล็กวันนี้" active={pathname === "/steel-prices"} />
           {basic.slice(2).map(([href, label]) => <Nav key={href} href={href} label={label} active={pathname === href} />)}
           <Nav href="/contact" label="ติดต่อเรา" active={pathname === "/contact"} />
           <Nav href="/reviews" label="รีวิวจากลูกค้า" active={pathname === "/reviews"} />
@@ -82,6 +83,7 @@ export default function Header() {
             <summary className="cursor-pointer px-3 py-4 text-sm font-bold">สินค้าเหล็ก</summary>
             <div className="px-2 pb-2">{mobileLink("/products", "ดูสินค้าทั้งหมด")}{categories.map(category => <details key={category} className="border-t border-zinc-200"><summary className="cursor-pointer px-3 py-4 text-sm text-[#8b352d]">{category}</summary><div className="pl-3">{products.filter(product => product.category === category).map(product => mobileLink(`/products/${product.slug}`, product.name))}</div></details>)}</div>
           </details>
+          {mobileLink("/steel-prices", "ราคาเหล็กวันนี้")}
           {mobileLink("/services", "บริการของเรา")}
           {basic.slice(2).map(([href, label]) => mobileLink(href, label))}
           {mobileLink("/contact", "ติดต่อเรา")}
