@@ -57,7 +57,7 @@ export default function Header() {
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-4 sm:h-20 sm:px-6">
         <Link href="/" onClick={() => { setOpen(false); setMega(false); }} className="flex min-w-0 items-center gap-2 sm:gap-3">
           <div className="relative h-10 w-14 shrink-0 overflow-hidden bg-white sm:h-14 sm:w-20 md:h-12 md:w-16 xl:h-14 xl:w-20"><Image src="/suparerk-logo-main.jpg" alt="SUPARERK STEEL" fill sizes="(min-width: 1280px) 80px, (min-width: 768px) 64px, 56px" className="scale-[.9] object-contain" /></div>
-          <div className="md:hidden xl:block"><b className="whitespace-nowrap text-sm text-[#8b352d] sm:text-xl xl:text-xl">SUPARERK <span>STEEL</span></b><div className="text-[9px] font-bold tracking-widest text-[#8b352d]">ศุภฤกษ์ สตีล จำกัด</div></div>
+          <div><b className="whitespace-nowrap text-sm text-[#8b352d] sm:text-xl md:text-sm lg:text-base xl:text-xl">SUPARERK <span>STEEL</span></b><div className="text-[8px] font-bold tracking-wider text-[#8b352d] sm:text-[9px] md:tracking-normal xl:tracking-widest">ศุภฤกษ์ สตีล จำกัด</div></div>
         </Link>
         <nav aria-label="เมนูหลัก" className="hidden h-full items-center gap-2 md:flex lg:gap-3 xl:gap-5">
           {basic.slice(0, 2).map(([href, label]) => <Nav key={href} href={href} label={label} active={pathname === href} />)}
