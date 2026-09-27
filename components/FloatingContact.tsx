@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { MessageCircle, X } from "lucide-react";
+import { MessageCircle, Phone, X } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
 const LINE = "https://lin.ee/Yurg5Hy";
@@ -41,13 +41,43 @@ export default function FloatingContact() {
               <Image src="/line-logo.svg" alt="" width={56} height={56} />
             </motion.a>
             <motion.a
+              href="tel:0863215445"
+              aria-label="โทรสาขาสุพรรณบุรี 086-321-5445"
+              initial={reduceMotion ? false : { opacity: 0, y: 8, scale: 0.9 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ delay: reduceMotion ? 0 : 0.1, duration: reduceMotion ? 0 : 0.2 }}
+              whileHover={reduceMotion ? undefined : { y: -3, scale: 1.06 }}
+              whileTap={reduceMotion ? undefined : { scale: 0.94 }}
+              className="group relative grid h-14 w-14 place-items-center rounded-full bg-[#8b352d] text-white shadow-xl"
+            >
+              <span aria-hidden="true" className="pointer-events-none absolute right-full top-1/2 mr-3 -translate-y-1/2 whitespace-nowrap rounded-xl bg-[#202124] px-3 py-2 text-xs font-bold text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none">
+                โทรสาขาสุพรรณบุรี
+              </span>
+              <Phone size={24} className="text-white" />
+            </motion.a>
+            <motion.a
+              href="tel:0803732231"
+              aria-label="โทรสาขากาญจนบุรี 080-373-2231"
+              initial={reduceMotion ? false : { opacity: 0, y: 8, scale: 0.9 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ delay: reduceMotion ? 0 : 0.14, duration: reduceMotion ? 0 : 0.2 }}
+              whileHover={reduceMotion ? undefined : { y: -3, scale: 1.06 }}
+              whileTap={reduceMotion ? undefined : { scale: 0.94 }}
+              className="group relative grid h-14 w-14 place-items-center rounded-full bg-[#8b352d] text-white shadow-xl"
+            >
+              <span aria-hidden="true" className="pointer-events-none absolute right-full top-1/2 mr-3 -translate-y-1/2 whitespace-nowrap rounded-xl bg-[#202124] px-3 py-2 text-xs font-bold text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none">
+                โทรสาขากาญจนบุรี
+              </span>
+              <Phone size={24} className="text-[#ffd166]" />
+            </motion.a>
+            <motion.a
               href={FACEBOOK}
               target="_blank"
               rel="noreferrer"
               aria-label="Facebook"
               initial={reduceMotion ? false : { opacity: 0, y: 8, scale: 0.9 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ delay: reduceMotion ? 0 : 0.12, duration: reduceMotion ? 0 : 0.2 }}
+              transition={{ delay: reduceMotion ? 0 : 0.18, duration: reduceMotion ? 0 : 0.2 }}
               whileHover={reduceMotion ? undefined : { y: -3, scale: 1.06 }}
               whileTap={reduceMotion ? undefined : { scale: 0.94 }}
               className="group relative grid h-14 w-14 place-items-center rounded-full bg-[#1877F2] text-white shadow-xl"
