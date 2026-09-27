@@ -115,7 +115,7 @@ export default async function About() {
       />
 
       <section className="bg-[#f7f5f2]">
-        <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-[1.15fr_.85fr] lg:items-center lg:gap-16 lg:py-20">
+        <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-[.95fr_1.05fr] lg:items-center lg:gap-12 lg:py-20">
           <div>
             <p className="text-xs font-black tracking-[.2em] text-[#8b352d]">OUR STORY</p>
             <h2 className="mt-3 max-w-3xl text-3xl font-black leading-tight sm:text-4xl lg:text-5xl">
@@ -150,7 +150,7 @@ export default async function About() {
                 <p className="mt-2 text-sm text-zinc-400">ปีที่ก่อตั้ง</p>
               </div>
               <div className="border-t border-white/15 pt-4">
-                <p className="text-3xl font-black sm:text-4xl">5,000,000 บาท</p>
+                <p className="whitespace-nowrap text-xl font-black sm:text-2xl lg:text-3xl xl:text-4xl">5,000,000 บาท</p>
                 <p className="mt-2 text-sm text-zinc-400">ทุนจดทะเบียนปัจจุบัน</p>
               </div>
               <div className="col-span-2 border-t border-white/15 pt-4">
