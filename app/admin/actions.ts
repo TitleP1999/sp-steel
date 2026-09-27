@@ -8,6 +8,7 @@ import { requireAdmin } from "../../lib/admin-session";
 import { PriceError, savePrices } from "../../lib/prices";
 import { NewsError, saveNews } from "../../lib/news";
 import { ReviewError, saveReviews } from "../../lib/reviews";
+import { HomeProjectError, saveHomeProjects } from "../../lib/home-projects";
 
 export async function login(_previous: { error: string }, form: FormData) {
   if (!authConfigured()) return { error: "ยังไม่ได้ตั้งค่าบัญชีแอดมิน กรุณาตั้งค่า ADMIN_USERNAME, ADMIN_PASSWORD_HASH และ ADMIN_SESSION_SECRET บนเซิร์ฟเวอร์" };
@@ -60,5 +61,19 @@ export async function updateReviews(items: unknown, revision: string): Promise<{
     if (error instanceof ReviewError) return { error: error.message };
     console.error("Review storage write failed", error);
     return { error: "บันทึกรีวิวไม่สำเร็จ กรุณาลองใหม่ หรือติดต่อผู้ดูแลเซิร์ฟเวอร์" };
+  }
+}
+
+export async function updateHomeProjects(items: unknown, revision: string): Promise<{ error?: string; revision?: string }> {
+  requireAdmin();
+  try {
+    const nextRevision = await saveHomeProjects(items, revision);
+    revalidatePath("/");
+    revalidatePath("/admin");
+    return { revision: nextRevision };
+  } catch (error) {
+    if (error instanceof HomeProjectError) return { error: error.message };
+    console.error("Home project storage write failed", error);
+    return { error: "บันทึกโครงการไม่สำเร็จ กรุณาลองใหม่ หรือติดต่อผู้ดูแลเซิร์ฟเวอร์" };
   }
 }

@@ -13,6 +13,7 @@ const quotes = require('../lib/quote-requests.ts');
 const specifications = require('../lib/product-specifications.ts');
 const { products } = require('../data/products.ts');
 const { productStandards } = require('../lib/product-standards.ts');
+const homeProjects = require('../lib/home-projects.ts');
 
 test('admin credentials, signed sessions, rotation and throttling', async () => {
   const salt = randomBytes(16).toString('hex');
@@ -85,6 +86,23 @@ test('news configuration persists, validates links and rejects stale or broken d
     fs.writeFileSync(path.join(directory, 'news.json'), '{broken');
     await assert.rejects(require('../lib/news.ts').getNews());
   } finally { fs.rmSync(directory, { recursive: true, force: true }); delete process.env.NEWS_DATA_DIR; }
+});
+
+test('homepage projects persist in display order and reject unsafe data or stale writes', async () => {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'sp-steel-project-test-'));
+  process.env.HOME_PROJECT_DATA_DIR = directory;
+  try {
+    const initial = await homeProjects.getHomeProjects();
+    const items = [
+      { id: 'tower-1', title: 'อาคารตัวอย่าง', summary: 'จัดส่งเหล็กโครงสร้าง', imageUrl: '/projects/tower.jpg', href: '/contact', published: true },
+      { id: 'warehouse-2', title: 'คลังสินค้าตัวอย่าง', summary: '', imageUrl: 'https://example.com/warehouse.jpg', href: '', published: false }
+    ];
+    const revision = await homeProjects.saveHomeProjects(items, initial.revision);
+    assert.deepEqual((await homeProjects.getHomeProjects()).items, items);
+    await assert.rejects(homeProjects.saveHomeProjects([{ ...items[0], href: 'javascript:alert(1)' }], revision));
+    await assert.rejects(homeProjects.saveHomeProjects([{ ...items[0], imageUrl: '' }], revision));
+    await assert.rejects(homeProjects.saveHomeProjects(items, initial.revision), /หน้าต่างอื่น/);
+  } finally { fs.rmSync(directory, { recursive: true, force: true }); delete process.env.HOME_PROJECT_DATA_DIR; }
 });
 
 test('quote request validation accepts contact details and rejects malformed or oversized input', () => {
