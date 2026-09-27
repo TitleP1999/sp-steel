@@ -16,9 +16,10 @@ export default function Contact(){return <main><PageHero eyebrow="CONTACT US" ti
     <div className="mt-5 flex gap-3 border-y border-zinc-200 py-5">
       <MapPin size={24} className="mt-1 shrink-0 fill-[#8b352d] text-[#8b352d]"/><p className="text-sm leading-7 text-zinc-700">{b.address}</p>
     </div>
-    <div className="mt-4 flex min-h-20 items-center gap-4 text-left text-zinc-800">
-      <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-[#8b352d]/10"><Phone size={25} className="fill-[#a02f2b] text-[#a02f2b]"/></span>
-      <div className="grid min-w-0 flex-1 gap-3 sm:grid-cols-[minmax(0,1fr)_1px_minmax(0,.8fr)] sm:items-center"><span><small className="font-bold text-zinc-600">เบอร์โทรศัพท์ (สาขา{b.shortName})</small><a href={`tel:${b.phone.replace(/-/g,"")}`} className="mt-1 block text-xl font-black tracking-wide text-[#a02f2b] sm:text-2xl">{b.phone}</a></span><span aria-hidden="true" className="hidden h-14 bg-zinc-300 sm:block"/><span className="border-t border-zinc-200 pt-3 sm:border-0 sm:pt-0"><small className="font-bold text-zinc-600">สำรอง</small><a href={`tel:${b.backupPhone.replace(/-/g,"")}`} className="mt-1 block text-lg font-black tracking-wide text-[#a02f2b] sm:text-xl">{b.backupPhone}</a></span></div>
+    <div className="mt-4 grid min-h-20 gap-4 text-left text-zinc-800 sm:grid-cols-[1fr_1px_1fr] sm:items-center">
+      <div className="flex min-w-0 items-center justify-center gap-4"><span className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-[#8b352d]/10"><Phone size={25} className="fill-[#a02f2b] text-[#a02f2b]"/></span><span><small className="font-bold text-zinc-600">เบอร์โทรศัพท์ (สาขา{b.shortName})</small><a href={`tel:${b.phone.replace(/-/g,"")}`} className="mt-1 block text-xl font-black tracking-wide text-[#a02f2b] sm:text-2xl">{b.phone}</a></span></div>
+      <span aria-hidden="true" className="hidden h-14 bg-zinc-300 sm:block"/>
+      <div className="border-t border-zinc-200 pt-3 text-center sm:border-0 sm:pt-0"><small className="font-bold text-zinc-600">สำรอง</small><a href={`tel:${b.backupPhone.replace(/-/g,"")}`} className="mt-1 block text-lg font-black tracking-wide text-[#a02f2b] sm:text-xl">{b.backupPhone}</a></div>
     </div>
     <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
       <a href="https://lin.ee/Yurg5Hy" target="_blank" rel="noopener noreferrer" className="flex min-h-16 items-center justify-center gap-2 bg-[#06C755] p-2 text-center text-xs font-black text-white shadow-md transition hover:bg-[#05b34a]"><Image src="/line-logo.svg" alt="" width={22} height={22}/><span>LINE</span></a>
