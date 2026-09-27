@@ -5,13 +5,13 @@ import { motion } from "framer-motion";
 import { Reveal } from "./Motion";
 
 const brands = [
-  { name: "ZUBB STEEL", image: "/brands/zubb-steel.png", scale: "scale-[1.28]" },
-  { name: "PACIFIC PIPE", image: "/brands/pacific-pipe.png", scale: "scale-[1.18]" },
-  { name: "TOA", image: "/brands/toa.png", scale: "scale-[1.18]" },
-  { name: "TATA TISCON", image: "/brands/tata-tiscon.png", scale: "scale-[1.18]" },
-  { name: "SYS", image: "/brands/sys.png", scale: "scale-[1.28]" },
-  { name: "CARCO", image: "/brands/carco.png", scale: "scale-[1.25]" },
-  { name: "KOBELCO", image: "/brands/kobelco.png", scale: "scale-[1.28]" },
+  { name: "ZUBB STEEL", image: "/brands/zubb-steel.png" },
+  { name: "PACIFIC PIPE", image: "/brands/pacific-pipe.png" },
+  { name: "TOA", image: "/brands/toa.png" },
+  { name: "TATA TISCON", image: "/brands/tata-tiscon.png" },
+  { name: "SYS", image: "/brands/sys.png" },
+  { name: "CARCO", image: "/brands/carco.png" },
+  { name: "KOBELCO", image: "/brands/kobelco.png" },
 ];
 
 export default function BrandMarquee() {
@@ -33,9 +33,9 @@ export default function BrandMarquee() {
           className="flex w-max items-center"
         >
           {loop.map((brand, index) => (
-            <div key={`${brand.name}-${index}`} className="mx-3 flex h-44 w-80 shrink-0 items-center justify-center overflow-hidden sm:h-52 sm:w-96">
-              <div className="relative h-full w-full overflow-hidden rounded-[24px]">
-                <Image src={brand.image} alt={brand.name} fill sizes="(max-width: 640px) 320px, 384px" className={`brand-marquee-image rounded-[24px] object-cover transition-transform ${brand.scale}`} />
+            <div key={`${brand.name}-${index}`} className="mx-3 flex h-36 w-80 shrink-0 items-center justify-center overflow-hidden sm:h-44 sm:w-96">
+              <div className="relative h-full w-full overflow-hidden">
+                <Image src={brand.image} alt={brand.name} fill sizes="(max-width: 640px) 320px, 384px" className="brand-marquee-image scale-[1.01] object-cover" />
               </div>
             </div>
           ))}
