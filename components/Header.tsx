@@ -16,7 +16,7 @@ export default function Header() {
   const [open, setOpen] = useState(false);
   const [mega, setMega] = useState(false);
   const toggle = useRef<HTMLButtonElement>(null);
-  const catalogToggle = useRef<HTMLButtonElement>(null);
+  const catalogToggle = useRef<HTMLAnchorElement>(null);
   const header = useRef<HTMLElement>(null);
   const megaCloseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -70,7 +70,7 @@ export default function Header() {
         </Link>
         <nav aria-label="เมนูหลัก" className="hidden h-full items-center gap-2 md:flex lg:gap-3 xl:gap-5">
           {basic.slice(0, 2).map(([href, label]) => <Nav key={href} href={href} label={label} active={pathname === href} />)}
-          <button ref={catalogToggle} aria-expanded={mega} aria-controls="desktop-catalog" onMouseEnter={openMega} onMouseLeave={scheduleMegaClose} onClick={() => setMega(!mega)} className={`relative flex h-full items-center gap-1 whitespace-nowrap px-2 pt-[3px] text-xs font-black leading-none transition-transform duration-200 hover:-translate-y-0.5 xl:px-3 xl:text-sm after:absolute after:bottom-0 after:left-2 after:right-2 after:h-[2px] after:origin-left after:scale-x-0 after:bg-[#8b352d] after:transition-transform after:duration-300 after:content-[''] hover:after:scale-x-100 ${mega ? "after:scale-x-100" : ""}`}>สินค้าและบริการ <ChevronDown size={15} className={`transition-transform duration-200 ease-out ${mega ? "rotate-180" : ""}`} /></button>
+          <Link ref={catalogToggle} href="/products" aria-haspopup="true" aria-expanded={mega} aria-controls="desktop-catalog" onMouseEnter={openMega} onMouseLeave={scheduleMegaClose} onFocus={openMega} className={`relative flex h-full items-center gap-1 whitespace-nowrap px-2 pt-[3px] text-xs font-black leading-none transition-transform duration-200 hover:-translate-y-0.5 xl:px-3 xl:text-sm after:absolute after:bottom-0 after:left-2 after:right-2 after:h-[2px] after:origin-left after:scale-x-0 after:bg-[#8b352d] after:transition-transform after:duration-300 after:content-[''] hover:after:scale-x-100 ${mega ? "after:scale-x-100" : ""}`}>สินค้าและบริการ <ChevronDown size={15} className={`transition-transform duration-200 ease-out ${mega ? "rotate-180" : ""}`} /></Link>
           <Nav href="/steel-prices" label="ราคาเหล็กวันนี้" active={pathname === "/steel-prices"} />
           {basic.slice(2).map(([href, label]) => <Nav key={href} href={href} label={label} active={pathname === href} />)}
           <Nav href="/contact" label="ติดต่อเรา" active={pathname === "/contact"} />
