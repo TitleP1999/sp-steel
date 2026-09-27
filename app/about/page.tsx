@@ -150,7 +150,7 @@ export default async function About() {
                 <p className="mt-2 text-sm text-zinc-400">ปีที่ก่อตั้ง</p>
               </div>
               <div className="border-t border-white/15 pt-4">
-                <p className="text-3xl font-black sm:text-4xl">5,000,000 บาท</p>
+                <p className="whitespace-nowrap text-[clamp(1.65rem,4vw,2.25rem)] font-black">5,000,000 บาท</p>
                 <p className="mt-2 text-sm text-zinc-400">ทุนจดทะเบียนปัจจุบัน</p>
               </div>
               <div className="col-span-2 border-t border-white/15 pt-4">
