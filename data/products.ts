@@ -1,4 +1,4 @@
-export type ProductOption={size:string;price:number};
+export type ProductOption={size:string;price:number;previousPrice?:number|null;changePercent?:number|null};
 export type Product={
  slug:string; code:string; name:string; en:string; category:string;
  short:string; description:string; uses:string[]; specs:string[]; image:string;

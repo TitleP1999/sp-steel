@@ -105,9 +105,14 @@ async function getData() {
 export async function getCatalog() {
   const data = await getData();
   return { revision: data.revision, updatedAt: data.updatedAt, unpricedCount: products.filter(product => !Object.hasOwn(data.prices, product.slug)).length, products: products.map(product => {
-    const options = product.options.map((option, index) => ({ ...option, price: data.prices[product.slug]?.[index] ?? option.price }));
-    const price = Math.min(...options.map(option => option.price));
     const previous = data.previousPrices[product.slug];
+    const options = product.options.map((option, index) => {
+      const price = data.prices[product.slug]?.[index] ?? option.price;
+      const previousPrice = previous?.[index] ?? null;
+      const changePercent = previousPrice && previousPrice > 0 ? ((price - previousPrice) / previousPrice) * 100 : null;
+      return { ...option, price, previousPrice, changePercent };
+    });
+    const price = Math.min(...options.map(option => option.price));
     const previousPrice = previous?.length ? Math.min(...previous) : null;
     const changePercent = previousPrice && previousPrice > 0 ? ((price - previousPrice) / previousPrice) * 100 : null;
     return { ...product, options, price, changePercent };

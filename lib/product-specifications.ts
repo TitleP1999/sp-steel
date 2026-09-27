@@ -1,6 +1,6 @@
 import type { Product } from "../data/products";
 
-export type ProductSpecification = { size: string; thickness: string; weight: string; basis: string };
+export type ProductSpecification = { size: string; thickness: string; weight: string; basis: string; unitWeight: number | null; saleWeight: number | null; saleUnit: string };
 
 const fixedWeights: Record<string, number[]> = {
   "c-channel": [1.63, 2.86, 4.06, 8.01],
@@ -56,7 +56,13 @@ export function getProductSpecifications(product: Product): ProductSpecification
     const thickness = option.size.match(/หนา\s*(\d+(?:[.,]\d+)?)\s*มม\./)?.[1];
     const fixed = fixedWeights[product.slug]?.[index];
     const calculated = fixed === undefined ? theoreticalWeight(product.slug, option.size) : null;
-    const weight = fixed !== undefined ? `${format(fixed)} กก./ม.` : calculated ? `${format(calculated.value)} ${calculated.unit}` : "โปรดตรวจสอบกับฝ่ายขาย";
-    return { size: option.size, thickness: thickness ? `${thickness} มม.` : "ระบุในขนาด", weight, basis: fixed !== undefined ? "ตารางมาตรฐาน" : calculated ? "ค่าประมาณตามหน้าตัด" : "ตรวจสอบก่อนสั่งซื้อ" };
+    const unitWeight = fixed ?? calculated?.value ?? null;
+    const unit = fixed !== undefined ? "กก./ม." : calculated?.unit ?? "";
+    const weight = unitWeight !== null ? `${format(unitWeight)} ${unit}` : "โปรดตรวจสอบกับฝ่ายขาย";
+    const isPlate = unit === "กก./แผ่น";
+    const isBar = ["round-bar", "deformed-bar"].includes(product.slug);
+    const saleWeight = unitWeight === null ? null : isPlate ? unitWeight : unit === "กก./ม." ? unitWeight * (isBar ? 10 : 6) : null;
+    const saleUnit = isPlate ? "แผ่น" : product.slug === "wire-mesh" ? "แผ่น" : "เส้น";
+    return { size: option.size, thickness: thickness ? `${thickness} มม.` : "ระบุในขนาด", weight, basis: fixed !== undefined ? "ตารางมาตรฐาน" : calculated ? "ค่าประมาณตามหน้าตัด" : "ตรวจสอบก่อนสั่งซื้อ", unitWeight, saleWeight, saleUnit };
   });
 }

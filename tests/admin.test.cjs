@@ -125,9 +125,13 @@ test('quote request validation accepts contact details and rejects malformed or 
 test('product specification tables provide standard and calculated weights', () => {
   const cChannel = specifications.getProductSpecifications(products.find(product => product.slug === 'c-channel'));
   assert.equal(cChannel[0].weight, '1.63 กก./ม.');
+  assert.equal(cChannel[0].saleWeight, 9.78);
+  assert.equal(cChannel[0].saleUnit, 'เส้น');
   assert.equal(cChannel[2].weight, '4.06 กก./ม.');
   const roundBar = specifications.getProductSpecifications(products.find(product => product.slug === 'round-bar'));
   assert.equal(roundBar[0].weight, '0.22 กก./ม.');
   assert.match(roundBar[0].basis, /ค่าประมาณ/);
+  assert.equal(roundBar[0].saleUnit, 'เส้น');
+  assert.ok(roundBar[0].saleWeight > roundBar[0].unitWeight);
   assert.deepEqual(products.filter(product => !productStandards[product.slug]).map(product => product.slug), []);
 });
