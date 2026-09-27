@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
-import { Check, Copy, Send } from "lucide-react";
+import { Check, Copy, ExternalLink, Send } from "lucide-react";
 import { submitQuoteRequest, type QuoteFormState } from "./actions";
 import { SelectedQuoteProducts, useQuoteSelection } from "../../components/QuoteSelection";
 
@@ -18,6 +18,8 @@ export default function QuoteForm() {
   const formRef = useRef<HTMLFormElement>(null);
   const detailsRef = useRef<HTMLTextAreaElement>(null);
   const [copyMessage, setCopyMessage] = useState("");
+  const [quoteMessage, setQuoteMessage] = useState("");
+  const [quoteCopyMessage, setQuoteCopyMessage] = useState("");
   const { items, clear } = useQuoteSelection();
   const selectedProductText = items.map(item => `${item.name} (${item.code}) - ${item.size} x ${item.quantity}`).join("; ");
   async function copyDetails() {
@@ -39,10 +41,27 @@ export default function QuoteForm() {
       ...productLines.map((item, index) => `${index + 1}. ${item}`),
       String(submitted.get("details") || "").trim() ? `รายละเอียดเพิ่มเติม: ${String(submitted.get("details") || "").trim()}` : "",
     ].filter(Boolean).join("\n");
+    setQuoteMessage(message);
     formRef.current.reset();
     clear();
-    window.location.assign(`https://line.me/R/share?text=${encodeURIComponent(message)}`);
   }, [state.success, state.submittedAt]);
+  async function copyQuoteMessage() {
+    if (!quoteMessage) return;
+    try {
+      await navigator.clipboard.writeText(quoteMessage);
+    } catch {
+      const temporary = document.createElement("textarea");
+      temporary.value = quoteMessage;
+      temporary.setAttribute("readonly", "");
+      temporary.style.position = "fixed";
+      temporary.style.opacity = "0";
+      document.body.appendChild(temporary);
+      temporary.select();
+      document.execCommand("copy");
+      temporary.remove();
+    }
+    setQuoteCopyMessage("คัดลอกข้อความแล้ว นำไปวางใน LINE ได้เลย");
+  }
   return <form ref={formRef} id="quote-request" action={action}>
     <div className="mt-6 grid gap-4 sm:grid-cols-2">
       <label className="sr-only" htmlFor="quote-name">ชื่อ / บริษัท</label><input id="quote-name" name="name" required minLength={2} maxLength={100} className="min-w-0 w-full bg-white px-4 py-3 text-base text-black" autoComplete="organization" placeholder="ชื่อ / บริษัท" />
@@ -55,7 +74,13 @@ export default function QuoteForm() {
       <div className="absolute -left-[10000px]" aria-hidden="true"><label htmlFor="quote-website">เว็บไซต์</label><input id="quote-website" name="website" tabIndex={-1} autoComplete="off" /></div>
     </div>
     <p className="mt-3 text-xs leading-5 text-zinc-400">เมื่อส่งคำขอ บริษัทจะใช้ข้อมูลนี้เพื่อติดต่อกลับเกี่ยวกับสินค้าและใบเสนอราคา</p>
-    {state.message && <p role={state.success ? "status" : "alert"} className={`mt-4 text-sm font-bold ${state.success ? "text-green-400" : "text-red-400"}`}>{state.message}</p>}
-    <SubmitButton />
+    {state.message && <div role={state.success ? "status" : "alert"} className={`mt-4 text-sm font-bold ${state.success ? "text-green-400" : "text-red-400"}`}>
+      <p>{state.message}</p>
+      {state.success && quoteMessage && <div className="mt-3 flex flex-col gap-2 sm:flex-row">
+        <button type="button" onClick={() => void copyQuoteMessage()} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-white px-4 py-2 font-bold text-[#202124] hover:bg-zinc-100"><Copy size={16}/>{quoteCopyMessage || "คัดลอกข้อความสำหรับส่ง LINE"}</button>
+        <a href="https://lin.ee/Yurg5Hy" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-[#06C755] px-4 py-2 font-bold text-white hover:bg-[#05b34a]">เปิด LINE <ExternalLink size={16}/></a>
+      </div>}
+    </div>}
+    {!state.success && <SubmitButton />}
   </form>;
 }
