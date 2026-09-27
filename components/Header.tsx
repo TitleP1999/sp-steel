@@ -78,7 +78,7 @@ export default function Header() {
       {open && <nav id="mobile-navigation" aria-label="เมนูหลักบนมือถือ" className="mobile-navigation absolute inset-x-0 top-full overflow-y-auto overscroll-contain border-t border-zinc-200 bg-white px-4 py-3 shadow-xl md:hidden">
         <div className="mx-auto max-w-3xl space-y-1">
           {basic.slice(0, 2).map(([href, label]) => mobileLink(href, label))}
-          <details className="rounded border border-zinc-200">
+          <details>
             <summary className="cursor-pointer px-3 py-4 text-sm font-bold">สินค้าเหล็ก</summary>
             <div className="px-2 pb-2">{mobileLink("/products", "ดูสินค้าทั้งหมด")}{categories.map(category => <details key={category} className="border-t border-zinc-200"><summary className="cursor-pointer px-3 py-4 text-sm text-[#8b352d]">{category}</summary><div className="pl-3">{products.filter(product => product.category === category).map(product => mobileLink(`/products/${product.slug}`, product.name))}</div></details>)}</div>
           </details>
