@@ -18,6 +18,16 @@ export default function Header() {
   const toggle = useRef<HTMLButtonElement>(null);
   const catalogToggle = useRef<HTMLButtonElement>(null);
   const header = useRef<HTMLElement>(null);
+  const megaCloseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const openMega = () => {
+    if (megaCloseTimer.current) clearTimeout(megaCloseTimer.current);
+    setMega(true);
+  };
+  const scheduleMegaClose = () => {
+    if (megaCloseTimer.current) clearTimeout(megaCloseTimer.current);
+    megaCloseTimer.current = setTimeout(() => setMega(false), 180);
+  };
 
   useEffect(() => { setOpen(false); setMega(false); }, [pathname]);
   useEffect(() => {
@@ -60,7 +70,7 @@ export default function Header() {
         </Link>
         <nav aria-label="เมนูหลัก" className="hidden h-full items-center gap-2 md:flex lg:gap-3 xl:gap-5">
           {basic.slice(0, 2).map(([href, label]) => <Nav key={href} href={href} label={label} active={pathname === href} />)}
-          <button ref={catalogToggle} aria-expanded={mega} aria-controls="desktop-catalog" onClick={() => setMega(!mega)} className="flex h-full items-center gap-1 whitespace-nowrap border-b-[3px] border-transparent pt-[3px] text-xs font-black leading-none xl:text-sm">สินค้าและบริการ <ChevronDown size={15} className={mega ? "rotate-180" : ""} /></button>
+          <button ref={catalogToggle} aria-expanded={mega} aria-controls="desktop-catalog" onMouseEnter={openMega} onMouseLeave={scheduleMegaClose} onClick={() => setMega(!mega)} className="flex h-full items-center gap-1 whitespace-nowrap border-b-[3px] border-transparent pt-[3px] text-xs font-black leading-none xl:text-sm">สินค้าและบริการ <ChevronDown size={15} className={`transition-transform duration-200 ease-out ${mega ? "rotate-180" : ""}`} /></button>
           <Nav href="/steel-prices" label="ราคาเหล็กวันนี้" active={pathname === "/steel-prices"} />
           {basic.slice(2).map(([href, label]) => <Nav key={href} href={href} label={label} active={pathname === href} />)}
           <Nav href="/contact" label="ติดต่อเรา" active={pathname === "/contact"} />
@@ -69,12 +79,12 @@ export default function Header() {
         </nav>
         <button ref={toggle} type="button" aria-label={open ? "ปิดเมนู" : "เปิดเมนู"} aria-expanded={open} aria-controls="mobile-navigation" onClick={() => setOpen(!open)} className="grid h-11 w-11 shrink-0 place-items-center rounded-3xl border border-zinc-200 hover:bg-zinc-100 md:hidden">{open ? <X /> : <Menu />}</button>
       </div>
-      {mega && <nav id="desktop-catalog" aria-label="สินค้าและบริการ" className="absolute inset-x-0 top-full hidden max-h-[calc(100dvh-5rem)] overflow-y-auto border-y bg-white text-[#202124] shadow-2xl md:block">
+      <nav id="desktop-catalog" aria-label="สินค้าและบริการ" aria-hidden={!mega} onMouseEnter={openMega} onMouseLeave={scheduleMegaClose} className={`desktop-catalog absolute inset-x-0 top-full hidden max-h-[calc(100dvh-5rem)] overflow-y-auto border-y bg-white text-[#202124] shadow-2xl md:block ${mega ? "desktop-catalog-open" : ""}`}>
         <div className="mx-auto max-w-7xl px-6 py-8" onClick={event => { if ((event.target as HTMLElement).closest("a")) setMega(false); }}>
           <div className="mb-6 flex items-center justify-between border-b pb-5"><h2 className="text-2xl font-black">สินค้าเหล็กครบทุกหมวด</h2><div className="flex gap-6 font-bold text-[#8b352d]"><Link href="/products">สินค้าทั้งหมด →</Link><Link href="/services">บริการ →</Link></div></div>
           <div className="grid grid-cols-3 gap-7 xl:grid-cols-5">{categories.map(category => <div key={category}><b className="text-sm">{category}</b><div className="mt-3">{products.filter(product => product.category === category).map(product => <Link key={product.slug} href={`/products/${product.slug}`} className="flex min-h-11 items-center justify-between gap-2 py-2 text-sm text-zinc-600 hover:text-[#8b352d]">{product.name}<ArrowRight size={14} className="shrink-0" /></Link>)}</div></div>)}</div>
         </div>
-      </nav>}
+      </nav>
       {open && <nav id="mobile-navigation" aria-label="เมนูหลักบนมือถือ" className="mobile-navigation absolute inset-x-0 top-full overflow-y-auto overscroll-contain border-t border-zinc-200 bg-white px-4 py-3 shadow-xl md:hidden">
         <div className="mx-auto max-w-3xl space-y-1">
           {basic.slice(0, 2).map(([href, label]) => mobileLink(href, label))}

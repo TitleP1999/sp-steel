@@ -24,6 +24,23 @@ a,button{-webkit-tap-highlight-color:transparent}
   max-height: calc(100dvh - 6rem);
   padding-bottom: max(1rem, env(safe-area-inset-bottom));
 }
+.desktop-catalog {
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(-0.5rem);
+  pointer-events: none;
+  transition: opacity 180ms ease, transform 180ms ease, visibility 0s linear 180ms;
+}
+.desktop-catalog-open {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  transition-delay: 0s;
+}
+@media (prefers-reduced-motion: reduce) {
+  .desktop-catalog { transform: none; }
+}
 @media (min-width: 640px) {
   .mobile-navigation { max-height: calc(100dvh - 7rem); }
 }
