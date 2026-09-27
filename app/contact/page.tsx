@@ -2,8 +2,8 @@
 import { Fragment } from "react";
 import Image from "next/image"; import PageHero from "../../components/PageHero"; import {MapPin,Phone,ExternalLink} from "lucide-react"; import {motion} from "framer-motion"; import QuoteForm from "./QuoteForm";
 const branches=[
- {name:"สาขาสุพรรณบุรี",shortName:"สุพรรณบุรี",en:"SUPHAN BURI",logo:"/suparerk-logo-suphanburi.jpg",address:"สำนักงานใหญ่ เลขที่ 232/9 หมู่ที่ 4 ตำบลสนามชัย อำเภอเมืองสุพรรณบุรี จังหวัดสุพรรณบุรี",phone:"086-321-5445",facebook:"https://www.facebook.com/SuparerkSteelSuphanburi",map:"https://maps.app.goo.gl/tddg4Y9Gv5Dd25cX8?g_st=il",embed:"https://www.google.com/maps?q=14.473345,100.1346707&z=16&output=embed"},
- {name:"สาขากาญจนบุรี",shortName:"กาญจนบุรี",en:"KANCHANABURI",logo:"/suparerk-logo-kanchanaburi.jpg",address:"สำนักงานสาขา (1) เลขที่ 1089 หมู่ที่ 4 ตำบลท่าม่วง อำเภอท่าม่วง จังหวัดกาญจนบุรี",phone:"080-373-2231",facebook:"https://www.facebook.com/SuparerkSteelKanchanaburi",map:"https://maps.app.goo.gl/jTfe5Rd5fkLsmCnz8?g_st=il",embed:"https://www.google.com/maps?q=Suparerk%20Steel%20Kanchanaburi&z=15&output=embed"}
+ {name:"สาขาสุพรรณบุรี",shortName:"สุพรรณบุรี",en:"SUPHAN BURI",logo:"/suparerk-logo-suphanburi.jpg",address:"สำนักงานใหญ่ เลขที่ 232/9 หมู่ที่ 4 ตำบลสนามชัย อำเภอเมืองสุพรรณบุรี จังหวัดสุพรรณบุรี",phone:"086-321-5445",backupPhone:"091-696-4747",facebook:"https://www.facebook.com/SuparerkSteelSuphanburi",map:"https://maps.app.goo.gl/tddg4Y9Gv5Dd25cX8?g_st=il",embed:"https://www.google.com/maps?q=14.473345,100.1346707&z=16&output=embed"},
+ {name:"สาขากาญจนบุรี",shortName:"กาญจนบุรี",en:"KANCHANABURI",logo:"/suparerk-logo-kanchanaburi.jpg",address:"สำนักงานสาขา 00001 เลขที่ 1089 หมู่ที่ 4 ตำบลท่าม่วง อำเภอท่าม่วง จังหวัดกาญจนบุรี",phone:"080-373-2231",backupPhone:"091-696-4747",facebook:"https://www.facebook.com/SuparerkSteelKanchanaburi",map:"https://maps.app.goo.gl/jTfe5Rd5fkLsmCnz8?g_st=il",embed:"https://www.google.com/maps?q=Suparerk%20Steel%20Kanchanaburi&z=15&output=embed"}
 ];
 export default function Contact(){return <main><PageHero eyebrow="CONTACT US" title="ติดต่อเรา" desc="ติดต่อฝ่ายขาย สอบถามสินค้า ขอใบเสนอราคา หรือเลือกสาขาที่สะดวกสำหรับการเดินทาง"/>
 <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:py-20"><div className="grid gap-0">
@@ -16,10 +16,10 @@ export default function Contact(){return <main><PageHero eyebrow="CONTACT US" ti
     <div className="mt-5 flex gap-3 border-y border-zinc-200 py-5">
       <MapPin size={24} className="mt-1 shrink-0 fill-[#8b352d] text-[#8b352d]"/><p className="text-sm leading-7 text-zinc-700">{b.address}</p>
     </div>
-    <a href={`tel:${b.phone.replace(/-/g,"")}`} className="mt-4 flex min-h-20 items-center gap-4 text-left text-zinc-800">
+    <div className="mt-4 flex min-h-20 items-center gap-4 text-left text-zinc-800">
       <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-[#8b352d]/10"><Phone size={25} className="fill-[#a02f2b] text-[#a02f2b]"/></span>
-      <span><small className="font-bold text-zinc-600">เบอร์โทรศัพท์ (สาขา{b.shortName})</small><strong className="mt-1 block text-xl font-black tracking-wide text-[#a02f2b] sm:text-2xl">{b.phone}</strong></span>
-    </a>
+      <span><small className="font-bold text-zinc-600">เบอร์โทรศัพท์ (สาขา{b.shortName})</small><span className="mt-1 flex flex-wrap items-baseline gap-x-2 gap-y-1"><a href={`tel:${b.phone.replace(/-/g,"")}`} className="text-xl font-black tracking-wide text-[#a02f2b] sm:text-2xl">{b.phone}</a><span className="font-bold text-zinc-400">—</span><small className="font-bold text-zinc-500">สำรอง</small><a href={`tel:${b.backupPhone.replace(/-/g,"")}`} className="font-black tracking-wide text-[#a02f2b]">{b.backupPhone}</a></span></span>
+    </div>
     <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
       <a href="https://lin.ee/Yurg5Hy" target="_blank" rel="noopener noreferrer" className="flex min-h-16 items-center justify-center gap-2 bg-[#06C755] p-2 text-center text-xs font-black text-white shadow-md transition hover:bg-[#05b34a]"><Image src="/line-logo.svg" alt="" width={22} height={22}/><span>LINE</span></a>
       <a href={b.facebook} target="_blank" rel="noopener noreferrer" className="flex min-h-16 items-center justify-center gap-2 bg-[#1877F2] p-2 text-center text-xs font-black text-white shadow-md transition hover:bg-[#1668d4]"><Image src="/facebook-icon.png" alt="" width={22} height={22}/><span>Facebook<small className="block font-normal text-white/80">สาขา{b.shortName}</small></span></a>
