@@ -150,12 +150,12 @@ export default async function About() {
                 <p className="mt-2 text-sm text-zinc-400">ปีที่ก่อตั้ง</p>
               </div>
               <div className="border-t border-white/15 pt-4">
-                <p className="text-3xl font-black sm:text-4xl">5 ล้าน</p>
+                <p className="text-3xl font-black sm:text-4xl">5,000,000 บาท</p>
                 <p className="mt-2 text-sm text-zinc-400">ทุนจดทะเบียนปัจจุบัน</p>
               </div>
               <div className="col-span-2 border-t border-white/15 pt-4">
-                <p className="text-3xl font-black sm:text-4xl">2 พื้นที่</p>
-                <p className="mt-2 text-sm text-zinc-400">สุพรรณบุรี · ท่าม่วง จังหวัดกาญจนบุรี</p>
+                <p className="text-3xl font-black sm:text-4xl">2 สาขา</p>
+                <p className="mt-2 text-sm text-zinc-400">สุพรรณบุรี • กาญจนบุรี</p>
               </div>
             </div>
           </div>

@@ -33,8 +33,8 @@ export default function BrandMarquee() {
           className="flex w-max items-center"
         >
           {loop.map((brand, index) => (
-            <div key={`${brand.name}-${index}`} className="mx-3 flex h-36 w-80 shrink-0 items-center justify-center overflow-hidden sm:h-44 sm:w-96">
-              <div className="relative h-full w-full overflow-hidden">
+            <div key={`${brand.name}-${index}`} className="mx-3 flex h-36 w-80 shrink-0 items-center justify-center overflow-hidden rounded-3xl bg-white sm:h-44 sm:w-96">
+              <div className="relative h-full w-full overflow-hidden rounded-3xl">
                 <Image src={brand.image} alt={brand.name} fill sizes="(max-width: 640px) 320px, 384px" className="brand-marquee-image scale-[1.01] object-cover" />
               </div>
             </div>
