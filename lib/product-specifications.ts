@@ -14,6 +14,18 @@ const parseNumber = (value: string) => Number(value.replace(",", "."));
 const format = (value: number) => value.toLocaleString("th-TH", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const dimensions = (size: string) => Array.from(size.matchAll(/\d+(?:[.,]\d+)?/g), match => parseNumber(match[0]));
 
+function displaySize(slug: string, size: string) {
+  const plateSize = size.match(/(\d+(?:\.\d+)?)\s*(?:×|x)\s*(\d+(?:\.\d+)?)\s*ฟุต/);
+  if (plateSize) {
+    const width = parseNumber(plateSize[1]);
+    const length = parseNumber(plateSize[2]);
+    return `${width} ฟุต x ${length} ฟุต (ประมาณ ${format(width * 0.3048)} เมตร x ${format(length * 0.3048)} เมตร)`;
+  }
+  if (["round-bar", "deformed-bar"].includes(slug)) return "ความยาวมาตรฐาน 10 เมตร";
+  if (slug === "wire-mesh") return "แผ่นมาตรฐาน 2 เมตร x 5 เมตร";
+  return "ความยาวมาตรฐาน 6 เมตร";
+}
+
 function theoreticalWeight(slug: string, size: string): { value: number; unit: string } | null {
   const values = dimensions(size);
   const thicknessMatch = size.match(/หนา\s*(\d+(?:[.,]\d+)?)/);
@@ -63,6 +75,6 @@ export function getProductSpecifications(product: Product): ProductSpecification
     const isBar = ["round-bar", "deformed-bar"].includes(product.slug);
     const saleWeight = unitWeight === null ? null : isPlate ? unitWeight : unit === "กก./ม." ? unitWeight * (isBar ? 10 : 6) : null;
     const saleUnit = isPlate ? "แผ่น" : product.slug === "wire-mesh" ? "แผ่น" : "เส้น";
-    return { size: option.size, thickness: thickness ? `${thickness} มม.` : "ระบุในขนาด", weight, basis: fixed !== undefined ? "ตารางมาตรฐาน" : calculated ? "ค่าประมาณตามหน้าตัด" : "ตรวจสอบก่อนสั่งซื้อ", unitWeight, saleWeight, saleUnit };
+    return { size: option.size, thickness: thickness ? `${thickness} มม.` : "ระบุในขนาด", weight, basis: displaySize(product.slug, option.size), unitWeight, saleWeight, saleUnit };
   });
 }
