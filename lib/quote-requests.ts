@@ -77,7 +77,7 @@ async function saveLocalQuote(input: ReturnType<typeof validateQuoteRequest>) {
   try {
     const items = await readLocalQuotes();
     const cutoff = Date.now() - 15 * 60 * 1000;
-    const recentCount = items.filter(item => item.phone === input.phone && new Date(item.createdAt).getTime() > cutoff).length;
+    const recentCount = input.phone ? items.filter(item => item.phone === input.phone && new Date(item.createdAt).getTime() > cutoff).length : 0;
     if (recentCount >= 3) throw new QuoteRequestError("ส่งคำขอบ่อยเกินไป กรุณารอ 15 นาที หรือติดต่อฝ่ายขายโดยตรง");
     items.push({ id: randomUUID(), ...input, status: "new", createdAt: new Date().toISOString() });
     await writeFile(temporary, JSON.stringify(items, null, 2), { mode: 0o600 });
@@ -95,8 +95,8 @@ export function validateQuoteRequest(form: FormData) {
   const product = clean(form.get("product"));
   const details = clean(form.get("details"));
   const digits = phone.replace(/\D/g, "");
-  if (name.length < 2 || name.length > 100) throw new QuoteRequestError("กรุณาระบุชื่อหรือบริษัท 2–100 ตัวอักษร");
-  if (phone.length > 30 || digits.length < 8 || digits.length > 15 || !/^[+()\d\s-]+$/.test(phone)) throw new QuoteRequestError("กรุณาระบุเบอร์โทรที่ติดต่อได้");
+  if (name.length > 100) throw new QuoteRequestError("ชื่อหรือบริษัทต้องไม่เกิน 100 ตัวอักษร");
+  if (phone && (phone.length > 30 || digits.length < 8 || digits.length > 15 || !/^[+()\d\s-]+$/.test(phone))) throw new QuoteRequestError("กรุณาระบุเบอร์โทรที่ติดต่อได้");
   if (product.length < 2 || product.length > 5000) throw new QuoteRequestError("กรุณาระบุสินค้าที่สนใจ 2–5,000 ตัวอักษร");
   if (details.length > 2000) throw new QuoteRequestError("รายละเอียดเพิ่มเติมต้องไม่เกิน 2,000 ตัวอักษร");
   return { name, phone, product, details };
@@ -111,7 +111,7 @@ export async function createQuoteRequest(input: ReturnType<typeof validateQuoteR
   const result = await database().query(
     `INSERT INTO sp_quote_requests (id, customer_name, phone, product, details)
      SELECT $1::uuid, $2::varchar(100), $3::varchar(30), $4::text, $5::text
-     WHERE (SELECT COUNT(*) FROM sp_quote_requests WHERE phone = $3::varchar(30) AND created_at > NOW() - INTERVAL '15 minutes') < 3
+     WHERE $3::varchar(30) = '' OR (SELECT COUNT(*) FROM sp_quote_requests WHERE phone = $3::varchar(30) AND created_at > NOW() - INTERVAL '15 minutes') < 3
      RETURNING id`,
     [randomUUID(), input.name, input.phone, input.product, input.details]
   );
