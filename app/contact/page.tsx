@@ -24,7 +24,7 @@ export default function Contact(){return <main><PageHero eyebrow="CONTACT US" ti
     <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
       <a href="https://lin.ee/Yurg5Hy" target="_blank" rel="noopener noreferrer" className="flex min-h-16 items-center justify-center gap-2 bg-[#06C755] p-2 text-center text-xs font-black text-white shadow-md transition hover:bg-[#05b34a]"><Image src="/line-logo.svg" alt="" width={22} height={22}/><span>LINE</span></a>
       <a href={b.facebook} target="_blank" rel="noopener noreferrer" className="flex min-h-16 items-center justify-center gap-2 bg-[#1877F2] p-2 text-center text-xs font-black text-white shadow-md transition hover:bg-[#1668d4]"><Image src="/facebook-icon.png" alt="" width={22} height={22}/><span>Facebook<small className="block font-normal text-white/80">สาขา{b.shortName}</small></span></a>
-      <a href={`tel:${b.phone.replace(/-/g,"")}`} className="col-span-2 flex min-h-16 items-center justify-center gap-2 border border-zinc-200 bg-white p-2 text-center text-xs font-black text-zinc-800 shadow-sm sm:col-span-1"><Phone size={20}/><span>โทรเลย</span></a>
+      <a href={`tel:${b.phone.replace(/-/g,"")}`} className="col-span-2 flex min-h-16 items-center justify-center gap-2 border border-zinc-200 bg-white p-2 text-center text-xs font-black text-zinc-800 shadow-sm transition-colors duration-200 hover:bg-zinc-200 sm:col-span-1"><Phone size={20}/><span>โทรเลย</span></a>
     </div>
   </div>
   <div className="flex flex-col border-t border-zinc-200 bg-zinc-100 p-3 sm:p-5 lg:border-l lg:border-t-0">
