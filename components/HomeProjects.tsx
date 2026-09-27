@@ -5,7 +5,7 @@ import { Reveal, Stagger, Item } from "./Motion";
 
 function ProjectCard({ project }: { project: HomeProjectItem }) {
   const content = <article className="group">
-    <div className="relative aspect-[4/3] overflow-hidden bg-zinc-200">
+    <div className="relative aspect-[4/3] overflow-hidden rounded-3xl bg-zinc-200">
       <Image src={project.imageUrl} alt={project.title} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw" className="object-cover transition duration-500 group-hover:scale-105" />
     </div>
     <h3 className="mt-5 text-center text-lg font-black text-zinc-800">{project.title}</h3>
