@@ -14,6 +14,7 @@ const specifications = require('../lib/product-specifications.ts');
 const { products } = require('../data/products.ts');
 const { productStandards } = require('../lib/product-standards.ts');
 const homeProjects = require('../lib/home-projects.ts');
+const executives = require('../lib/executives.ts');
 
 test('admin credentials, signed sessions, rotation and throttling', async () => {
   const salt = randomBytes(16).toString('hex');
@@ -103,6 +104,19 @@ test('homepage projects persist in display order and reject unsafe data or stale
     await assert.rejects(homeProjects.saveHomeProjects([{ ...items[0], imageUrl: '' }], revision));
     await assert.rejects(homeProjects.saveHomeProjects(items, initial.revision), /หน้าต่างอื่น/);
   } finally { fs.rmSync(directory, { recursive: true, force: true }); delete process.env.HOME_PROJECT_DATA_DIR; }
+});
+
+test('executive profiles persist and reject unsafe images or stale writes', async () => {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'sp-steel-executive-test-'));
+  process.env.EXECUTIVE_DATA_DIR = directory;
+  try {
+    const initial = await executives.getExecutives();
+    const items = [{ id: 'director-1', name: 'คุณทดสอบ ระบบ', position: 'กรรมการผู้จัดการ', imageUrl: '/executives/director.jpg', published: true }];
+    const revision = await executives.saveExecutives(items, initial.revision);
+    assert.deepEqual((await executives.getExecutives()).items, items);
+    await assert.rejects(executives.saveExecutives([{ ...items[0], imageUrl: 'javascript:alert(1)' }], revision));
+    await assert.rejects(executives.saveExecutives(items, initial.revision), /หน้าต่างอื่น/);
+  } finally { fs.rmSync(directory, { recursive: true, force: true }); delete process.env.EXECUTIVE_DATA_DIR; }
 });
 
 test('quote request validation accepts contact details and rejects malformed or oversized input', () => {

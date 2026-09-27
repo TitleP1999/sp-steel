@@ -12,6 +12,10 @@ import {
   Warehouse,
 } from "lucide-react";
 import PageHero from "../../components/PageHero";
+import Executives from "../../components/Executives";
+import { getExecutives } from "../../lib/executives";
+
+export const dynamic = "force-dynamic";
 
 const milestones = [
   {
@@ -100,7 +104,8 @@ const principles = [
   },
 ];
 
-export default function About() {
+export default async function About() {
+  const executives = await getExecutives();
   return (
     <main>
       <PageHero
@@ -156,6 +161,8 @@ export default function About() {
           </div>
         </div>
       </section>
+
+      <Executives items={executives.items.filter(item => item.published)} />
 
       <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20">
         <div className="mx-auto max-w-3xl text-center">
