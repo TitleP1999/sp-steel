@@ -38,6 +38,8 @@ a,button{-webkit-tap-highlight-color:transparent}
   pointer-events: auto;
   transition-delay: 0s;
 }
+.project-carousel-track { scrollbar-width: none; -ms-overflow-style: none; }
+.project-carousel-track::-webkit-scrollbar { display: none; }
 @media (prefers-reduced-motion: reduce) {
   .desktop-catalog { transform: none; }
 }
