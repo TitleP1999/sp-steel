@@ -17,7 +17,7 @@ export default function Contact(){return <main><PageHero eyebrow="CONTACT US" ti
       <MapPin size={24} className="mt-1 shrink-0 fill-[#8b352d] text-[#8b352d]"/><p className="text-sm leading-7 text-zinc-700">{b.address}</p>
     </div>
     <div className="mt-4 grid min-h-20 gap-4 text-left text-zinc-800 sm:grid-cols-[1fr_1px_1fr] sm:items-center">
-      <div className="flex min-w-0 items-center justify-center gap-4"><span className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-[#8b352d]/10"><Phone size={25} className="fill-[#a02f2b] text-[#a02f2b]"/></span><span><small className="font-bold text-zinc-600">เบอร์โทรศัพท์ (สาขา{b.shortName})</small><a href={`tel:${b.phone.replace(/-/g,"")}`} className="mt-1 block text-xl font-black tracking-wide text-[#a02f2b] sm:text-2xl">{b.phone}</a></span></div>
+      <div className="flex min-w-0 items-center justify-center gap-4"><span className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-[#8b352d]/10"><Phone size={25} className="fill-[#a02f2b] text-[#a02f2b]"/></span><span><small className="font-bold text-zinc-600">เบอร์โทรศัพท์</small><a href={`tel:${b.phone.replace(/-/g,"")}`} className="mt-1 block text-xl font-black tracking-wide text-[#a02f2b] sm:text-2xl">{b.phone}</a></span></div>
       <span aria-hidden="true" className="hidden h-14 bg-zinc-300 sm:block"/>
       <div className="border-t border-zinc-200 pt-3 text-center sm:border-0 sm:pt-0"><small className="font-bold text-zinc-600">สำรอง</small><a href={`tel:${b.backupPhone.replace(/-/g,"")}`} className="mt-1 block text-lg font-black tracking-wide text-[#a02f2b] sm:text-xl">{b.backupPhone}</a></div>
     </div>
@@ -35,4 +35,5 @@ export default function Contact(){return <main><PageHero eyebrow="CONTACT US" ti
 </div>
 <div className="mt-12 grid gap-8 bg-[#202124] p-5 sm:p-8 text-white lg:grid-cols-[.8fr_1.2fr] lg:p-12"><div><p className="text-xs font-black tracking-[.2em] text-[#c46b60]">SALES & SOCIAL</p><h2 className="mt-3 text-3xl font-black">ช่องทางติดต่อทั้งหมด</h2><p className="mt-5 leading-7 text-zinc-300">Facebook, LINE Official Account, TikTok และช่องทางบริษัท</p><div className="mt-7 space-y-3"><a href="tel:035569333" className="flex items-center gap-3 font-black"><Phone size={18} className="text-[#c46b60]"/> 035-569-333</a><a href="https://linktr.ee/suparerksteel" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 bg-[#8b352d] px-5 py-3 font-black">เปิดช่องทางติดต่อ <ExternalLink size={16}/></a></div></div>
 <div className="border border-white/10 bg-white/5 p-5 sm:p-7"><h3 className="text-2xl font-black">ขอใบเสนอราคา</h3><p className="mt-2 text-sm text-zinc-400">กรอกรายละเอียดเบื้องต้นเพื่อเตรียมข้อมูลสำหรับติดต่อฝ่ายขาย</p><QuoteForm /></div></div></section></main>}
+
 
