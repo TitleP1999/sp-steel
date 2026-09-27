@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { MessageCircle, X, Facebook } from "lucide-react";
+import { MessageCircle, X } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
 const LINE = "https://lin.ee/Yurg5Hy";
@@ -55,7 +55,7 @@ export default function FloatingContact() {
               <span aria-hidden="true" className="pointer-events-none absolute right-full top-1/2 mr-3 -translate-y-1/2 whitespace-nowrap rounded-xl bg-[#202124] px-3 py-2 text-xs font-bold text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none">
                 Facebook
               </span>
-              <Facebook size={27} fill="currentColor" />
+              <Image src="/facebook-icon.png" alt="" width={40} height={40} />
             </motion.a>
           </motion.div>
         )}
