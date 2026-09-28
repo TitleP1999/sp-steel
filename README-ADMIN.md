@@ -8,6 +8,7 @@
 - `/`, `/products` และ `/products/[slug]` อ่านราคาฝั่งเซิร์ฟเวอร์ทุกครั้งที่เปิดหรือโหลดหน้าใหม่ ไม่ต้อง build ใหม่เมื่อแก้ราคา
 - `/admin/login` และ `/admin` เป็นหน้าล็อกอินและแก้ราคาสินค้า ค้นหาหรือกรองหมวดได้ บันทึกทีละสินค้า
   - `/admin` จัดการข่าวสารได้ เพิ่ม แก้ไข ลบ เลือกรูปภาพ และเลือกเผยแพร่รายการข่าวสาร ซึ่งจะแสดงใน `/news`
+  - `/reviews` ดึงรีวิวจริงจาก Google Business Profile ของทั้งสองสาขา และแสดงเฉพาะรีวิว 5 ดาว
   - ฟอร์มขอใบเสนอราคาที่ `/contact` บันทึกใน `sp_quote_requests` เมื่อเชื่อมฐานข้อมูล หรือใน `storage/quote-requests.json` บนเซิร์ฟเวอร์ที่ไม่มีฐานข้อมูล และแสดงรายการล่าสุดใน `/admin`
 - หน้าเว็บที่ลูกค้าเปิดค้างไว้ต้องโหลดใหม่เพื่อเห็นราคาใหม่ ไม่มีระบบ push แบบเรียลไทม์
 
@@ -54,6 +55,23 @@ ORDER BY created_at DESC;
 การบันทึกใช้ lock และเขียนไฟล์ชั่วคราวแล้ว rename เพื่อลดโอกาสข้อมูลเสีย มี revision ป้องกันการเขียนทับจากข้อมูลเก่า หากเกิดข้อขัดแย้ง ให้โหลดข้อมูลล่าสุดแล้วแก้ใหม่ หาก process หยุดกลางการบันทึกและเหลือ `prices.lock` ให้หยุดเซิร์ฟเวอร์ ตรวจสอบว่าไม่มี process อื่นเขียนข้อมูล แล้วจึงลบเฉพาะ lock ดังกล่าวและเปิดเซิร์ฟเวอร์ใหม่ ระบบจะไม่ย้อนกลับไปแสดงราคาตัวอย่างเงียบ ๆ เมื่อไฟล์ข้อมูลเสีย
 
 Production นอก Vercel ใช้ `npm run build` และ `npm start` หลัง reverse proxy ที่ให้บริการ HTTPS เพราะ session cookie ใช้ Secure ใน production อย่าใช้ static export
+
+## รีวิวจาก Google
+
+หน้า `/reviews` ใช้ Google Business Profile API เพื่อดึงรีวิว 5 ดาวของสาขาสุพรรณบุรีและกาญจนบุรีโดยตรง ไม่ใช้รีวิวตัวอย่างที่กรอกผ่านหน้าแอดมิน การเชื่อมต่อต้องใช้ Google Cloud project ที่ได้รับอนุมัติให้ใช้ Business Profile APIs, OAuth client และบัญชี Google ที่มีสิทธิ์จัดการโปรไฟล์ธุรกิจที่ยืนยันแล้วของทั้งสองสาขา ดู [ขั้นตอนขอสิทธิ์และตั้งค่า API](https://developers.google.com/my-business/content/basic-setup) และ [วิธีดึงรีวิว](https://developers.google.com/my-business/reference/rest/v4/accounts.locations.reviews/list)
+
+ตั้งค่าตัวแปรเหล่านี้ใน `.env.local` สำหรับ local และใน Environment Variables ของ Vercel สำหรับ production จากนั้นรีสตาร์ตหรือ redeploy:
+
+```dotenv
+GOOGLE_BUSINESS_ACCOUNT_ID=บัญชีธุรกิจ
+GOOGLE_BUSINESS_CLIENT_ID=OAuth-client-id
+GOOGLE_BUSINESS_CLIENT_SECRET=OAuth-client-secret
+GOOGLE_BUSINESS_REFRESH_TOKEN=OAuth-refresh-token
+GOOGLE_BUSINESS_SUPHANBURI_LOCATION_ID=รหัสสถานที่สุพรรณบุรี
+GOOGLE_BUSINESS_KANCHANABURI_LOCATION_ID=รหัสสถานที่กาญจนบุรี
+```
+
+เก็บ client secret และ refresh token ไว้ฝั่งเซิร์ฟเวอร์เท่านั้น ห้ามใช้ prefix `NEXT_PUBLIC_` หรือส่งค่าเหล่านี้ในแชต/API สาธารณะ หน้าเว็บจะแจ้งว่ายังไม่เชื่อมต่อจนกว่าจะตั้งค่าครบ และจะ cache คำตอบ API ชั่วคราวหนึ่งชั่วโมง
 
 ## การยืนยันตัวตน
 
