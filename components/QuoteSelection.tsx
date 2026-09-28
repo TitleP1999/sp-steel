@@ -35,6 +35,7 @@ export function useQuoteSelection() {
 export function QuoteSelectionProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<QuoteSelectionItem[]>([]);
   const [hydrated, setHydrated] = useState(false);
+  const totalQuantity = items.reduce((total, item) => total + item.quantity, 0);
 
   useEffect(() => {
     try {
@@ -68,9 +69,9 @@ export function QuoteSelectionProvider({ children }: { children: ReactNode }) {
 
   return <QuoteSelectionContext.Provider value={value}>
     {children}
-    {items.length > 0 && <div className="fixed bottom-20 left-4 right-4 z-[55] mx-auto flex max-w-3xl flex-wrap items-center justify-between gap-3 border border-zinc-200 bg-white p-3 shadow-xl sm:bottom-4 sm:flex-nowrap sm:gap-5 sm:px-5">
+    {items.length > 0 && <div className="fixed inset-x-0 bottom-0 z-[55] mx-auto flex w-full max-w-3xl flex-wrap items-center justify-between gap-3 border border-zinc-200 bg-white p-3 shadow-xl sm:flex-nowrap sm:gap-5 sm:px-5">
       <div className="min-w-0 flex-1">
-        <p className="font-black text-zinc-900">เลือกแล้ว {items.length} รายการ</p>
+        <p className="font-black text-zinc-900">เลือกแล้ว {totalQuantity} รายการ</p>
         <p className="truncate text-xs text-zinc-500">{items.map(item => item.name).join(" · ")}</p>
       </div>
       <Link href="/contact#quote-request" className="inline-flex min-h-11 shrink-0 items-center gap-2 bg-[#8b352d] px-4 py-2 text-sm font-black text-white transition hover:bg-[#67251f]">ขอใบเสนอราคา <ArrowRight size={16}/></Link>
@@ -88,8 +89,9 @@ export function QuoteProductButton({ product, size, className = "" }: { product:
 
 export function SelectedQuoteProducts() {
   const { items, remove, setQuantity } = useQuoteSelection();
+  const totalQuantity = items.reduce((total, item) => total + item.quantity, 0);
   return <div className="sm:col-span-2">
-    <p className="mb-2 text-sm font-bold text-white">สินค้าที่เลือก {items.length > 0 && `(${items.length} รายการ)`}</p>
+    <p className="mb-2 text-sm font-bold text-white">สินค้าที่เลือก {items.length > 0 && `(${totalQuantity} รายการ)`}</p>
     {items.length === 0
       ? <p className="border border-white/15 bg-white/5 px-4 py-3 text-sm text-zinc-300">ยังไม่ได้เลือกสินค้า — เลือกได้จากหน้ารวมสินค้าหรือหน้ารายละเอียดสินค้า</p>
       : <div className="space-y-2">
