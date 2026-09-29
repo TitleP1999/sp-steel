@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
@@ -8,14 +8,20 @@ import type { Product } from "../data/products";
 
 export default function HomeProductStrip({ products }: { products: Product[] }) {
   const stripRef = useRef<HTMLDivElement>(null);
+  const progressRef = useRef<HTMLSpanElement>(null);
+  const frameRef = useRef<number>();
   const dragRef = useRef({ active: false, startX: 0, startScroll: 0, moved: false, lastX: 0, lastTime: 0, velocity: 0 });
-  const [progress, setProgress] = useState(0);
   const scroll = (direction: number) => stripRef.current?.scrollBy({ left: direction * 640, behavior: "smooth" });
   const updateProgress = () => {
-    const strip = stripRef.current;
-    if (!strip) return;
-    const maxScroll = strip.scrollWidth - strip.clientWidth;
-    setProgress(maxScroll > 0 ? strip.scrollLeft / maxScroll : 0);
+    if (frameRef.current) cancelAnimationFrame(frameRef.current);
+    frameRef.current = requestAnimationFrame(() => {
+      const strip = stripRef.current;
+      const thumb = progressRef.current;
+      if (!strip || !thumb) return;
+      const maxScroll = strip.scrollWidth - strip.clientWidth;
+      const progress = maxScroll > 0 ? strip.scrollLeft / maxScroll : 0;
+      thumb.style.transform = `translate3d(${progress * 69}px, 0, 0)`;
+    });
   };
   const startDrag = (event: React.PointerEvent<HTMLDivElement>) => {
     if (event.pointerType !== "mouse") return;
@@ -57,7 +63,7 @@ export default function HomeProductStrip({ products }: { products: Product[] }) 
           <div className="p-3 sm:p-4"><span className="text-[10px] font-black tracking-wide text-[#8b352d]">{product.code}</span><h3 className="mt-1 line-clamp-2 min-h-12 text-base font-black leading-6">{product.name}</h3><span className="mt-2 inline-flex items-center gap-1 text-xs font-bold text-zinc-500">ดูสินค้า <ArrowRight size={13} className="transition group-hover:translate-x-1"/></span></div>
         </Link>)}
       </div>
-      <div aria-hidden="true" className="relative mx-auto mt-3 h-1.5 w-24 overflow-hidden rounded-full bg-zinc-300"><span className="absolute inset-y-0 w-[28%] rounded-full bg-[#8b352d] transition-[left] duration-150" style={{ left: `${progress * 72}%` }}/></div>
+      <div aria-hidden="true" className="relative mx-auto mt-3 h-1.5 w-24 overflow-hidden rounded-full bg-zinc-300"><span ref={progressRef} className="absolute inset-y-0 left-0 w-[28%] rounded-full bg-[#8b352d] will-change-transform"/></div>
     </div>
   </section>;
 }
