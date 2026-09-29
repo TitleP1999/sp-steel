@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import type { Product } from "../data/products";
 
 export default function HomeProductStrip({ products }: { products: Product[] }) {
@@ -11,7 +11,6 @@ export default function HomeProductStrip({ products }: { products: Product[] }) 
   const progressRef = useRef<HTMLSpanElement>(null);
   const frameRef = useRef<number>();
   const dragRef = useRef({ active: false, startX: 0, startScroll: 0, moved: false, lastX: 0, lastTime: 0, velocity: 0 });
-  const scroll = (direction: number) => stripRef.current?.scrollBy({ left: direction * 640, behavior: "smooth" });
   const updateProgress = () => {
     if (frameRef.current) cancelAnimationFrame(frameRef.current);
     frameRef.current = requestAnimationFrame(() => {
@@ -51,11 +50,7 @@ export default function HomeProductStrip({ products }: { products: Product[] }) 
     <div className="mx-auto max-w-7xl px-4 sm:px-6">
       <div className="flex items-end justify-between gap-4">
         <div><p className="text-xs font-black tracking-[.18em] text-[#8b352d]">PRODUCT RANGE</p><h2 className="mt-2 text-2xl font-black sm:text-4xl">หมวดหมู่สินค้า</h2></div>
-        <div className="flex items-center gap-2">
-          <button type="button" onClick={() => scroll(-1)} aria-label="เลื่อนสินค้าไปทางซ้าย" className="grid h-10 w-10 place-items-center rounded-full border border-zinc-300 bg-white text-[#8b352d] transition hover:bg-zinc-100"><ChevronLeft size={19}/></button>
-          <button type="button" onClick={() => scroll(1)} aria-label="เลื่อนสินค้าไปทางขวา" className="grid h-10 w-10 place-items-center rounded-full bg-[#8b352d] text-white transition hover:bg-[#67251f]"><ChevronRight size={19}/></button>
-          <Link href="/products" className="ml-1 hidden text-sm font-black text-[#8b352d] sm:inline-flex">ดูทั้งหมด →</Link>
-        </div>
+        <Link href="/products" className="inline-flex min-h-10 shrink-0 items-center gap-2 rounded-full bg-[#8b352d] px-4 py-2 text-xs font-black text-white transition hover:bg-[#67251f] sm:px-5 sm:text-sm">ดูสินค้าทั้งหมด <ArrowRight size={15}/></Link>
       </div>
       <div ref={stripRef} onScroll={updateProgress} onPointerDown={startDrag} onPointerMove={moveDrag} onPointerUp={stopDrag} onPointerCancel={stopDrag} onDragStart={event => event.preventDefault()} onClickCapture={event => { if (dragRef.current.moved) { event.preventDefault(); event.stopPropagation(); dragRef.current.moved = false; } }} className="mt-6 flex cursor-grab gap-3 overflow-x-auto pb-2 select-none touch-auto overscroll-x-contain [scrollbar-width:none] active:cursor-grabbing [&::-webkit-scrollbar]:hidden sm:gap-4">
         {products.map(product => <Link draggable={false} key={product.slug} href={`/products/${product.slug}`} className="group w-[185px] shrink-0 overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg sm:w-[220px]">

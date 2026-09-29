@@ -17,10 +17,10 @@ export default function HomeContent({products,projects}:{products:Product[];proj
    <p className="hidden shrink-0 text-sm font-bold text-zinc-600 sm:block">เลือกสาขาใกล้คุณ</p>
    <div className="grid w-full max-w-lg grid-cols-2 gap-3">
     <Link href="/contact#branch-suphanburi" className="group flex min-h-14 items-center justify-center gap-2 border border-[#8b352d]/25 bg-[#8b352d]/5 px-3 py-2 text-sm font-black text-[#8b352d] transition hover:bg-[#8b352d] hover:text-white">
-     <span>สาขา 1</span><span className="hidden text-xs font-normal text-zinc-500 group-hover:text-white/80 sm:inline">สุพรรณบุรี</span><ArrowRight size={16} className="transition group-hover:translate-x-1"/>
+     <span>สาขาสุพรรณบุรี</span><ArrowRight size={16} className="transition group-hover:translate-x-1"/>
     </Link>
     <Link href="/contact#branch-kanchanaburi" className="group flex min-h-14 items-center justify-center gap-2 border border-[#8b352d]/25 bg-[#8b352d]/5 px-3 py-2 text-sm font-black text-[#8b352d] transition hover:bg-[#8b352d] hover:text-white">
-     <span>สาขา 2</span><span className="hidden text-xs font-normal text-zinc-500 group-hover:text-white/80 sm:inline">กาญจนบุรี</span><ArrowRight size={16} className="transition group-hover:translate-x-1"/>
+     <span>สาขากาญจนบุรี</span><ArrowRight size={16} className="transition group-hover:translate-x-1"/>
     </Link>
    </div>
   </div>
