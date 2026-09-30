@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { categories } from "../../data/products";
 import { getCatalog } from "../../lib/prices";
+import { QuoteProductButton } from "../../components/QuoteSelection";
 
 export const dynamic = "force-dynamic";
 
@@ -56,13 +57,13 @@ export default async function SteelPricesPage() {
           <div className="mb-6 flex items-center gap-4"><h2 className="text-2xl font-black sm:text-3xl">{category}</h2><div className="h-px flex-1 bg-zinc-200" /></div>
           <div className="space-y-6">{categoryProducts.map(product => <article key={product.slug} className="overflow-hidden border bg-white">
             <div className="grid md:grid-cols-[220px_1fr]">
-              <Link href={`/products/${product.slug}`} className="relative block min-h-48 overflow-hidden bg-zinc-200 md:min-h-full"><Image src={product.image} alt={product.name} fill sizes="(max-width: 768px) 100vw, 220px" className="object-cover transition duration-500 hover:scale-105" /></Link>
+              <Link href={`/products/${product.slug}`} className="relative block min-h-48 overflow-hidden bg-zinc-200 !rounded-r-none md:min-h-full"><Image src={product.image} alt={product.name} fill sizes="(max-width: 768px) 100vw, 220px" className="object-cover object-right scale-110 transition duration-500 hover:scale-[1.15]" /></Link>
               <div className="min-w-0">
-                <div className="flex flex-wrap items-start justify-between gap-3 border-b px-5 py-5 sm:px-6"><div><p className="text-xs font-bold tracking-widest text-zinc-400">{product.code}</p><h3 className="mt-1 text-xl font-black">{product.name}</h3></div><Link href={`/products/${product.slug}`} className="text-sm font-bold text-[#8b352d] underline">ดูรายละเอียดสินค้า →</Link></div>
+                <div className="flex flex-wrap items-start justify-between gap-3 border-b border-[#742820] bg-[#8b352d] px-5 py-5 text-white sm:px-6"><div><p className="text-xs font-bold tracking-widest text-white/70">{product.code}</p><h3 className="mt-1 text-xl font-black text-white">{product.name}</h3></div><Link href={`/products/${product.slug}`} className="text-sm font-bold text-white underline">ดูรายละเอียดสินค้า →</Link></div>
                 <div className="overflow-x-auto">
                   <table className="w-full min-w-[520px] text-left text-sm">
-                    <thead className="bg-zinc-100 text-xs text-zinc-500"><tr><th className="px-5 py-3 font-bold sm:px-6">ขนาด</th><th className="w-40 px-5 py-3 text-right font-bold sm:px-6">ราคา</th><th className="w-44 px-5 py-3 text-right font-bold sm:px-6">สอบถาม / สั่งซื้อ</th></tr></thead>
-                    <tbody>{product.options.map(option => <tr key={option.size} className="border-t"><td className="px-5 py-4 sm:px-6">{option.size}</td><td className="px-5 py-4 text-right text-lg font-black text-[#8b352d] sm:px-6">฿{option.price.toLocaleString("th-TH", { maximumFractionDigits: 2 })}</td><td className="px-5 py-4 text-right sm:px-6"><a href="https://lin.ee/Yurg5Hy" target="_blank" rel="noopener noreferrer" aria-label={`ขอใบเสนอราคา ${product.name} ขนาด ${option.size} ผ่าน LINE`} className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-lg bg-[#06C755] px-3 py-2 text-xs font-bold text-white transition hover:bg-[#05b34a]"><Image src="/line-logo.svg" alt="" width={18} height={18}/>ขอใบเสนอราคา</a></td></tr>)}</tbody>
+                    <thead className="bg-zinc-100 text-xs text-zinc-500"><tr><th className="px-5 py-3 font-bold sm:px-6">ขนาด</th><th className="w-40 px-5 py-3 text-right font-bold sm:px-6">ราคา</th><th className="w-44 px-5 py-3 text-right font-bold sm:px-6">รายการขอราคา</th></tr></thead>
+                    <tbody>{product.options.map(option => <tr key={option.size} className="border-t"><td className="px-5 py-4 sm:px-6">{option.size}</td><td className="px-5 py-4 text-right text-lg font-black text-[#8b352d] sm:px-6">฿{option.price.toLocaleString("th-TH", { maximumFractionDigits: 2 })}</td><td className="px-5 py-4 text-right sm:px-6"><QuoteProductButton product={product} size={option.size} className="mt-0 rounded-lg px-3 py-2 text-xs"/></td></tr>)}</tbody>
                   </table>
                 </div>
               </div>
