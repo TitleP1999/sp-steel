@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { MessageCircle, Phone, X } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { useQuoteSelection } from "./QuoteSelection";
 
 const LINE = "https://lin.ee/Yurg5Hy";
 const branches = {
@@ -17,13 +18,14 @@ export default function FloatingContact() {
   const [open, setOpen] = useState(false);
   const [submenu, setSubmenu] = useState<Submenu>(null);
   const reduceMotion = useReducedMotion();
+  const { items } = useQuoteSelection();
   const branchList = Object.values(branches);
   const toggleMenu = () => {
     setOpen(value => !value);
     setSubmenu(null);
   };
 
-  return <div className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-4 z-[60] flex flex-col items-end gap-3">
+  return <div className={`fixed right-4 z-[60] flex flex-col items-end gap-3 transition-[bottom] duration-300 sm:bottom-4 ${items.length > 0 ? "bottom-[calc(max(.5rem,env(safe-area-inset-bottom))+4rem)]" : "bottom-[max(1rem,env(safe-area-inset-bottom))]"}`}>
     <AnimatePresence>
       {open && <motion.div
         initial={{ opacity: 0, y: reduceMotion ? 0 : 18, scale: reduceMotion ? 1 : .92 }}

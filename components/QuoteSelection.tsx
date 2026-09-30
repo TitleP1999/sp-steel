@@ -3,7 +3,7 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import Link from "next/link";
-import { ArrowRight, Check, Minus, Plus, X } from "lucide-react";
+import { ArrowRight, Check, Minus, Plus, Trash2, X } from "lucide-react";
 import type { Product } from "../data/products";
 
 export type QuoteSelectionItem = {
@@ -70,9 +70,9 @@ export function QuoteSelectionProvider({ children }: { children: ReactNode }) {
   return <QuoteSelectionContext.Provider value={value}>
     {children}
     {items.length > 0 && <div className="fixed inset-x-0 bottom-0 z-[55] mx-auto flex w-full max-w-3xl flex-wrap items-center justify-between gap-3 border border-zinc-200 bg-white p-3 shadow-xl sm:flex-nowrap sm:gap-5 sm:px-5">
-      <div className="min-w-0 flex-1">
-        <p className="font-black text-zinc-900">เลือกแล้ว {totalQuantity} รายการ</p>
-        <p className="truncate text-xs text-zinc-500">{items.map(item => item.name).join(" · ")}</p>
+      <div className="flex min-w-0 flex-1 items-center gap-2">
+        <div className="min-w-0 flex-1"><p className="font-black text-zinc-900">เลือกแล้ว {totalQuantity} รายการ</p><p className="truncate text-xs text-zinc-500">{items.map(item => item.name).join(" · ")}</p></div>
+        <button type="button" onClick={() => setItems([])} aria-label="ล้างรายการสินค้าที่เลือกทั้งหมด" title="ล้างรายการ" className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-red-200 text-red-600 transition hover:bg-red-50"><Trash2 size={16}/></button>
       </div>
       <Link href="/contact#quote-request" className="inline-flex min-h-11 shrink-0 items-center gap-2 bg-[#8b352d] px-4 py-2 text-sm font-black text-white transition hover:bg-[#67251f]">ขอใบเสนอราคา <ArrowRight size={16}/></Link>
     </div>}
