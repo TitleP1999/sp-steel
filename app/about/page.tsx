@@ -1,20 +1,18 @@
 import {
   ArrowUpRight,
-  BadgeCheck,
   Banknote,
-  Boxes,
   Building2,
   CalendarDays,
   ChartNoAxesCombined,
   ClipboardCheck,
   MapPinned,
-  PackageCheck,
   Target,
   Truck,
   Warehouse,
 } from "lucide-react";
 import PageHero from "../../components/PageHero";
 import Executives from "../../components/Executives";
+import HomeWhySections from "../../components/HomeWhySections";
 import { getExecutives } from "../../lib/executives";
 
 export const dynamic = "force-dynamic";
@@ -61,48 +59,6 @@ const milestones = [
     description:
       "ต่อยอดสินค้า สต๊อก การขนส่ง และระบบบริหารภายใน เพื่อรองรับลูกค้ารายย่อย ร้านค้า ผู้รับเหมา และลูกค้าโครงการ พร้อมสร้างความเชื่อมั่นในระยะยาว",
     icon: Target,
-  },
-];
-
-const productGroups = [
-  {
-    title: "เหล็กเส้น",
-    items: "เหล็กเส้นกลม (RB) · เหล็กข้ออ้อย (DB)",
-  },
-  {
-    title: "เหล็กรูปพรรณและท่อ",
-    items: "เหล็กกล่อง · ท่อดำ · ท่อชุบสังกะสี · เหล็กตัวซี · เหล็กฉาก",
-  },
-  {
-    title: "เหล็กโครงสร้าง",
-    items: "H-Beam · I-Beam · Wide Flange · เหล็กแผ่น",
-  },
-  {
-    title: "สินค้าและอุปกรณ์ก่อสร้าง",
-    items: "Wire Mesh และสินค้าเกี่ยวข้องกับงานเหล็กและงานก่อสร้าง",
-  },
-];
-
-const principles = [
-  {
-    icon: BadgeCheck,
-    title: "คุณภาพและมาตรฐาน",
-    description: "คัดเลือกสินค้าและตรวจสอบให้ได้คุณภาพตามความต้องการใช้งาน",
-  },
-  {
-    icon: ClipboardCheck,
-    title: "สเปกถูกต้อง",
-    description: "ให้ข้อมูลและตรวจสอบรายละเอียดก่อนส่งมอบ เพื่อให้ตรงตามความต้องการ",
-  },
-  {
-    icon: Boxes,
-    title: "สินค้าและสต๊อกพร้อม",
-    description: "บริหารสินค้าให้หลากหลาย รองรับทั้งงานทั่วไปและงานโครงการ",
-  },
-  {
-    icon: Truck,
-    title: "บริการจัดส่ง",
-    description: "ดูแลตั้งแต่เสนอราคา จัดเตรียมสินค้า จนถึงจัดส่งถึงพื้นที่ลูกค้า",
   },
 ];
 
@@ -213,68 +169,7 @@ export default async function About() {
         </div>
       </section>
 
-      <section className="bg-[#202124] text-white">
-        <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20">
-          <div className="max-w-3xl">
-            <p className="text-xs font-black tracking-[.2em] text-[#d28a80]">STEEL & MATERIALS</p>
-            <h2 className="mt-3 text-3xl font-black sm:text-4xl">สินค้าเหล็กสำหรับงานหลากหลาย</h2>
-            <p className="mt-4 leading-7 text-zinc-300">
-              คัดเลือกสินค้าให้มีคุณภาพ ได้มาตรฐาน และมีสเปกถูกต้อง
-              เพื่อให้ลูกค้ามั่นใจเมื่อนำไปใช้งาน
-            </p>
-          </div>
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {productGroups.map((group) => (
-              <div key={group.title} className="rounded-[24px] border border-white/10 bg-white/[.04] p-5 sm:p-6">
-                <PackageCheck size={24} className="text-[#d28a80]" />
-                <h3 className="mt-5 text-lg font-black">{group.title}</h3>
-                <p className="mt-3 text-sm leading-7 text-zinc-300">{group.items}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20">
-        <div className="grid gap-10 lg:grid-cols-[.8fr_1.2fr] lg:items-start">
-          <div>
-            <p className="text-xs font-black tracking-[.2em] text-[#8b352d]">HOW WE WORK</p>
-            <h2 className="mt-3 text-3xl font-black sm:text-4xl">ครบตั้งแต่เลือกสินค้า ถึงส่งถึงหน้างาน</h2>
-            <p className="mt-5 leading-8 text-zinc-600">
-              เราบริหารคลังและสต๊อกให้รองรับสินค้าหลากหลาย
-              สนับสนุนการซื้อหน้าร้านและการสั่งซื้อจากลูกค้าธุรกิจ
-              พร้อมเอกสารทางการค้า ใบกำกับภาษี และระบบขนส่งที่ช่วยให้การจัดซื้อสะดวกขึ้น
-            </p>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2">
-            {principles.map(({ icon: Icon, title, description }) => (
-              <article key={title} className="rounded-[24px] border border-zinc-200 bg-[#f7f5f2] p-5 sm:p-6">
-                <Icon size={26} className="text-[#8b352d]" />
-                <h3 className="mt-4 text-lg font-black">{title}</h3>
-                <p className="mt-2 text-sm leading-7 text-zinc-600">{description}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-[#8b352d] text-white">
-        <div className="mx-auto grid max-w-7xl gap-8 px-4 py-14 sm:px-6 sm:py-16 lg:grid-cols-[1fr_auto] lg:items-center">
-          <div>
-            <p className="text-xs font-black tracking-[.2em] text-white/70">OUR DIRECTION</p>
-            <h2 className="mt-3 text-3xl font-black sm:text-4xl">เติบโตอย่างเป็นระบบ และเป็นที่ไว้วางใจ</h2>
-            <p className="mt-4 max-w-3xl leading-8 text-white/85">
-              เรามุ่งสู่การเป็นผู้จัดจำหน่ายเหล็กและวัสดุก่อสร้างแบบครบวงจร
-              พัฒนาบุคลากร ระบบสต๊อก การขาย การบัญชี และโลจิสติกส์
-              เพื่อให้บริการได้อย่างมีประสิทธิภาพและสร้างความเชื่อมั่นแก่ลูกค้าในระยะยาว
-            </p>
-          </div>
-          <div className="flex items-center gap-3 rounded-[24px] border border-white/20 bg-white/10 p-5">
-            <Truck size={28} />
-            <p className="text-sm font-bold leading-6">สินค้าได้มาตรฐาน<br />สเปกถูกต้อง · จัดส่งรวดเร็ว</p>
-          </div>
-        </div>
-      </section>
+      <HomeWhySections />
     </main>
   );
 }
