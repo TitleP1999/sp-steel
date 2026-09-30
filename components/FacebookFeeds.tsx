@@ -28,7 +28,7 @@ function pluginUrl(url: string, width: number) {
   return `https://www.facebook.com/plugins/page.php?${params.toString()}`;
 }
 
-export default function FacebookFeeds() {
+export default function FacebookFeeds({ showIntro = true, stacked = false }: { showIntro?: boolean; stacked?: boolean }) {
   const feed = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(0);
   useEffect(() => {
@@ -42,16 +42,16 @@ export default function FacebookFeeds() {
   return (
     <section className="bg-white py-12 sm:py-16 lg:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="max-w-3xl">
+        {showIntro && <div className="max-w-3xl">
           <p className="font-black tracking-[.18em] text-[#8b352d]">NEWS &amp; UPDATES</p>
           <h2 className="mt-3 text-3xl font-black sm:text-4xl lg:text-5xl">ติดตามความเคลื่อนไหวของเรา</h2>
           <p className="mt-4 leading-7 text-zinc-600">ข่าวสาร สินค้า และกิจกรรมล่าสุดจาก SUPARERK STEEL ทั้งสองสาขา</p>
-        </div>
+        </div>}
 
-        <div className="mt-12 grid gap-7 lg:grid-cols-2">
+        <div className={`${showIntro ? "mt-12" : ""} grid gap-7 ${stacked ? "grid-cols-1" : "lg:grid-cols-2"}`}>
           {pages.map((page, index) => (
-            <article key={page.branch} className="overflow-hidden rounded-3xl border border-zinc-200 bg-[#faf9f7] shadow-sm">
-              <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center border-b border-zinc-200 px-5 py-4 sm:px-6">
+            <article key={page.branch} className={`overflow-hidden rounded-3xl border border-zinc-200 bg-[#faf9f7] shadow-sm ${stacked ? "lg:grid lg:grid-cols-[500px_minmax(260px,1fr)]" : ""}`}>
+              <div className={`flex flex-col items-start justify-between gap-4 px-5 py-4 sm:px-6 ${stacked ? "border-b border-zinc-200 lg:order-2 lg:justify-center lg:border-b-0 lg:border-l lg:px-10" : "border-b border-zinc-200 sm:flex-row sm:items-center"}`}>
                 <div>
                   <p className="text-xs font-black tracking-[.16em] text-[#8b352d]">FACEBOOK</p>
                   <h3 className="mt-1 text-xl font-black">สาขา{page.branch}</h3>
@@ -59,7 +59,7 @@ export default function FacebookFeeds() {
                 <a href={page.url} target="_blank" rel="noreferrer" className="shrink-0 rounded-3xl bg-[#1877F2] px-4 py-3 text-sm font-black text-white transition hover:bg-[#1668d4]">เปิด Facebook ↗</a>
               </div>
 
-              <div ref={index === 0 ? feed : undefined} className="flex min-h-[620px] justify-center overflow-hidden bg-white py-3">
+              <div ref={index === 0 ? feed : undefined} className={`flex min-h-[620px] overflow-hidden bg-white py-3 ${stacked ? "justify-start lg:order-1 lg:min-w-[500px]" : "justify-center"}`}>
                 {width > 0 && <iframe
                   title={page.label}
                   src={pluginUrl(page.url, width)}
