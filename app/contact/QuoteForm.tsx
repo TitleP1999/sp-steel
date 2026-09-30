@@ -1,24 +1,15 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { Check, Copy, ExternalLink } from "lucide-react";
+import { Copy, ExternalLink } from "lucide-react";
 import { SelectedQuoteProducts, useQuoteSelection } from "../../components/QuoteSelection";
 
 export default function QuoteForm() {
   const detailsRef = useRef<HTMLTextAreaElement>(null);
   const productRef = useRef<HTMLInputElement>(null);
-  const [copyMessage, setCopyMessage] = useState("");
   const [quoteCopyMessage, setQuoteCopyMessage] = useState("");
   const { items } = useQuoteSelection();
   const selectedProductText = items.map(item => `${item.name} (${item.code}) - ${item.size} x ${item.quantity}`).join("; ");
-
-  async function copyDetails() {
-    const value = detailsRef.current?.value.trim() || "";
-    if (!value) { setCopyMessage("ยังไม่มีข้อความให้คัดลอก"); return; }
-    try { await navigator.clipboard.writeText(value); setCopyMessage("คัดลอกแล้ว"); }
-    catch { detailsRef.current?.select(); document.execCommand("copy"); setCopyMessage("คัดลอกแล้ว"); }
-    window.setTimeout(() => setCopyMessage(""), 2000);
-  }
 
   function buildQuoteMessage() {
     const productLines = (selectedProductText || productRef.current?.value || "")
@@ -26,7 +17,7 @@ export default function QuoteForm() {
       .map(item => item.trim())
       .filter(Boolean);
     return [
-      "ขอใบเสนอราคา SUPARERK STEEL",
+      "ขอใบเสนอราคา",
       "รายการสินค้า:",
       ...productLines.map((item, index) => `${index + 1}. ${item}`),
       detailsRef.current?.value.trim() ? `รายละเอียดเพิ่มเติม: ${detailsRef.current.value.trim()}` : "",
@@ -58,7 +49,7 @@ export default function QuoteForm() {
       {items.length > 0
         ? <input type="hidden" name="product" value={selectedProductText} />
         : <><label className="sr-only" htmlFor="quote-product">สินค้าที่สนใจ</label><input ref={productRef} id="quote-product" name="product" minLength={2} maxLength={5000} className="min-w-0 w-full bg-white px-4 py-3 text-base text-black sm:col-span-2" placeholder="สินค้าที่สนใจ หรือเลือกจากหน้าสินค้า" /></>}
-      <div className="relative sm:col-span-2"><label className="sr-only" htmlFor="quote-details">รายละเอียดเพิ่มเติม</label><textarea ref={detailsRef} id="quote-details" name="details" maxLength={2000} className="min-h-28 min-w-0 w-full bg-white px-4 py-3 pr-32 text-base text-black" placeholder="รายละเอียดเพิ่มเติม" /><button type="button" onClick={() => void copyDetails()} aria-label="คัดลอกรายละเอียดเพิ่มเติม" title="คัดลอกข้อความ" className="absolute right-3 top-3 inline-flex h-10 items-center justify-center gap-2 border border-zinc-200 bg-white px-3 text-sm font-bold text-[#8b352d] shadow-sm hover:bg-zinc-50">{copyMessage === "คัดลอกแล้ว" ? <Check size={17}/> : <Copy size={17}/>}<span>{copyMessage === "คัดลอกแล้ว" ? "คัดลอกแล้ว" : "คัดลอก"}</span></button>{copyMessage && copyMessage !== "คัดลอกแล้ว" && <span role="status" className="absolute bottom-3 right-3 rounded bg-[#202124] px-2 py-1 text-xs font-bold text-white">{copyMessage}</span>}</div>
+      <div className="sm:col-span-2"><label className="sr-only" htmlFor="quote-details">รายละเอียดเพิ่มเติม</label><textarea ref={detailsRef} id="quote-details" name="details" maxLength={2000} className="min-h-28 min-w-0 w-full bg-white px-4 py-3 text-base text-black" placeholder="รายละเอียดเพิ่มเติมเช่น ที่อยู่, เบอร์โทรติดต่อกลับ" /></div>
     </div>
     <p className="mt-3 text-xs leading-5 text-zinc-400">คัดลอกข้อความ แล้วเปิด LINE เพื่อส่งรายการสินค้าให้ฝ่ายขายได้ทันที</p>
     <div className="mt-4 flex w-full flex-col items-stretch gap-2 sm:w-auto sm:flex-row sm:items-center sm:gap-3">

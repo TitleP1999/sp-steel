@@ -27,7 +27,7 @@ const productCatalog:Omit<Product,"price"|"options">[]=[
  {slug:"galvanized-sheet",code:"GI",name:"เหล็กแผ่นสังกะสี",en:"Galvanized Steel Sheet",category:"เหล็กแผ่น",short:"แผ่นเหล็กเคลือบสังกะสีสำหรับงานทั่วไป",description:"เหล็กแผ่นเคลือบสังกะสีสำหรับงานขึ้นรูป งานก่อสร้าง และงานที่ต้องการการป้องกันผิวเพิ่มเติม",uses:["งานขึ้นรูป","งานก่อสร้าง","งานภายนอก","งานผลิต"],specs:["ผิวสังกะสี","หลายความหนา","สอบถามขนาดกับฝ่ายขาย"],image:"/products/galvanized-sheet-catalog-v2.png"},
  {slug:"round-bar",code:"RB",name:"เหล็กเส้นกลม",en:"Round Bar",category:"เหล็กเสริมคอนกรีต",short:"สำหรับงานคอนกรีตเสริมเหล็กและงานก่อสร้างทั่วไป",description:"เหล็กเส้นหน้าตัดกลม เหมาะสำหรับงานก่อสร้างและงานคอนกรีตเสริมเหล็กหลายประเภท",uses:["ปลอกเสาและคาน","งานคอนกรีต","งานก่อสร้าง","งานประกอบ"],specs:["เลือกขนาดได้ตามงาน","ตรวจสอบสเปกก่อนจัดส่ง","สอบถามมาตรฐานและสต๊อก"],image:"/products/round-bar-catalog-v2.png"},
  {slug:"deformed-bar",code:"DB",name:"เหล็กข้ออ้อย",en:"Deformed Bar",category:"เหล็กเสริมคอนกรีต",short:"เหล็กเสริมกำลังสำหรับโครงสร้างคอนกรีต",description:"ผิวเหล็กมีบั้งเพื่อเพิ่มแรงยึดเกาะกับคอนกรีต ใช้ในงานฐานราก เสา คาน และพื้น",uses:["ฐานราก","เสาและคาน","พื้นคอนกรีต","งานโครงสร้าง"],specs:["มีหลายขนาด","เหมาะกับงานโครงสร้าง","สอบถามเกรดและมาตรฐาน"],image:"/products/deformed-bar-catalog-v2.png"},
- {slug:"wire-mesh",code:"MESH",name:"ไวร์เมช",en:"Welded Wire Mesh",category:"เหล็กเสริมคอนกรีต",short:"ตะแกรงเหล็กสำเร็จรูปสำหรับพื้นและงานคอนกรีต",description:"ตะแกรงเหล็กเชื่อมสำเร็จรูป ช่วยลดขั้นตอนการผูกเหล็กหน้างาน เหมาะกับงานพื้นและคอนกรีต",uses:["พื้นคอนกรีต","ถนน","ลาน","งานสำเร็จรูป"],specs:["หลายขนาดช่อง","หลายขนาดลวด","สอบถามขนาดแผ่นและสต๊อก"],image:"/products/wire-mesh-catalog-v2.png"}
+ {slug:"wire-mesh",code:"MESH",name:"ไวร์เมช",en:"Welded Wire Mesh",category:"สินค้าสำเร็จรูปและฮาร์ดแวร์",short:"ตะแกรงเหล็กสำเร็จรูปสำหรับพื้นและงานคอนกรีต",description:"ตะแกรงเหล็กเชื่อมสำเร็จรูป ช่วยลดขั้นตอนการผูกเหล็กหน้างาน เหมาะกับงานพื้นและคอนกรีต",uses:["พื้นคอนกรีต","ถนน","ลาน","งานสำเร็จรูป"],specs:["หลายขนาดช่อง","หลายขนาดลวด","สอบถามขนาดแผ่นและสต๊อก"],image:"/products/wire-mesh-catalog-v2.png"}
 ];
 
 const mockPrices=[10,20,30,40];
@@ -60,5 +60,5 @@ export const products:Product[]=productCatalog.map(product=>{
  const options=(sizes[product.slug]??["ขนาดมาตรฐาน"]).map((size,index)=>({size,price:mockPrices[index]??10*(index+1)}));
  return {...product,options,price:options[0].price};
 });
-export const categories=["เหล็กรูปพรรณขึ้นรูปเย็น","เหล็กรูปพรรณรีดร้อน","เหล็กแผ่น","เหล็กเสริมคอนกรีต"];
+export const categories=["เหล็กรูปพรรณขึ้นรูปเย็น","เหล็กรูปพรรณรีดร้อน","เหล็กแผ่น","เหล็กเสริมคอนกรีต","สินค้าสำเร็จรูปและฮาร์ดแวร์"];
 export function getProduct(slug:string){return products.find(p=>p.slug===slug)}
