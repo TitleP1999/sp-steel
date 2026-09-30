@@ -12,13 +12,16 @@ import { getHomeProjects } from "../../lib/home-projects";
 import HomeProjectEditor from "./HomeProjectEditor";
 import { getExecutives } from "../../lib/executives";
 import ExecutiveEditor from "./ExecutiveEditor";
+import { getProductGallery } from "../../lib/product-gallery";
+import ProductGalleryEditor from "./ProductGalleryEditor";
 
 export default async function AdminPage() {
   requireAdmin();
-  const [catalog, news, reviews, quoteRequests, projects, executives] = await Promise.all([getCatalog(), getNews(), getReviews(), getQuoteRequests(), getHomeProjects(), getExecutives()]);
+  const [catalog, news, reviews, quoteRequests, projects, executives, gallery] = await Promise.all([getCatalog(), getNews(), getReviews(), getQuoteRequests(), getHomeProjects(), getExecutives(), getProductGallery()]);
   return <main className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
-    <div className="flex flex-wrap items-center justify-between gap-4"><div><p className="text-sm font-bold tracking-widest text-[#8b352d]">SUPARERK STEEL · ADMIN</p><h1 className="mt-2 text-3xl font-black">จัดการเว็บไซต์</h1></div><div className="flex flex-wrap items-center gap-5"><a href="#executives" className="underline">ผู้บริหาร</a><a href="#home-projects" className="underline">โครงการหน้าแรก</a><a href="#quote-requests" className="underline">คำขอใบเสนอราคา</a><Link href="/news" className="underline">ดูข่าวสาร</Link><Link href="/reviews" className="underline">ดูรีวิว</Link><Link href="/steel-prices" className="underline">ดูราคาเหล็กวันนี้</Link><Link href="/products" className="underline">ดูหน้าร้าน</Link><form action={logout}><button className="rounded border px-4 py-2">ออกจากระบบ</button></form></div></div>
+    <div className="flex flex-wrap items-center justify-between gap-4"><div><p className="text-sm font-bold tracking-widest text-[#8b352d]">SUPARERK STEEL · ADMIN</p><h1 className="mt-2 text-3xl font-black">จัดการเว็บไซต์</h1></div><div className="flex flex-wrap items-center gap-5"><a href="#product-gallery" className="underline">ภาพสินค้า</a><a href="#executives" className="underline">ผู้บริหาร</a><a href="#home-projects" className="underline">โครงการหน้าแรก</a><a href="#quote-requests" className="underline">คำขอใบเสนอราคา</a><Link href="/news" className="underline">ดูข่าวสาร</Link><Link href="/reviews" className="underline">ดูรีวิว</Link><Link href="/steel-prices" className="underline">ดูราคาเหล็กวันนี้</Link><Link href="/products" className="underline">ดูหน้าร้าน</Link><form action={logout}><button className="rounded border px-4 py-2">ออกจากระบบ</button></form></div></div>
     <p className="mt-4 text-zinc-600">จัดการข่าวสาร รีวิว และแก้ราคาสินค้าตามขนาด ราคาที่บันทึกจะแสดงทั้งหน้าสินค้าและหน้า “ราคาเหล็กวันนี้”</p>
+    <ProductGalleryEditor products={catalog.products} items={gallery.items} revision={gallery.revision} />
     <NewsEditor items={news.items} revision={news.revision} />
     {news.updatedAt && <p className="mt-4 text-sm text-zinc-500">ข่าวสารบันทึกล่าสุด: {new Date(news.updatedAt).toLocaleString("th-TH", { timeZone: "Asia/Bangkok" })}</p>}
     <ReviewEditor items={reviews.items} revision={reviews.revision} />

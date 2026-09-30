@@ -10,6 +10,7 @@ import { NewsError, saveNews } from "../../lib/news";
 import { ReviewError, saveReviews } from "../../lib/reviews";
 import { HomeProjectError, saveHomeProjects } from "../../lib/home-projects";
 import { ExecutiveError, saveExecutives } from "../../lib/executives";
+import { ProductGalleryError, saveProductGallery } from "../../lib/product-gallery";
 
 export async function login(_previous: { error: string }, form: FormData) {
   if (!authConfigured()) return { error: "ยังไม่ได้ตั้งค่าบัญชีแอดมิน กรุณาตั้งค่า ADMIN_USERNAME, ADMIN_PASSWORD_HASH และ ADMIN_SESSION_SECRET บนเซิร์ฟเวอร์" };
@@ -89,5 +90,19 @@ export async function updateExecutives(items: unknown, revision: string): Promis
     if (error instanceof ExecutiveError) return { error: error.message };
     console.error("Executive storage write failed", error);
     return { error: "บันทึกข้อมูลผู้บริหารไม่สำเร็จ กรุณาลองใหม่ หรือติดต่อผู้ดูแลเซิร์ฟเวอร์" };
+  }
+}
+
+export async function updateProductGallery(items: unknown, revision: string): Promise<{ error?: string; revision?: string }> {
+  requireAdmin();
+  try {
+    const nextRevision = await saveProductGallery(items, revision);
+    revalidatePath("/products/[slug]", "page");
+    revalidatePath("/admin");
+    return { revision: nextRevision };
+  } catch (error) {
+    if (error instanceof ProductGalleryError) return { error: error.message };
+    console.error("Product gallery storage write failed", error);
+    return { error: "บันทึกภาพสินค้าไม่สำเร็จ กรุณาลองใหม่ หรือติดต่อผู้ดูแลเซิร์ฟเวอร์" };
   }
 }
