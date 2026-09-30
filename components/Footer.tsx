@@ -21,13 +21,13 @@ export default function Footer() {
             <p className="flex items-center gap-2 whitespace-nowrap text-xs font-black text-white xl:text-sm"><MapPin size={17} className="shrink-0 text-red-500"/>สาขาสุพรรณบุรี (สำนักงานใหญ่)</p>
             <p className="mt-2 pl-6 text-xs leading-5 text-zinc-400">232/9 หมู่ 4 ต.สนามชัย อ.เมืองสุพรรณบุรี<br/>จ.สุพรรณบุรี 72000</p>
             <p className="mt-2 flex items-center gap-2 pl-0 text-xs font-bold text-zinc-200"><Phone size={16} className="shrink-0 text-red-500"/><a href="tel:0863215445">086-321-5445</a><span className="text-zinc-600">|</span><a href="tel:0916964747">091-696-4747</a></p>
-            <a href="https://maps.app.goo.gl/tddg4Y9Gv5Dd25cX8?g_st=il" target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1.5 pl-6 text-xs font-black text-[#d28a80] transition hover:text-[#efa398]">ดูแผนที่ <ExternalLink size={12}/></a>
+            <a href="https://maps.app.goo.gl/tddg4Y9Gv5Dd25cX8?g_st=il" target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1.5 pl-6 text-xs font-black text-red-500 transition hover:text-red-400">ดูแผนที่ <ExternalLink size={12}/></a>
           </div>
           <div className="border-t border-white/15 py-6 sm:border-t-0 sm:px-8 lg:border-l lg:py-0">
             <p className="flex items-center gap-2 text-sm font-black text-white"><MapPin size={17} className="shrink-0 text-red-500"/>สาขากาญจนบุรี</p>
             <p className="mt-2 pl-6 text-xs leading-5 text-zinc-400">1089 หมู่ 4 ต.ท่าม่วง อ.ท่าม่วง<br/>จ.กาญจนบุรี 71110</p>
             <p className="mt-2 flex items-center gap-2 pl-0 text-xs font-bold text-zinc-200"><Phone size={16} className="shrink-0 text-red-500"/><a href="tel:0803732231">080-373-2231</a><span className="text-zinc-600">|</span><a href="tel:0916964747">091-696-4747</a></p>
-            <a href="https://maps.app.goo.gl/jTfe5Rd5fkLsmCnz8?g_st=il" target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1.5 pl-6 text-xs font-black text-[#d28a80] transition hover:text-[#efa398]">ดูแผนที่ <ExternalLink size={12}/></a>
+            <a href="https://maps.app.goo.gl/jTfe5Rd5fkLsmCnz8?g_st=il" target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1.5 pl-6 text-xs font-black text-red-500 transition hover:text-red-400">ดูแผนที่ <ExternalLink size={12}/></a>
           </div>
         </div>
 
@@ -36,7 +36,7 @@ export default function Footer() {
             <b className="text-sm text-zinc-100">ติดต่อเรา</b>
             <div className="mt-3 flex flex-col items-start gap-3">
               <a href={LINE_URL} target="_blank" rel="noopener noreferrer" aria-label="ติดต่อผ่าน LINE" className="inline-flex h-10 items-center gap-2 rounded-full bg-[#06C755] px-5 text-xs font-black text-white transition hover:-translate-y-0.5 hover:bg-[#05b34a]"><Image src="/line-logo.svg" alt="" width={26} height={26}/> LINE</a>
-              <a href="https://linktr.ee/suparerksteel" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 text-xs font-black text-[#d28a80] transition hover:text-[#efa398]">ช่องทางติดต่อทั้งหมด <ExternalLink size={13}/></a>
+              <a href="https://linktr.ee/suparerksteel" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 text-xs font-black text-red-500 transition hover:text-red-400">ช่องทางติดต่อทั้งหมด <ExternalLink size={13}/></a>
             </div>
           </div>
         </div>
