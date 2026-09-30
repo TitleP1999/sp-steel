@@ -1,8 +1,10 @@
 import {
   ArrowUpRight,
   BadgeCheck,
+  Banknote,
   Boxes,
   Building2,
+  CalendarDays,
   ChartNoAxesCombined,
   ClipboardCheck,
   MapPinned,
@@ -40,10 +42,10 @@ const milestones = [
     icon: ChartNoAxesCombined,
   },
   {
-    date: "พ.ศ. 2568 เป็นต้นไป",
-    title: "ยกระดับประสิทธิภาพการดำเนินงาน",
+    date: "พ.ศ. 2568",
+    title: "ยกระดับการดำเนินงาน",
     description:
-      "หลังรายได้ปรับลดลงในปี 2568 บริษัทมุ่งพัฒนาการบริหารต้นทุน สินค้าคงคลัง การขนส่ง และช่องทางการขาย เพื่อรองรับการเติบโตในระยะยาว",
+      "พัฒนาระบบบริหารต้นทุน สินค้าคงคลัง การขนส่ง และช่องทางการขาย เพื่อเพิ่มประสิทธิภาพและรองรับการเติบโตในระยะยาว",
     icon: ClipboardCheck,
   },
   {
@@ -141,21 +143,24 @@ export default async function About() {
             </div>
           </div>
 
-          <div className="relative overflow-hidden rounded-[24px] bg-[#202124] p-6 text-white shadow-xl sm:p-8">
-            <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full border border-white/10" />
-            <p className="relative text-xs font-black tracking-[.2em] text-[#d28a80]">SUPARERK STEEL</p>
-            <div className="relative mt-6 grid grid-cols-2 gap-5">
-              <div className="border-t border-white/15 pt-4">
-                <p className="text-3xl font-black sm:text-4xl">2563</p>
-                <p className="mt-2 text-sm text-zinc-400">ปีที่ก่อตั้ง</p>
+          <div className="rounded-[24px] bg-white p-5 sm:p-7">
+            <p className="inline-flex items-center gap-2 text-xs font-black tracking-[.2em] text-[#8b352d]"><Building2 aria-hidden="true" size={16} />SUPARERK STEEL</p>
+            <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-3">
+              <div className="flex min-h-48 flex-col items-center justify-center rounded-2xl border border-white/15 bg-[#a6292e] px-3 py-6 text-center text-white shadow-[0_12px_28px_rgba(166,41,46,0.18)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_16px_32px_rgba(166,41,46,0.25)]">
+                <span className="grid h-14 w-14 place-items-center rounded-full bg-white/15 ring-1 ring-white/20"><CalendarDays aria-hidden="true" size={30} /></span>
+                <p className="mt-4 text-sm font-bold text-white/80">ก่อตั้งบริษัท</p>
+                <p className="mt-2 text-lg font-black leading-tight">2 ตุลาคม 2563</p>
               </div>
-              <div className="border-t border-white/15 pt-4">
-                <p className="whitespace-nowrap text-xl font-black sm:text-2xl lg:text-3xl xl:text-4xl">5,000,000 บาท</p>
-                <p className="mt-2 text-sm text-zinc-400">ทุนจดทะเบียนปัจจุบัน</p>
+              <div className="flex min-h-48 flex-col items-center justify-center rounded-2xl border border-white/15 bg-[#a6292e] px-3 py-6 text-center text-white shadow-[0_12px_28px_rgba(166,41,46,0.18)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_16px_32px_rgba(166,41,46,0.25)]">
+                <span className="grid h-14 w-14 place-items-center rounded-full bg-white/15 ring-1 ring-white/20"><Banknote aria-hidden="true" size={30} /></span>
+                <p className="mt-4 text-sm font-bold leading-tight text-white/80">ทุนจดทะเบียนปัจจุบัน</p>
+                <p className="mt-2 text-2xl font-black leading-tight">5 ล้านบาท</p>
               </div>
-              <div className="col-span-2 border-t border-white/15 pt-4">
-                <p className="text-3xl font-black sm:text-4xl">2 สาขา</p>
-                <p className="mt-2 text-sm text-zinc-400">สุพรรณบุรี • กาญจนบุรี</p>
+              <div className="flex min-h-48 flex-col items-center justify-center rounded-2xl border border-white/15 bg-[#a6292e] px-3 py-6 text-center text-white shadow-[0_12px_28px_rgba(166,41,46,0.18)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_16px_32px_rgba(166,41,46,0.25)]">
+                <span className="grid h-14 w-14 place-items-center rounded-full bg-white/15 ring-1 ring-white/20"><MapPinned aria-hidden="true" size={30} /></span>
+                <p className="mt-4 text-sm font-bold text-white/80">จำนวนสาขา</p>
+                <p className="mt-2 text-2xl font-black leading-tight">2 สาขา</p>
+                <p className="mt-2 text-xs font-medium leading-5 text-white/75 sm:text-[11px]">สุพรรณบุรี และ กาญจนบุรี</p>
               </div>
             </div>
           </div>
