@@ -70,6 +70,7 @@ export default async function About() {
         eyebrow="ABOUT US"
         title="เกี่ยวกับ ศุภฤกษ์ สตีล"
         desc="รู้จักเส้นทางการเติบโตของบริษัท ศุภฤกษ์ สตีล จำกัด จากจุดเริ่มต้นในสุพรรณบุรี สู่ผู้จัดจำหน่ายเหล็กที่พร้อมดูแลลูกค้าหลากหลายกลุ่ม"
+        backgroundImage="/steel-warehouse-background.jpg"
       />
 
       <section className="bg-[#f7f5f2]">

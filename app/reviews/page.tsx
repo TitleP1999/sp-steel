@@ -6,7 +6,7 @@ const formatDate = (value: string) => new Date(`${value}T00:00:00+07:00`).toLoca
 
 export default async function Reviews() {
   const { configured, items } = await getGoogleBusinessReviews();
-  return <main><PageHero eyebrow="GOOGLE REVIEWS" title="รีวิวจากลูกค้า" desc="รีวิวจริงจาก Google ของทั้งสองสาขา แสดงเฉพาะรีวิวที่ให้ 5 ดาว"/><section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:py-20">
+  return <main><PageHero eyebrow="GOOGLE REVIEWS" title="รีวิวจากลูกค้า" desc="รีวิวจริงจาก Google ของทั้งสองสาขา แสดงเฉพาะรีวิวที่ให้ 5 ดาว" backgroundImage="/steel-warehouse-background.jpg"/><section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:py-20">
     {items.length ? <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">{items.map(item => <article key={item.id} className="flex h-full flex-col border bg-white p-6 sm:p-7">
       <div className="flex items-center justify-between gap-3"><div className="text-xl tracking-wider text-amber-500" aria-label="5 จาก 5 ดาว">★★★★★</div><span className="rounded-full bg-[#f1f0ed] px-3 py-1 text-xs font-bold text-zinc-700">สาขา{item.branchName}</span></div>
       <blockquote className="mt-4 flex-1 whitespace-pre-wrap text-lg leading-8 text-zinc-700">“{item.message}”</blockquote>
