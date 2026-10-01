@@ -26,13 +26,11 @@ export default async function ProductPage({ params }: { params: { slug: string }
   const [{ products }, gallery] = await Promise.all([getCatalog(), getProductGallery()]);
   const product = products.find((item) => item.slug === params.slug);
   if (!product) return notFound();
-  const prices = product.options.map((option) => option.price).filter((price) => Number.isFinite(price) && price > 0);
   const productUrl = `${siteUrl}/products/${product.slug}`;
   const productJsonLd = {
     "@context": "https://schema.org", "@type": "Product", name: product.name,
     description: product.description, image: [`${siteUrl}${product.image}`], sku: product.code, url: productUrl,
     brand: { "@type": "Brand", name: product.slug === "tiscon-superlinks" ? "TATA TISCON" : "SUPARERK STEEL" },
-    ...(prices.length ? { offers: { "@type": "AggregateOffer", priceCurrency: "THB", lowPrice: Math.min(...prices), highPrice: Math.max(...prices), offerCount: prices.length, url: productUrl } } : {}),
   };
   const breadcrumbJsonLd = {
     "@context": "https://schema.org", "@type": "BreadcrumbList",

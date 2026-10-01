@@ -35,17 +35,14 @@ export default async function SteelPricesPage() {
 
         <div className="bg-[#8b352d] px-4 py-9 text-white sm:px-7 lg:px-10 lg:py-12 xl:px-14">
           <div className="mb-7"><p className="text-xs font-black tracking-[.18em] text-[#efb4ae]">STEEL MARKET BOARD</p><h2 className="mt-2 text-2xl font-black sm:text-3xl">สรุปราคาเหล็กวันนี้</h2></div>
-          <div className="hidden grid-cols-[1fr_150px_150px] px-5 pb-3 text-sm font-bold text-[#efc8c4] md:grid"><span>รายการ</span><span className="text-right">ราคาเริ่มต้น</span><span className="text-right">% เปลี่ยนแปลง</span></div>
+          <div className="hidden grid-cols-[1fr_220px] px-5 pb-3 text-sm font-bold text-[#efc8c4] md:grid"><span>รายการ</span><span className="text-right">ราคา</span></div>
           <div className="space-y-3">{featured.map(product => {
-          const change = product.changePercent;
-          const direction = change === null || Math.abs(change) < 0.005 ? "same" : change > 0 ? "up" : "down";
-          return <Link key={product.slug} href={`/products/${product.slug}`} className="grid items-center gap-4 rounded-xl bg-[#f7f8fa] p-3 text-[#202124] transition hover:-translate-y-0.5 hover:shadow-2xl md:grid-cols-[1fr_150px_150px]">
+          return <Link key={product.slug} href={`/products/${product.slug}`} className="grid items-center gap-4 rounded-xl bg-[#f7f8fa] p-3 text-[#202124] transition hover:-translate-y-0.5 hover:shadow-2xl md:grid-cols-[1fr_220px]">
             <span className="flex min-w-0 items-center gap-4"><span className="relative h-16 w-20 shrink-0 overflow-hidden rounded-lg bg-white sm:h-[74px] sm:w-24"><Image src={product.image} alt="" fill sizes="96px" className="object-cover" /></span><span><strong className="block text-base sm:text-lg">{product.name}</strong><small className="mt-1 block text-zinc-500">{product.options.length} ขนาด</small></span></span>
-            <span className="flex items-baseline justify-between gap-3 md:block md:text-right"><small className="font-bold text-zinc-500 md:hidden">ราคาเริ่มต้น</small><strong className="text-2xl font-black">฿{product.price.toLocaleString("th-TH", { maximumFractionDigits: 2 })}</strong></span>
-            <span className="flex items-center justify-between gap-3 md:justify-end"><small className="font-bold text-zinc-500 md:hidden">เปลี่ยนแปลง</small><strong className={`rounded-full px-3 py-1.5 text-base font-black ${direction === "up" ? "bg-red-100 text-red-700" : direction === "down" ? "bg-emerald-100 text-emerald-700" : "bg-zinc-100 text-zinc-600"}`}>{change === null ? "—" : `${direction === "up" ? "▲ " : direction === "down" ? "▼ " : ""}${Math.abs(change).toFixed(2)}%`}</strong></span>
+            <span className="flex items-baseline justify-between gap-3 md:block md:text-right"><small className="font-bold text-zinc-500 md:hidden">ราคา</small><strong className="text-lg font-black text-[#8b352d]">สอบถามราคาก่อน</strong></span>
           </Link>;
         })}</div>
-          <p className="mt-5 text-xs leading-5 text-[#efc8c4]">ราคาเริ่มต้นจากทุกขนาด · เปอร์เซ็นต์เทียบกับราคาก่อนแก้ไขล่าสุด หากไม่มีราคาก่อนหน้า ระบบจะแสดง —</p>
+          <p className="mt-5 text-xs leading-5 text-[#efc8c4]">กรุณาติดต่อฝ่ายขายเพื่อสอบถามราคาปัจจุบันของแต่ละขนาด</p>
         </div>
       </div>
     </section>
@@ -63,7 +60,7 @@ export default async function SteelPricesPage() {
                 <div className="overflow-x-auto">
                   <table className="w-full min-w-[520px] text-left text-sm">
                     <thead className="bg-zinc-100 text-xs text-zinc-500"><tr><th className="px-5 py-3 font-bold sm:px-6">ขนาด</th><th className="w-40 px-5 py-3 text-right font-bold sm:px-6">ราคา</th><th className="w-44 px-5 py-3 text-right font-bold sm:px-6">รายการขอราคา</th></tr></thead>
-                    <tbody>{product.options.map(option => <tr key={option.size} className="border-t"><td className="px-5 py-4 sm:px-6">{option.size}</td><td className="px-5 py-4 text-right text-lg font-black text-[#8b352d] sm:px-6">฿{option.price.toLocaleString("th-TH", { maximumFractionDigits: 2 })}</td><td className="px-5 py-4 text-right sm:px-6"><QuoteProductButton product={product} size={option.size} className="mt-0 rounded-lg px-3 py-2 text-xs"/></td></tr>)}</tbody>
+                    <tbody>{product.options.map(option => <tr key={option.size} className="border-t"><td className="px-5 py-4 sm:px-6">{option.size}</td><td className="px-5 py-4 text-right text-base font-black text-[#8b352d] sm:px-6">สอบถามราคาก่อน</td><td className="px-5 py-4 text-right sm:px-6"><QuoteProductButton product={product} size={option.size} className="mt-0 rounded-lg px-3 py-2 text-xs"/></td></tr>)}</tbody>
                   </table>
                 </div>
               </div>
