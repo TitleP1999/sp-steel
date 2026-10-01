@@ -39,7 +39,7 @@ export default async function SteelPricesPage() {
           <div className="space-y-3">{featured.map(product => {
           return <Link key={product.slug} href={`/products/${product.slug}`} className="grid items-center gap-4 rounded-xl bg-[#f7f8fa] p-3 text-[#202124] transition hover:-translate-y-0.5 hover:shadow-2xl md:grid-cols-[1fr_220px]">
             <span className="flex min-w-0 items-center gap-4"><span className="relative h-16 w-20 shrink-0 overflow-hidden rounded-lg bg-white sm:h-[74px] sm:w-24"><Image src={product.image} alt="" fill sizes="96px" className="object-cover" /></span><span><strong className="block text-base sm:text-lg">{product.name}</strong><small className="mt-1 block text-zinc-500">{product.options.length} ขนาด</small></span></span>
-            <span className="flex items-baseline justify-between gap-3 md:block md:text-right"><small className="font-bold text-zinc-500 md:hidden">ราคา</small><strong className="text-lg font-black text-[#8b352d]">สอบถามราคาก่อน</strong></span>
+            <span className="flex items-baseline justify-between gap-3 md:block md:text-right"><small className="font-bold text-zinc-500 md:hidden">ราคา</small><strong className="text-lg font-black text-[#8b352d]">สอบถามราคา</strong></span>
           </Link>;
         })}</div>
           <p className="mt-5 text-xs leading-5 text-[#efc8c4]">กรุณาติดต่อฝ่ายขายเพื่อสอบถามราคาปัจจุบันของแต่ละขนาด</p>
@@ -60,7 +60,7 @@ export default async function SteelPricesPage() {
                 <div className="overflow-x-auto">
                   <table className="w-full min-w-[520px] text-left text-sm">
                     <thead className="bg-zinc-100 text-xs text-zinc-500"><tr><th className="px-5 py-3 font-bold sm:px-6">ขนาด</th><th className="w-40 px-5 py-3 text-right font-bold sm:px-6">ราคา</th><th className="w-44 px-5 py-3 text-right font-bold sm:px-6">รายการขอราคา</th></tr></thead>
-                    <tbody>{product.options.map(option => <tr key={option.size} className="border-t"><td className="px-5 py-4 sm:px-6">{option.size}</td><td className="px-5 py-4 text-right text-base font-black text-[#8b352d] sm:px-6">สอบถามราคาก่อน</td><td className="px-5 py-4 text-right sm:px-6"><QuoteProductButton product={product} size={option.size} className="mt-0 rounded-lg px-3 py-2 text-xs"/></td></tr>)}</tbody>
+                    <tbody>{product.options.map(option => <tr key={option.size} className="border-t"><td className="px-5 py-4 sm:px-6">{option.size}</td><td className="px-5 py-4 text-right text-base font-black text-[#8b352d] sm:px-6">สอบถามราคา</td><td className="px-5 py-4 text-right sm:px-6"><QuoteProductButton product={product} size={option.size} className="mt-0 rounded-lg px-3 py-2 text-xs"/></td></tr>)}</tbody>
                   </table>
                 </div>
               </div>
