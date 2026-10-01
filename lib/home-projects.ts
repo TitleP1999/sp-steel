@@ -29,6 +29,10 @@ function isSafeUrl(value: string) {
   return value === "" || (value.startsWith("/") && !value.startsWith("//")) || /^https?:\/\//i.test(value);
 }
 
+function isSafeImage(value: string) {
+  return /^data:image\/(jpeg|png|webp);base64,/i.test(value) ? value.length <= 1_200_000 : value.length <= 1000 && isSafeUrl(value);
+}
+
 export function validateHomeProjects(items: unknown): HomeProjectItem[] {
   if (!Array.isArray(items) || items.length > 50) throw new HomeProjectError("โครงการต้องเป็นรายการไม่เกิน 50 รายการ");
   const ids = new Set<string>();
@@ -43,7 +47,7 @@ export function validateHomeProjects(items: unknown): HomeProjectItem[] {
     if (!id || id.length > 80 || !/^[A-Za-z0-9_-]+$/.test(id) || ids.has(id)) throw new HomeProjectError(`รหัสโครงการรายการที่ ${index + 1} ไม่ถูกต้องหรือซ้ำกัน`);
     if (!title || title.length > 160) throw new HomeProjectError(`กรุณาระบุชื่อโครงการรายการที่ ${index + 1} ไม่เกิน 160 ตัวอักษร`);
     if (summary.length > 500) throw new HomeProjectError(`รายละเอียดโครงการรายการที่ ${index + 1} ต้องไม่เกิน 500 ตัวอักษร`);
-    if (!imageUrl || imageUrl.length > 1000 || !isSafeUrl(imageUrl)) throw new HomeProjectError(`กรุณาระบุรูปภาพโครงการรายการที่ ${index + 1} ให้ถูกต้อง`);
+    if (!imageUrl || !isSafeImage(imageUrl)) throw new HomeProjectError(`กรุณาเลือกรูปโครงการรายการที่ ${index + 1} เป็น JPEG หรือ PNG`);
     if (href.length > 1000 || !isSafeUrl(href)) throw new HomeProjectError(`ลิงก์โครงการรายการที่ ${index + 1} ไม่ถูกต้อง`);
     ids.add(id);
     return { id, title, summary, imageUrl, href, published: value.published === true };

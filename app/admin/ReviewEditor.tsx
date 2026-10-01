@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { ReviewItem } from "../../lib/reviews";
 import { updateReviews } from "./actions";
+import ImageFilePicker from "./ImageFilePicker";
 
 const today = () => new Date().toISOString().slice(0, 10);
 const newId = () => globalThis.crypto?.randomUUID?.() || `review-${Date.now()}`;
@@ -40,7 +41,7 @@ export default function ReviewEditor({ items: initialItems, revision: initialRev
           <label className="text-sm font-bold sm:col-span-2">สินค้า / บริการที่ใช้ <span className="font-normal text-zinc-500">(ไม่บังคับ)</span><input maxLength={160} value={item.product} onChange={event => updateItem(item.id, "product", event.target.value)} className="mt-2 w-full rounded border p-3 font-normal" placeholder="เช่น เหล็กกล่องและบริการจัดส่ง" /></label>
           <label className="text-sm font-bold">คะแนน<select value={item.rating} onChange={event => updateItem(item.id, "rating", Number(event.target.value))} className="mt-2 w-full rounded border bg-white p-3 font-normal">{[5, 4, 3, 2, 1].map(rating => <option key={rating} value={rating}>{rating} ดาว</option>)}</select></label>
           <label className="text-sm font-bold">วันที่รีวิว<input required type="date" value={item.reviewedAt} onChange={event => updateItem(item.id, "reviewedAt", event.target.value)} className="mt-2 w-full rounded border p-3 font-normal" /></label>
-          <label className="text-sm font-bold sm:col-span-2">รูปภาพลูกค้า / ผลงาน <span className="font-normal text-zinc-500">(ไม่บังคับ)</span><input maxLength={1000} value={item.imageUrl} onChange={event => updateItem(item.id, "imageUrl", event.target.value)} className="mt-2 w-full rounded border p-3 font-normal" placeholder="/reviews/customer.jpg หรือ https://example.com/photo.jpg" /><span className="mt-1 block font-normal text-zinc-500">ใส่ URL รูปภาพ หรือ path ของรูปที่อยู่ในโฟลเดอร์ public</span>{item.imageUrl && <img src={item.imageUrl} alt="ตัวอย่างรูปรีวิว" className="mt-3 h-40 w-full rounded border object-cover" />}</label>
+          <ImageFilePicker label="รูปภาพลูกค้า / ผลงาน" value={item.imageUrl} onChange={value => updateItem(item.id, "imageUrl", value)} disabled={pending} previewClassName="h-40" />
           <label className="flex items-center gap-3 text-sm font-bold sm:col-span-2"><input type="checkbox" checked={item.published} onChange={event => updateItem(item.id, "published", event.target.checked)} className="h-5 w-5 accent-[#8b352d]" />เผยแพร่รายการนี้บนหน้าเว็บ</label>
         </div>
       </article>)}

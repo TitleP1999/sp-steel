@@ -12,7 +12,7 @@ const filename = () => path.join(directory(), "executives.json");
 const useDatabase = () => Boolean(process.env.DATABASE_URL) && !process.env.EXECUTIVE_DATA_DIR;
 const databaseState = globalThis as typeof globalThis & { executiveSchemaPromise?: Promise<void> };
 function database() { if (!process.env.DATABASE_URL) throw new Error("DATABASE_URL is not configured"); return neon(process.env.DATABASE_URL); }
-function isSafeImage(value: string) { return (value.startsWith("/") && !value.startsWith("//")) || /^https?:\/\//i.test(value); }
+function isSafeImage(value: string) { return /^data:image\/(jpeg|png|webp);base64,/i.test(value) ? value.length <= 1_200_000 : value.length <= 1000 && ((value.startsWith("/") && !value.startsWith("//")) || /^https?:\/\//i.test(value)); }
 
 export function validateExecutives(items: unknown): ExecutiveItem[] {
   if (!Array.isArray(items) || items.length > 50) throw new ExecutiveError("รายชื่อผู้บริหารต้องไม่เกิน 50 รายการ");
@@ -27,7 +27,7 @@ export function validateExecutives(items: unknown): ExecutiveItem[] {
     if (!id || id.length > 80 || !/^[A-Za-z0-9_-]+$/.test(id) || ids.has(id)) throw new ExecutiveError(`รหัสผู้บริหารรายการที่ ${index + 1} ไม่ถูกต้องหรือซ้ำกัน`);
     if (!name || name.length > 160) throw new ExecutiveError(`กรุณาระบุชื่อผู้บริหารรายการที่ ${index + 1} ไม่เกิน 160 ตัวอักษร`);
     if (!position || position.length > 300) throw new ExecutiveError(`กรุณาระบุตำแหน่งรายการที่ ${index + 1} ไม่เกิน 300 ตัวอักษร`);
-    if (!imageUrl || imageUrl.length > 1000 || !isSafeImage(imageUrl)) throw new ExecutiveError(`กรุณาระบุรูปผู้บริหารรายการที่ ${index + 1} ให้ถูกต้อง`);
+    if (!imageUrl || !isSafeImage(imageUrl)) throw new ExecutiveError(`กรุณาเลือกรูปผู้บริหารรายการที่ ${index + 1} เป็น JPEG หรือ PNG`);
     ids.add(id);
     return { id, name, position, imageUrl, published: value.published === true };
   });

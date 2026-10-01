@@ -1,4 +1,5 @@
 import type { Product } from "../data/products";
+import { tisconStirrupRows } from "./tiscon-superlinks";
 
 export type ProductSpecification = { size: string; thickness: string; weight: string; basis: string; unitWeight: number | null; saleWeight: number | null; saleUnit: string };
 
@@ -65,6 +66,10 @@ function theoreticalWeight(slug: string, size: string): { value: number; unit: s
 
 export function getProductSpecifications(product: Product): ProductSpecification[] {
   return product.options.map((option, index) => {
+    if (product.slug === "tiscon-superlinks") {
+      const row = tisconStirrupRows.find(item => item.size === option.size);
+      return { size: option.size, thickness: "6 มม.", weight: row ? `${format(row.pieceWeight)} กก./ชิ้น` : "โปรดตรวจสอบกับฝ่ายขาย", basis: row ? `${row.bagWeight} กก./กระสอบ · ${row.piecesPerBag} ชิ้น` : "บรรจุกระสอบ", unitWeight: row?.pieceWeight ?? null, saleWeight: row?.bagWeight ?? null, saleUnit: "กระสอบ" };
+    }
     const thickness = option.size.match(/หนา\s*(\d+(?:[.,]\d+)?)\s*มม\./)?.[1];
     const fixed = fixedWeights[product.slug]?.[index];
     const calculated = fixed === undefined ? theoreticalWeight(product.slug, option.size) : null;

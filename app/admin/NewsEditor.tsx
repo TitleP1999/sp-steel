@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { NewsItem } from "../../lib/news";
 import { updateNews } from "./actions";
+import ImageFilePicker from "./ImageFilePicker";
 
 function today() {
   return new Date().toISOString().slice(0, 10);
@@ -69,7 +70,7 @@ export default function NewsEditor({ items: initialItems, revision: initialRevis
           <label className="text-sm font-bold">หมวดข่าวสาร<input maxLength={60} value={item.category} onChange={event => updateItem(item.id, "category", event.target.value)} className="mt-2 w-full rounded border p-3 font-normal" placeholder="ข่าวสาร / โปรโมชั่น / บทความ" /></label>
           <label className="text-sm font-bold">วันที่<input required type="date" value={item.publishedAt} onChange={event => updateItem(item.id, "publishedAt", event.target.value)} className="mt-2 w-full rounded border p-3 font-normal" /></label>
           <label className="text-sm font-bold sm:col-span-2">ลิงก์เพิ่มเติม <span className="font-normal text-zinc-500">(ไม่บังคับ)</span><input maxLength={500} value={item.href} onChange={event => updateItem(item.id, "href", event.target.value)} className="mt-2 w-full rounded border p-3 font-normal" placeholder="/contact หรือ https://example.com" /></label>
-          <label className="text-sm font-bold sm:col-span-2">รูปภาพข่าวสาร <span className="font-normal text-zinc-500">(ไม่บังคับ)</span><input type="text" maxLength={1000} value={item.imageUrl} onChange={event => updateItem(item.id, "imageUrl", event.target.value)} className="mt-2 w-full rounded border p-3 font-normal" placeholder="/news/promo.jpg หรือ https://example.com/promo.jpg" /><span className="mt-1 block font-normal text-zinc-500">ใส่ URL รูปภาพ หรือ path ของรูปที่อยู่ในโฟลเดอร์ public</span>{item.imageUrl && <img src={item.imageUrl} alt="ตัวอย่างรูปภาพข่าวสาร" className="mt-3 h-32 w-full rounded border object-cover" />}</label>
+          <ImageFilePicker label="รูปภาพข่าวสาร" value={item.imageUrl} onChange={value => updateItem(item.id, "imageUrl", value)} disabled={pending} previewClassName="h-32" />
           <label className="flex items-center gap-3 text-sm font-bold sm:col-span-2"><input type="checkbox" checked={item.published} onChange={event => updateItem(item.id, "published", event.target.checked)} className="h-5 w-5 accent-[#8b352d]" />เผยแพร่รายการนี้บนหน้าเว็บ</label>
         </div>
       </article>)}

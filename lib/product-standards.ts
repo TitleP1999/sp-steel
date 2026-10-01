@@ -19,6 +19,7 @@ export const productStandards: Record<string, string> = {
   "cold-rolled-sheet": "TIS 2012 : 2558 / JIS G3141 · GRADE SPCC",
   "checkered-plate": "JIS G3101 · GRADE SS400",
   "galvanized-sheet": "TIS 50 : 2561 / JIS G3302 · GRADE SGCC",
+  "tiscon-superlinks": "TATA TISCON SUPERLINKS · ROUND BAR SR24 6 MM. · TIS 20-2559",
   "round-bar": "TIS 20 : 2559 · GRADE SR24",
   "deformed-bar": "TIS 24 : 2559 · GRADE SD40, SD50",
   "wire-mesh": "TIS 737 : 2549 · WELDED STEEL WIRE FABRIC"

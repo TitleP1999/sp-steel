@@ -37,6 +37,10 @@ function isSafeLink(value: string) {
   return value === "" || (value.startsWith("/") && !value.startsWith("//")) || /^https?:\/\//i.test(value);
 }
 
+function isSafeImage(value: string) {
+  return value === "" || (/^data:image\/(jpeg|png|webp);base64,/i.test(value) ? value.length <= 1_200_000 : value.length <= 1000 && isSafeLink(value));
+}
+
 export function validateNews(items: unknown): NewsItem[] {
   if (!Array.isArray(items) || items.length > 100) throw new NewsError("ข่าวสารต้องเป็นรายการไม่เกิน 100 รายการ");
   const ids = new Set<string>();
@@ -56,7 +60,7 @@ export function validateNews(items: unknown): NewsItem[] {
     if (category.length > 60) throw new NewsError(`หมวดข่าวสารรายการที่ ${index + 1} ต้องไม่เกิน 60 ตัวอักษร`);
     if (!isDate(publishedAt)) throw new NewsError(`วันที่ข่าวสารรายการที่ ${index + 1} ไม่ถูกต้อง`);
     if (href.length > 500 || !isSafeLink(href)) throw new NewsError(`ลิงก์ข่าวสารรายการที่ ${index + 1} ไม่ถูกต้อง`);
-    if (imageUrl.length > 1000 || !isSafeLink(imageUrl)) throw new NewsError(`รูปภาพข่าวสารรายการที่ ${index + 1} ไม่ถูกต้อง`);
+    if (!isSafeImage(imageUrl)) throw new NewsError(`รูปภาพข่าวสารรายการที่ ${index + 1} ต้องเป็น JPEG หรือ PNG`);
     ids.add(id);
     return { id, title, summary, category, publishedAt, href, imageUrl, published: value.published === true };
   });

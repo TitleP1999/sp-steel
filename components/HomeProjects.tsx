@@ -114,7 +114,7 @@ export default function HomeProjects({ projects }: { projects: HomeProjectItem[]
           const content = <article className="group">
             <button type="button" onClick={() => setSelectedProject(project)} aria-label={`ดูรูปผลงาน ${project.title} เต็มจอ`} className="block w-full text-left">
               <div className="relative aspect-[16/9] overflow-hidden rounded-3xl bg-zinc-200">
-                <Image src={project.imageUrl} alt={project.title} fill sizes="(max-width: 640px) 88vw, (max-width: 1024px) 72vw, 62vw" className="object-cover transition duration-500 group-hover:scale-[1.03]"/>
+                <Image src={project.imageUrl} alt={project.title} fill unoptimized={project.imageUrl.startsWith("data:")} sizes="(max-width: 640px) 88vw, (max-width: 1024px) 72vw, 62vw" className="object-cover transition duration-500 group-hover:scale-[1.03]"/>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent"/>
                 <div className="absolute inset-x-0 bottom-0 p-5 text-white sm:p-8">
                   <h3 className="text-xl font-black sm:text-2xl">{project.title}</h3>
@@ -143,7 +143,7 @@ export default function HomeProjects({ projects }: { projects: HomeProjectItem[]
       <motion.div initial={{ scale: 0.96, y: 10 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.98, y: 6 }} transition={{ duration: 0.2 }} onClick={event => event.stopPropagation()} className="relative flex h-full max-h-[90dvh] w-full max-w-7xl flex-col items-center justify-center">
         <button type="button" autoFocus onClick={() => setSelectedProject(null)} aria-label="ปิดรูปเต็มจอ" className="absolute right-0 top-0 z-10 grid h-11 w-11 place-items-center rounded-full bg-white/15 text-white backdrop-blur transition hover:bg-white/30"><X size={24}/></button>
         <div className="relative min-h-0 w-full flex-1">
-          <Image src={selectedProject.imageUrl} alt={selectedProject.title} fill sizes="100vw" className="object-contain" priority/>
+          <Image src={selectedProject.imageUrl} alt={selectedProject.title} fill unoptimized={selectedProject.imageUrl.startsWith("data:")} sizes="100vw" className="object-contain" priority/>
         </div>
         <div className="pt-4 text-center text-white"><h3 className="text-xl font-black sm:text-2xl">{selectedProject.title}</h3>{selectedProject.summary && <p className="mt-1 text-sm text-white/75">{selectedProject.summary}</p>}</div>
       </motion.div>

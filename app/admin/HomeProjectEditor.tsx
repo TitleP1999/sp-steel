@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { HomeProjectItem } from "../../lib/home-projects";
 import { updateHomeProjects } from "./actions";
+import ImageFilePicker from "./ImageFilePicker";
 
 const newId = () => globalThis.crypto?.randomUUID?.() || `project-${Date.now()}`;
 const blankProject = (): HomeProjectItem => ({ id: newId(), title: "", summary: "", imageUrl: "", href: "", published: true });
@@ -36,7 +37,7 @@ export default function HomeProjectEditor({ items: initialItems, revision: initi
         <div className="grid gap-4 sm:grid-cols-2">
           <label className="text-sm font-bold sm:col-span-2">ชื่อโครงการ<input required maxLength={160} value={item.title} onChange={event => updateItem(item.id, "title", event.target.value)} className="mt-2 w-full rounded border p-3 font-normal" placeholder="เช่น โครงการอาคารสำนักงาน" /></label>
           <label className="text-sm font-bold sm:col-span-2">รายละเอียดสั้น <span className="font-normal text-zinc-500">(ไม่บังคับ)</span><textarea maxLength={500} rows={2} value={item.summary} onChange={event => updateItem(item.id, "summary", event.target.value)} className="mt-2 w-full rounded border p-3 font-normal" placeholder="รายละเอียดของโครงการ" /></label>
-          <label className="text-sm font-bold sm:col-span-2">URL รูปภาพ<input required maxLength={1000} value={item.imageUrl} onChange={event => updateItem(item.id, "imageUrl", event.target.value)} className="mt-2 w-full rounded border p-3 font-normal" placeholder="/projects/example.jpg หรือ https://example.com/photo.jpg" /><span className="mt-1 block font-normal text-zinc-500">ใช้ URL รูปภาพ หรือ path ของรูปในโฟลเดอร์ public</span>{item.imageUrl && <img src={item.imageUrl} alt="ตัวอย่างรูปโครงการ" className="mt-3 h-52 w-full border object-cover" />}</label>
+          <ImageFilePicker label="รูปโครงการ" value={item.imageUrl} onChange={value => updateItem(item.id, "imageUrl", value)} required disabled={pending} />
           <label className="text-sm font-bold sm:col-span-2">ลิงก์เมื่อกดโครงการ <span className="font-normal text-zinc-500">(ไม่บังคับ)</span><input maxLength={1000} value={item.href} onChange={event => updateItem(item.id, "href", event.target.value)} className="mt-2 w-full rounded border p-3 font-normal" placeholder="/contact หรือ https://example.com" /></label>
           <label className="flex items-center gap-3 text-sm font-bold sm:col-span-2"><input type="checkbox" checked={item.published} onChange={event => updateItem(item.id, "published", event.target.checked)} className="h-5 w-5 accent-[#8b352d]" />เผยแพร่รายการนี้บนหน้าแรก</label>
         </div>

@@ -35,7 +35,7 @@ function isDate(value: string) {
 }
 
 function isSafeImage(value: string) {
-  return value === "" || (value.startsWith("/") && !value.startsWith("//")) || /^https?:\/\//i.test(value);
+  return value === "" || (/^data:image\/(jpeg|png|webp);base64,/i.test(value) ? value.length <= 1_200_000 : value.length <= 1000 && ((value.startsWith("/") && !value.startsWith("//")) || /^https?:\/\//i.test(value)));
 }
 
 export function validateReviews(items: unknown): ReviewItem[] {
@@ -59,7 +59,7 @@ export function validateReviews(items: unknown): ReviewItem[] {
     if (product.length > 160) throw new ReviewError(`สินค้า/บริการรีวิวรายการที่ ${index + 1} ต้องไม่เกิน 160 ตัวอักษร`);
     if (!Number.isInteger(rating) || rating < 1 || rating > 5) throw new ReviewError(`คะแนนรีวิวรายการที่ ${index + 1} ต้องอยู่ระหว่าง 1–5 ดาว`);
     if (!isDate(reviewedAt)) throw new ReviewError(`วันที่รีวิวรายการที่ ${index + 1} ไม่ถูกต้อง`);
-    if (imageUrl.length > 1000 || !isSafeImage(imageUrl)) throw new ReviewError(`รูปภาพรีวิวรายการที่ ${index + 1} ไม่ถูกต้อง`);
+    if (!isSafeImage(imageUrl)) throw new ReviewError(`รูปภาพรีวิวรายการที่ ${index + 1} ต้องเป็น JPEG หรือ PNG`);
     ids.add(id);
     return { id, customerName, company, message, product, rating, reviewedAt, imageUrl, published: value.published === true };
   });
