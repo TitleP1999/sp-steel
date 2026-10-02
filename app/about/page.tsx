@@ -103,22 +103,22 @@ export default async function About() {
           <div className="rounded-[24px] bg-white p-5 sm:p-7">
             <p className="inline-flex items-center gap-2 text-xs font-black tracking-[.2em] text-[#8b352d]"><Building2 aria-hidden="true" size={16} />SUPARERK STEEL</p>
             <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-3">
-              <div className="relative flex min-h-48 flex-col items-center rounded-2xl border border-white/15 bg-[#a6292e] px-3 py-6 text-center text-white shadow-[0_12px_28px_rgba(166,41,46,0.18)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_16px_32px_rgba(166,41,46,0.25)]">
+              <div className="relative flex min-h-48 flex-col items-center rounded-2xl border border-white/15 bg-[#a6292e] px-3 pb-2 pt-5 text-center text-white shadow-[0_12px_28px_rgba(166,41,46,0.18)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_16px_32px_rgba(166,41,46,0.25)]">
                 <span className="grid h-14 w-14 place-items-center rounded-full bg-white/15 ring-1 ring-white/20"><CalendarDays aria-hidden="true" size={30} /></span>
                 <p className="mt-3 flex min-h-10 items-center justify-center text-sm font-bold leading-tight text-white/80">ก่อตั้งบริษัท</p>
-                <p className="flex min-h-8 items-center text-2xl font-black leading-tight">2 ตุลาคม 2563</p>
+                <p className="flex min-h-8 items-center whitespace-nowrap text-xl font-black leading-tight xl:text-2xl">2 ตุลาคม 2563</p>
                 <p className="min-h-5 text-xs">&nbsp;</p>
               </div>
-              <div className="relative flex min-h-48 flex-col items-center rounded-2xl border border-white/15 bg-[#a6292e] px-3 py-6 text-center text-white shadow-[0_12px_28px_rgba(166,41,46,0.18)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_16px_32px_rgba(166,41,46,0.25)]">
+              <div className="relative flex min-h-48 flex-col items-center rounded-2xl border border-white/15 bg-[#a6292e] px-3 pb-2 pt-5 text-center text-white shadow-[0_12px_28px_rgba(166,41,46,0.18)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_16px_32px_rgba(166,41,46,0.25)]">
                 <span className="grid h-14 w-14 place-items-center rounded-full bg-white/15 ring-1 ring-white/20"><Banknote aria-hidden="true" size={30} /></span>
                 <p className="mt-3 flex min-h-10 items-center justify-center text-sm font-bold leading-tight text-white/80">ทุนจดทะเบียนปัจจุบัน</p>
-                <p className="flex min-h-8 items-center text-2xl font-black leading-tight">5 ล้านบาท</p>
+                <p className="flex min-h-8 items-center whitespace-nowrap text-xl font-black leading-tight xl:text-2xl">5 ล้านบาท</p>
                 <p className="min-h-5 text-xs">&nbsp;</p>
               </div>
-              <div className="relative flex min-h-48 flex-col items-center rounded-2xl border border-white/15 bg-[#a6292e] px-3 py-6 text-center text-white shadow-[0_12px_28px_rgba(166,41,46,0.18)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_16px_32px_rgba(166,41,46,0.25)]">
+              <div className="relative flex min-h-48 flex-col items-center rounded-2xl border border-white/15 bg-[#a6292e] px-3 pb-2 pt-5 text-center text-white shadow-[0_12px_28px_rgba(166,41,46,0.18)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_16px_32px_rgba(166,41,46,0.25)]">
                 <span className="grid h-14 w-14 place-items-center rounded-full bg-white/15 ring-1 ring-white/20"><MapPinned aria-hidden="true" size={30} /></span>
                 <p className="mt-3 flex min-h-10 items-center justify-center text-sm font-bold leading-tight text-white/80">จำนวนสาขา</p>
-                <p className="flex min-h-8 items-center text-2xl font-black leading-tight">2 สาขา</p>
+                <p className="flex min-h-8 items-center whitespace-nowrap text-xl font-black leading-tight xl:text-2xl">2 สาขา</p>
                 <p className="min-h-5 text-xs font-medium leading-5 text-white/75 sm:text-[11px]">สุพรรณบุรี และ กาญจนบุรี</p>
               </div>
             </div>
