@@ -55,7 +55,7 @@ export default async function SteelPricesPage() {
           <div className="mb-6 flex items-center gap-4"><h2 className="text-2xl font-black sm:text-3xl">{category}</h2><div className="h-px flex-1 bg-zinc-200" /></div>
           <div className="space-y-6">{categoryProducts.map(product => <article key={product.slug} className="overflow-hidden border bg-white">
             <div className="grid md:grid-cols-[220px_1fr]">
-              <Link href={`/products/${product.slug}`} className="relative block min-h-48 overflow-hidden bg-zinc-200 !rounded-r-none md:min-h-full"><Image src={product.image} alt={product.name} fill sizes="(max-width: 768px) 100vw, 220px" className="object-cover object-right scale-110 transition duration-500 hover:scale-[1.15]" /></Link>
+              <Link href={`/products/${product.slug}`} className={`relative block min-h-48 overflow-hidden !rounded-r-none md:min-h-full ${product.slug === "tiscon-superlinks" ? "bg-white" : "bg-zinc-200"}`}><Image src={product.image} alt={product.name} fill sizes="(max-width: 768px) 100vw, 220px" className={product.slug === "tiscon-superlinks" ? "object-contain p-6 sm:p-8" : "scale-110 object-cover object-right transition duration-500 hover:scale-[1.15]"} /></Link>
               <div className="min-w-0">
                 <div className="flex flex-wrap items-start justify-between gap-3 border-b border-[#742820] bg-[#8b352d] px-5 py-5 text-white sm:px-6"><div><p className="text-xs font-bold tracking-widest text-white/70">{product.code}</p><h3 className="mt-1 text-xl font-black text-white">{product.name}</h3></div><Link href={`/products/${product.slug}`} className="text-sm font-bold text-white underline">ดูรายละเอียดสินค้า →</Link></div>
                 <div className="overflow-x-auto">
