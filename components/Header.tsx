@@ -93,7 +93,6 @@ export default function Header() {
             <div className="px-2 pb-2">{mobileLink("/products", "ดูสินค้าทั้งหมด")}{categories.map(category => <details key={category} className="border-t border-white/20"><summary className="cursor-pointer px-3 py-4 text-sm text-white">{category}</summary><div className="pl-3">{products.filter(product => product.category === category).map(product => mobileLink(`/products/${product.slug}`, product.name))}</div></details>)}</div>
           </details>
           {mobileLink("/steel-prices", "ราคาเหล็กวันนี้")}
-          {mobileLink("/services", "บริการของเรา")}
           {basic.slice(2).map(([href, label]) => mobileLink(href, label))}
           {mobileLink("/contact", "ติดต่อเรา")}
           {mobileLink("/reviews", "รีวิวจากลูกค้า")}
