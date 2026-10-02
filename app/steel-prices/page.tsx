@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { categories } from "../../data/products";
 import { getCatalog } from "../../lib/prices";
+import { getProductSpecifications } from "../../lib/product-specifications";
 import { QuoteProductButton } from "../../components/QuoteSelection";
 
 export const dynamic = "force-dynamic";
@@ -59,7 +60,7 @@ export default async function SteelPricesPage() {
                 <div className="flex flex-wrap items-start justify-between gap-3 border-b border-[#742820] bg-[#8b352d] px-5 py-5 text-white sm:px-6"><div><p className="text-xs font-bold tracking-widest text-white/70">{product.code}</p><h3 className="mt-1 text-xl font-black text-white">{product.name}</h3></div><Link href={`/products/${product.slug}`} className="text-sm font-bold text-white underline">ดูรายละเอียดสินค้า →</Link></div>
                 <div className="overflow-x-auto">
                   <table className="w-full min-w-[520px] text-left text-sm">
-                    <thead className="bg-zinc-100 text-xs text-zinc-500"><tr><th className="px-5 py-3 font-bold sm:px-6">ขนาด</th><th className="w-40 px-5 py-3 text-right font-bold sm:px-6">ราคา</th><th className="w-44 px-5 py-3 text-right font-bold sm:px-6">รายการขอราคา</th></tr></thead>
+                    <thead className="bg-zinc-100 text-xs text-zinc-500"><tr><th className="px-5 py-3 font-bold sm:px-6">ขนาด</th><th className="w-40 px-5 py-3 text-right font-bold sm:px-6">ราคา/{product.slug === "tiscon-superlinks" ? "กก." : getProductSpecifications(product)[0]?.saleUnit ?? "หน่วย"}</th><th className="w-44 px-5 py-3 text-right font-bold sm:px-6">รายการขอราคา</th></tr></thead>
                     <tbody>{product.options.map(option => <tr key={option.size} className="border-t"><td className="px-5 py-4 sm:px-6">{option.size}</td><td className="px-5 py-4 text-right text-base font-black text-[#8b352d] sm:px-6">สอบถามราคา</td><td className="px-5 py-4 text-right sm:px-6"><QuoteProductButton product={product} size={option.size} className="mt-0 rounded-lg px-3 py-2 text-xs"/></td></tr>)}</tbody>
                   </table>
                 </div>
