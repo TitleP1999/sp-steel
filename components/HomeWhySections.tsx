@@ -12,7 +12,7 @@ export default function HomeWhySections() {
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:py-12">
         <Reveal>
           <p className="text-xs font-black tracking-[.18em] text-[#8b352d] sm:text-base">WHY SUPARERK STEEL</p>
-          <h2 className="mt-2 max-w-3xl text-2xl font-black leading-tight sm:mt-3 sm:text-4xl lg:text-5xl">มากกว่าการขายเหล็ก<br />คือความพร้อมในทุกขั้นตอน</h2>
+          <h2 className="mt-2 max-w-3xl text-2xl font-black leading-[1.18] sm:mt-3 sm:text-4xl lg:text-5xl">มากกว่าการขายเหล็ก<br /><span className="relative top-[.1em] inline-block">คือความพร้อมในทุกขั้นตอน</span></h2>
         </Reveal>
         <Stagger className="mt-5 grid gap-3 sm:mt-8 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
           {[[ShieldCheck, "QUALITY", "สเปกถูกต้อง", "ให้ความสำคัญกับมาตรฐานและคุณภาพสินค้า"], [ReceiptText, "TAX INVOICE", "ออกใบกำกับภาษีได้", "ออกเอกสารครบถ้วน รองรับลูกค้าทั่วไปและนิติบุคคล"], [Truck, "DELIVERY", "พร้อมจัดส่ง", "สนับสนุนตั้งแต่เสนอราคาจนถึงจัดส่งสินค้า"]].map(([Icon, eyebrow, title, description]: any) =>

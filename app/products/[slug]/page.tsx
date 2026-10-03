@@ -30,7 +30,7 @@ export default async function ProductPage({ params }: { params: { slug: string }
   const productJsonLd = {
     "@context": "https://schema.org", "@type": "Product", name: product.name,
     description: product.description, image: [`${siteUrl}${product.image}`], sku: product.code, url: productUrl,
-    brand: { "@type": "Brand", name: product.slug === "tiscon-superlinks" ? "TATA TISCON" : "SUPARERK STEEL" },
+    brand: { "@type": "Brand", name: product.brand === "SYS" ? "SIAM YAMATO STEEL" : product.brand === "TATA" || product.slug === "tiscon-superlinks" ? "TATA STEEL" : "SUPARERK STEEL" },
   };
   const breadcrumbJsonLd = {
     "@context": "https://schema.org", "@type": "BreadcrumbList",

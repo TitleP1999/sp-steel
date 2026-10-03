@@ -11,7 +11,12 @@ export const metadata: Metadata = {
   openGraph: { title: siteName, description: defaultDescription, siteName, locale: "th_TH", type: "website", images: [{ url: defaultOgImage, width: 1200, height: 630, alt: siteName }] },
   twitter: { card: "summary_large_image", title: siteName, description: defaultDescription, images: [defaultOgImage] },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 } },
-  icons: { icon: "/suparerk-logo-transparent.png", shortcut: "/suparerk-logo-transparent.png", apple: "/suparerk-logo-transparent.png" },
+  icons: {
+    icon: [{ url: "/icon.svg", type: "image/svg+xml" }, { url: "/suparerk-logo-transparent.png", type: "image/png" }],
+    shortcut: "/icon.svg",
+    apple: "/suparerk-logo-transparent.png",
+    other: [{ rel: "mask-icon", url: "/icon.svg", color: "#be1e2d" }],
+  },
 };
 
 const organizationJsonLd = {

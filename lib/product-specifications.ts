@@ -65,21 +65,22 @@ function theoreticalWeight(slug: string, size: string): { value: number; unit: s
 }
 
 export function getProductSpecifications(product: Product): ProductSpecification[] {
+  const slug = product.slug.replace(/-(?:sys|tata)$/, "");
   return product.options.map((option, index) => {
     if (product.slug === "tiscon-superlinks") {
       const row = tisconStirrupRows.find(item => item.size === option.size);
       return { size: option.size, thickness: "6 มม.", weight: row ? `${format(row.pieceWeight)} กก./ชิ้น` : "โปรดตรวจสอบกับฝ่ายขาย", basis: row ? `${row.bagWeight} กก./กระสอบ · ${row.piecesPerBag} ชิ้น` : "บรรจุกระสอบ", unitWeight: row?.pieceWeight ?? null, saleWeight: row?.bagWeight ?? null, saleUnit: "กระสอบ" };
     }
     const thickness = option.size.match(/หนา\s*(\d+(?:[.,]\d+)?)\s*มม\./)?.[1];
-    const fixed = fixedWeights[product.slug]?.[index];
-    const calculated = fixed === undefined ? theoreticalWeight(product.slug, option.size) : null;
+    const fixed = fixedWeights[slug]?.[index];
+    const calculated = fixed === undefined ? theoreticalWeight(slug, option.size) : null;
     const unitWeight = fixed ?? calculated?.value ?? null;
     const unit = fixed !== undefined ? "กก./ม." : calculated?.unit ?? "";
     const weight = unitWeight !== null ? `${format(unitWeight)} ${unit}` : "โปรดตรวจสอบกับฝ่ายขาย";
     const isPlate = unit === "กก./แผ่น";
-    const isBar = ["round-bar", "deformed-bar"].includes(product.slug);
+    const isBar = ["round-bar", "deformed-bar"].includes(slug);
     const saleWeight = unitWeight === null ? null : isPlate ? unitWeight : unit === "กก./ม." ? unitWeight * (isBar ? 10 : 6) : null;
     const saleUnit = isPlate ? "แผ่น" : product.slug === "wire-mesh" ? "แผ่น" : "เส้น";
-    return { size: option.size, thickness: thickness ? `${thickness} มม.` : "ระบุในขนาด", weight, basis: displaySize(product.slug, option.size), unitWeight, saleWeight, saleUnit };
+    return { size: option.size, thickness: thickness ? `${thickness} มม.` : "ระบุในขนาด", weight, basis: displaySize(slug, option.size), unitWeight, saleWeight, saleUnit };
   });
 }

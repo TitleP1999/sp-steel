@@ -10,9 +10,13 @@ export const productStandards: Record<string, string> = {
   "black-pipe": "SIZE AND PROPERTIES IN TIS STANDARD 107 : 2561",
   "black-pipe-jis": "JIS G3444 : 2015 · GRADE STK400",
   "h-beam": "TIS 1227 : 2558 / JIS G3192 · GRADE SS400, SS490, SS540",
+  "h-beam-sys": "SYS · TIS 1227 : 2558 / JIS G3192 · CHECK MILL CERTIFICATE BEFORE ORDER",
   "i-beam": "TIS 1227 : 2558 / JIS G3192 · GRADE SS400, SS490, SS540",
+  "i-beam-sys": "SYS · TIS 1227 : 2558 / JIS G3192 · CHECK MILL CERTIFICATE BEFORE ORDER",
   "wide-flange": "TIS 1227 : 2558 / JIS G3192 · GRADE SS400, SS490, SS540",
+  "wide-flange-sys": "SYS · TIS 1227 : 2558 / JIS G3192 · CHECK MILL CERTIFICATE BEFORE ORDER",
   "sheet-pile": "JIS A5528 · GRADE SY295, SY390",
+  "sheet-pile-sys": "SYS · JIS A5528 · GRADE SY295, SY390 · CHECK MILL CERTIFICATE BEFORE ORDER",
   "angle-bar": "TIS 1227 : 2558 / JIS G3192 : 1990 · GRADE SS400, SS540",
   "channel-bar": "TIS 1227 : 2558 / JIS G3192 · GRADE SS400, SS540",
   "black-steel-plate": "TIS 1479 : 2558, TIS 528 : 2560 · GRADE SS400",
@@ -22,5 +26,6 @@ export const productStandards: Record<string, string> = {
   "tiscon-superlinks": "TATA TISCON SUPERLINKS · ROUND BAR SR24 6 MM. · TIS 20-2559",
   "round-bar": "TIS 20 : 2559 · GRADE SR24",
   "deformed-bar": "TIS 24 : 2559 · GRADE SD40, SD50",
+  "deformed-bar-tata": "TATA STEEL · TIS 24 : 2559 · GRADE SD40, SD50 · CHECK MILL CERTIFICATE BEFORE ORDER",
   "wire-mesh": "TIS 737 : 2549 · WELDED STEEL WIRE FABRIC"
 };
