@@ -32,11 +32,11 @@ export default async function SteelPricesPage() {
           <Image src="/steel-price-board-hero.png" alt="เหล็กก่อสร้างหลายประเภท" fill priority sizes="(max-width: 1024px) 100vw, 38vw" className="scale-110 object-cover object-[center_58%]" />
           <div className="absolute inset-0 bg-gradient-to-b from-[#f6f4f1] via-[#f6f4f1]/75 to-[#f6f4f1]/5" />
           <div className="absolute inset-0 bg-gradient-to-r from-[#f6f4f1]/60 via-transparent to-transparent" />
-          <div className="relative z-10"><p className="text-xs font-black tracking-[.2em] text-[#8b352d]">DAILY STEEL PRICE</p><h1 className="mt-3 text-4xl font-black leading-tight text-[#17181a] sm:text-5xl">ราคาเหล็กวันนี้</h1><p className="mt-3 text-xl font-black text-[#8b352d]">ตารางอัปเดตราคารวม</p><p className="mt-3 text-sm leading-6 text-zinc-600">อัปเดตล่าสุด<br/><strong className="text-zinc-900">{formatUpdatedAt(updatedAt)}</strong></p></div>
+          <div className="relative z-10"><p className="text-xs font-black tracking-[.2em] text-[#8b352d]">DAILY STEEL PRICE</p><h1 className="mt-5 text-4xl font-black leading-tight text-[#17181a] sm:text-5xl"><span className="block">ราคาเหล็ก</span><span className="mt-4 block">วันนี้</span></h1><p className="mt-5 text-xl font-black leading-relaxed text-[#8b352d]">ตารางอัปเดตราคารวม</p><p className="mt-3 text-sm leading-6 text-zinc-600">อัปเดตล่าสุด<br/><strong className="text-zinc-900">{formatUpdatedAt(updatedAt)}</strong></p></div>
         </div>
 
         <div className="bg-[#8b352d] px-4 py-9 text-white sm:px-7 lg:px-10 lg:py-12 xl:px-14">
-          <div className="mb-7"><p className="text-xs font-black tracking-[.18em] text-[#efb4ae]">STEEL MARKET BOARD</p><h2 className="mt-2 text-2xl font-black sm:text-3xl">สรุปราคาเหล็กวันนี้</h2></div>
+          <div className="mb-7"><p className="text-xs font-black tracking-[.18em] text-[#efb4ae]">STEEL MARKET BOARD</p><h2 className="mt-4 text-2xl font-black leading-[1.3] sm:text-3xl">สรุปราคาเหล็กวันนี้</h2></div>
           <div className="hidden grid-cols-[1fr_220px] px-5 pb-3 text-sm font-bold text-[#efc8c4] md:grid"><span>รายการ</span><span className="text-right">ราคา</span></div>
           <div className="space-y-3">{featured.map(product => {
           return <Link key={product.slug} href={`/products/${product.slug}`} className="grid items-center gap-4 rounded-xl bg-[#f7f8fa] p-3 text-[#202124] transition hover:-translate-y-0.5 hover:shadow-2xl md:grid-cols-[1fr_220px]">
