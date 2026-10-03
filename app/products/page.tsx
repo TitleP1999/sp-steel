@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 export default async function Products() {
   const { products } = await getCatalog();
   return <main>
-    <PageHero eyebrow="PRODUCT CATALOG" title="สินค้าทั้งหมด" desc="เลือกหมวดสินค้าและดูข้อมูลสินค้าแต่ละประเภท พร้อมภาพประกอบ สเปก และรายละเอียดการใช้งาน"/>
+    <PageHero eyebrow="PRODUCT CATALOG" title="สินค้าทั้งหมด" desc="เลือกหมวดสินค้าและดูข้อมูลสินค้าแต่ละประเภท พร้อมภาพประกอบ สเปก และรายละเอียดการใช้งาน" backgroundImage="/steel-warehouse-background.jpg"/>
     <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:py-20">
       {categories.map(category => <div key={category} className="mb-20">
         <div className="mb-8 flex items-center gap-5"><h2 className="text-3xl font-black">{category}</h2><div className="h-px flex-1 bg-zinc-200"/></div>
