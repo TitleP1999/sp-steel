@@ -7,14 +7,14 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: { default: siteName, template: "%s | SUPARERK STEEL" },
   description: defaultDescription,
-  keywords: ["ร้านเหล็ก", "ราคาเหล็ก", "เหล็กสุพรรณบุรี", "เหล็กกาญจนบุรี", "วัสดุก่อสร้าง", "ศุภฤกษ์ สตีล"],
+  keywords: ["ร้านเหล็กสุพรรณบุรี", "ร้านเหล็กกาญจนบุรี", "ร้านเหล็ก", "ราคาเหล็ก", "เหล็กสุพรรณบุรี", "เหล็กกาญจนบุรี", "วัสดุก่อสร้าง", "ศุภฤกษ์ สตีล"],
   openGraph: { title: siteName, description: defaultDescription, siteName, locale: "th_TH", type: "website", images: [{ url: defaultOgImage, width: 1200, height: 630, alt: siteName }] },
   twitter: { card: "summary_large_image", title: siteName, description: defaultDescription, images: [defaultOgImage] },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 } },
   icons: {
-    icon: [{ url: "/icon.png", type: "image/png" }],
+    icon: [{ url: "/icon.png", type: "image/png", sizes: "512x512" }],
     shortcut: "/icon.png",
-    apple: "/apple-icon.png",
+    apple: [{ url: "/apple-icon.png", type: "image/png", sizes: "512x512" }],
   },
 };
 

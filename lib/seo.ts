@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
-export const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://sp-steel-six.vercel.app").replace(/\/$/, "");
+export const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://www.suparerksteel.com").replace(/\/$/, "");
 
-export const siteName = "SUPARERK STEEL | ศุภฤกษ์ สตีล";
-export const defaultDescription = "จำหน่ายเหล็กและวัสดุก่อสร้างครบวงจร พร้อมจัดส่ง จากศุภฤกษ์ สตีล สาขาสุพรรณบุรีและกาญจนบุรี";
+export const siteName = "ศุภฤกษ์ สตีล | ร้านเหล็กสุพรรณบุรีและกาญจนบุรี";
+export const defaultDescription = "ร้านเหล็กสุพรรณบุรีและกาญจนบุรี จำหน่ายเหล็กก่อสร้าง เหล็กรูปพรรณ และวัสดุก่อสร้างครบวงจร พร้อมสต๊อกสินค้า บริการจัดส่ง และขอใบเสนอราคา";
 export const defaultOgImage = "/steel-warehouse-background.jpg";
 
 export function pageMetadata(title: string, description: string, path: string): Metadata {
