@@ -12,9 +12,9 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image", title: siteName, description: defaultDescription, images: [defaultOgImage] },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 } },
   icons: {
-    icon: [{ url: "/icon.png", type: "image/png", sizes: "512x512" }],
-    shortcut: "/icon.png",
-    apple: [{ url: "/apple-icon.png", type: "image/png", sizes: "512x512" }],
+    icon: [{ url: "/favicon-v2.png", type: "image/png", sizes: "1024x1024" }],
+    shortcut: "/favicon-v2.png",
+    apple: [{ url: "/apple-icon.png", type: "image/png", sizes: "1024x1024" }],
   },
 };
 
