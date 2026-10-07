@@ -14,6 +14,10 @@ export default function Footer() {
           </div>
           <p className="-mt-6 pl-3 text-sm font-black text-white">บริษัท ศุภฤกษ์ สตีล จำกัด</p>
           <p className="mt-1 whitespace-nowrap pl-3 text-xs leading-5 text-zinc-400">เลขประจำตัวผู้เสียภาษี: <span className="font-bold tracking-wide text-zinc-200">0725563001575</span></p>
+          <a href="https://dbdregistered.dbd.go.th/api/public/shopinfoReg?param=00B11C0DB481DB4F1AB6358B612E7AEEC6AA56E3B28CDB26C9895B29716D6548" target="_blank" rel="noopener noreferrer" aria-label="ตรวจสอบข้อมูล DBD Registered" className="mt-4 inline-block pl-3 transition hover:opacity-80">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="https://dbdregistered.dbd.go.th/api/public/bannerreg?param=00B11C0DB481DB4F1AB6358B612E7AEEC6AA56E3B28CDB26C9895B29716D6548" alt="DBD Registered กรมพัฒนาธุรกิจการค้า" loading="lazy" className="h-auto max-h-10 w-auto max-w-[150px]" />
+          </a>
         </div>
 
         <div className="grid gap-0 border-t border-white/15 sm:col-span-2 sm:grid-cols-2 lg:contents">
