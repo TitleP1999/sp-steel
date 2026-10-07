@@ -12,13 +12,14 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   const product = products.find((item) => item.slug === params.slug);
   if (!product) return { title: "ไม่พบสินค้า", robots: { index: false, follow: false } };
   const path = `/products/${product.slug}`;
-  const title = `${product.name} ราคา ขนาด และสเปก`;
+  const title = `${product.name} ราคา ขนาด และสเปก | สุพรรณบุรี กาญจนบุรี`;
+  const description = `${product.short} จำหน่ายและจัดส่งโดยศุภฤกษ์ สตีล สาขาสุพรรณบุรีและกาญจนบุรี`;
   return {
     title,
-    description: product.short,
+    description,
     alternates: { canonical: path },
-    openGraph: { title, description: product.short, url: path, type: "website", locale: "th_TH", images: [{ url: product.image, alt: product.name }] },
-    twitter: { card: "summary_large_image", title, description: product.short, images: [product.image] },
+    openGraph: { title, description, url: path, type: "website", locale: "th_TH", images: [{ url: product.image, alt: product.name }] },
+    twitter: { card: "summary_large_image", title, description, images: [product.image] },
   };
 }
 

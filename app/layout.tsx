@@ -18,21 +18,43 @@ export const metadata: Metadata = {
   },
 };
 
-const organizationJsonLd = {
+const structuredData = {
   "@context": "https://schema.org",
-  "@type": "Organization",
-  "@id": `${siteUrl}/#organization`,
-  name: "บริษัท ศุภฤกษ์ สตีล จำกัด",
-  alternateName: "SUPARERK STEEL CO., LTD.",
-  url: siteUrl,
-  logo: `${siteUrl}/suparerk-logo-transparent.png`,
-  taxID: "0725563001575",
-  contactPoint: [{ "@type": "ContactPoint", telephone: "+66-91-696-4747", contactType: "sales", availableLanguage: ["th"] }],
-  sameAs: ["https://www.facebook.com/SuparerkSteelSuphanburi", "https://www.facebook.com/SuparerkSteelKanchanaburi"],
-  department: [
-    { "@type": "LocalBusiness", name: "ศุภฤกษ์ สตีล สาขาสุพรรณบุรี", telephone: "+66-86-321-5445", address: { "@type": "PostalAddress", streetAddress: "232/9 หมู่ 4 ตำบลสนามชัย", addressLocality: "อำเภอเมืองสุพรรณบุรี", addressRegion: "สุพรรณบุรี", postalCode: "72000", addressCountry: "TH" } },
-    { "@type": "LocalBusiness", name: "ศุภฤกษ์ สตีล สาขากาญจนบุรี", telephone: "+66-80-373-2231", address: { "@type": "PostalAddress", streetAddress: "1089 หมู่ 4 ตำบลท่าม่วง", addressLocality: "อำเภอท่าม่วง", addressRegion: "กาญจนบุรี", postalCode: "71110", addressCountry: "TH" } },
+  "@graph": [
+    {
+      "@type": "Organization", "@id": `${siteUrl}/#organization`,
+      name: "บริษัท ศุภฤกษ์ สตีล จำกัด", alternateName: "SUPARERK STEEL CO., LTD.", url: siteUrl,
+      logo: { "@type": "ImageObject", url: `${siteUrl}/suparerk-logo-transparent.png`, width: 1774, height: 887 },
+      taxID: "0725563001575",
+      contactPoint: [{ "@type": "ContactPoint", telephone: "+66-91-696-4747", contactType: "sales", areaServed: "TH", availableLanguage: ["th"] }],
+      sameAs: ["https://www.facebook.com/SuparerkSteelSuphanburi", "https://www.facebook.com/SuparerkSteelKanchanaburi"],
+      department: [{ "@id": `${siteUrl}/#suphanburi` }, { "@id": `${siteUrl}/#kanchanaburi` }],
+    },
+    {
+      "@type": "WebSite", "@id": `${siteUrl}/#website`, url: siteUrl,
+      name: "ศุภฤกษ์ สตีล", alternateName: "SUPARERK STEEL", inLanguage: "th-TH",
+      publisher: { "@id": `${siteUrl}/#organization` },
+    },
+    {
+      "@type": ["Store", "LocalBusiness"], "@id": `${siteUrl}/#suphanburi`,
+      name: "ศุภฤกษ์ สตีล สาขาสุพรรณบุรี", url: `${siteUrl}/contact#branch-suphanburi`,
+      image: `${siteUrl}/suparerk-logo-suphanburi.jpg`, telephone: "+66-86-321-5445", priceRange: "฿฿",
+      parentOrganization: { "@id": `${siteUrl}/#organization` },
+      address: { "@type": "PostalAddress", streetAddress: "232/9 หมู่ 4 ตำบลสนามชัย", addressLocality: "อำเภอเมืองสุพรรณบุรี", addressRegion: "สุพรรณบุรี", postalCode: "72000", addressCountry: "TH" },
+      geo: { "@type": "GeoCoordinates", latitude: 14.473345, longitude: 100.1346707 },
+      hasMap: "https://maps.app.goo.gl/tddg4Y9Gv5Dd25cX8", areaServed: { "@type": "AdministrativeArea", name: "จังหวัดสุพรรณบุรี" },
+      sameAs: ["https://www.facebook.com/SuparerkSteelSuphanburi"],
+    },
+    {
+      "@type": ["Store", "LocalBusiness"], "@id": `${siteUrl}/#kanchanaburi`,
+      name: "ศุภฤกษ์ สตีล สาขากาญจนบุรี", url: `${siteUrl}/contact#branch-kanchanaburi`,
+      image: `${siteUrl}/suparerk-logo-kanchanaburi.jpg`, telephone: "+66-80-373-2231", priceRange: "฿฿",
+      parentOrganization: { "@id": `${siteUrl}/#organization` },
+      address: { "@type": "PostalAddress", streetAddress: "1089 หมู่ 4 ตำบลท่าม่วง", addressLocality: "อำเภอท่าม่วง", addressRegion: "กาญจนบุรี", postalCode: "71110", addressCountry: "TH" },
+      hasMap: "https://maps.app.goo.gl/jTfe5Rd5fkLsmCnz8", areaServed: { "@type": "AdministrativeArea", name: "จังหวัดกาญจนบุรี" },
+      sameAs: ["https://www.facebook.com/SuparerkSteelKanchanaburi"],
+    },
   ],
 };
 
-export default function Layout({children}:{children:React.ReactNode}){return <html lang="th"><body><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(organizationJsonLd).replace(/</g,"\\u003c")}}/><QuoteSelectionProvider><Header/>{children}<Footer/><FloatingContact/></QuoteSelectionProvider></body></html>}
+export default function Layout({children}:{children:React.ReactNode}){return <html lang="th"><body><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(structuredData).replace(/</g,"\\u003c")}}/><QuoteSelectionProvider><Header/>{children}<Footer/><FloatingContact/></QuoteSelectionProvider></body></html>}
