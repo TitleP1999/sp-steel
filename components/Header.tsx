@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { Menu, X, ChevronDown, ArrowRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { categories, products } from "../data/products";
+import { LanguageSwitcher } from "./LanguageProvider";
 
 const basic = [["/", "หน้าแรก"], ["/about", "เกี่ยวกับเรา"], ["/news", "ข่าวสาร"]];
 const LINE_URL = "https://lin.ee/Yurg5Hy";
@@ -61,7 +62,7 @@ export default function Header() {
   );
 
   return <>
-    <div className="bg-[#202124] px-4 py-2 text-center text-[9px] font-bold leading-4 tracking-widest text-zinc-400 sm:text-[10px]">2026 • SUPARERK STEEL CO., LTD.<span className="hidden sm:inline"> • STEEL FOR CONSTRUCTION & INDUSTRY</span></div>
+    <div className="bg-[#202124] px-4 py-1.5 text-[9px] font-bold leading-4 tracking-widest text-zinc-400 sm:px-6 sm:py-2 sm:text-[10px]"><div className="mx-auto flex max-w-7xl items-center justify-between gap-3"><span className="min-w-0 truncate">2026 • SUPARERK STEEL CO., LTD.<span className="hidden sm:inline"> • STEEL FOR CONSTRUCTION & INDUSTRY</span></span><LanguageSwitcher compact /></div></div>
     <a href={LINE_URL} target="_blank" rel="noopener noreferrer" className="mx-4 my-2 flex min-h-11 items-center justify-center gap-2 rounded-3xl bg-[#06C755] px-4 py-2 text-sm font-black text-white shadow-md transition hover:bg-[#05b34a] md:hidden"><Image src="/line-logo.svg" alt="" width={22} height={22} />ขอใบเสนอราคาผ่าน LINE</a>
     <header ref={header} className="sticky top-0 z-[80] border-b border-white/20 bg-[#b51f2e] text-white shadow-sm">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-4 sm:h-20 sm:px-6">
