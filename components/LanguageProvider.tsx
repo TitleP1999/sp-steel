@@ -720,9 +720,9 @@ export function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
   const [open, setOpen] = useState(false);
   const container = useRef<HTMLDivElement>(null);
   const languages: { value: Locale; flag: string; label: string }[] = [
-    { value: "th", flag: "🇹🇭", label: "ไทย" },
-    { value: "en", flag: "🇬🇧", label: "English" },
-    { value: "zh", flag: "🇨🇳", label: "中文" },
+    { value: "th", flag: "/flags/th.svg", label: "ไทย" },
+    { value: "en", flag: "/flags/gb.svg", label: "English" },
+    { value: "zh", flag: "/flags/cn.svg", label: "中文" },
   ];
   const current = languages.find(language => language.value === locale) ?? languages[0];
 
@@ -744,12 +744,14 @@ export function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
 
   return <div ref={container} data-no-translate className="relative shrink-0">
     <button type="button" onClick={() => setOpen(value => !value)} aria-label={`Language: ${current.label}`} aria-haspopup="menu" aria-expanded={open} className={`inline-flex items-center justify-center gap-1 rounded-full border border-white/30 bg-white/10 text-white outline-none transition hover:bg-white/20 focus:ring-2 focus:ring-white/70 ${compact ? "h-8 min-w-11 px-2" : "h-10 min-w-12 px-2.5"}`}>
-      <span aria-hidden="true" className={compact ? "text-lg leading-none" : "text-xl leading-none"}>{current.flag}</span>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={current.flag} alt="" className={`rounded-[2px] object-cover shadow-sm ${compact ? "h-4 w-6" : "h-[18px] w-7"}`} />
       <span aria-hidden="true" className={`transition-transform ${open ? "rotate-180" : ""}`}>⌄</span>
     </button>
     {open && <div role="menu" aria-label="Language / ภาษา / 语言" className="absolute right-0 top-full z-[120] mt-2 min-w-36 overflow-hidden rounded-xl border border-zinc-200 bg-white py-1 text-sm font-bold tracking-normal text-[#202124] shadow-xl">
       {languages.map(language => <button key={language.value} type="button" role="menuitemradio" aria-checked={locale === language.value} onClick={() => { setLocale(language.value); setOpen(false); }} className={`flex w-full items-center gap-3 px-4 py-2.5 text-left transition hover:bg-zinc-100 ${locale === language.value ? "bg-zinc-100 text-[#8b352d]" : ""}`}>
-        <span aria-hidden="true" className="text-xl leading-none">{language.flag}</span>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={language.flag} alt="" className="h-4 w-6 rounded-[2px] object-cover shadow-sm" />
         <span>{language.label}</span>
       </button>)}
     </div>}
