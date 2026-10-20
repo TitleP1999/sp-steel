@@ -6,6 +6,12 @@ const pages = [
     branch: "สุพรรณบุรี",
     label: "SUPARERK STEEL สุพรรณบุรี",
     url: "https://www.facebook.com/SuparerkSteelSuphanburi",
+    posts: [
+      { url: "https://www.facebook.com/SuparerkSteelSuphanburi/posts/pfbid029FsKT4mRdarfoGYswui5nnkeKgLUyaW5UvQKuQVpmSqFCo8BdhGYNThdTbJBKnYbl", height: 425 },
+      { url: "https://www.facebook.com/SuparerkSteelSuphanburi/posts/pfbid023YCPsZdtB9Mnywx5PFXSMW7RSccm27msW9FVJxwgVPNon8SfgqvCJ7Ju2G4QNoxxl", height: 648 },
+      { url: "https://www.facebook.com/SuparerkSteelSuphanburi/posts/pfbid0B6tt4uJisKXFCTuojNq8shkYDxRLcUhqgJgkxJychnnmWei2MP2fZw3bYPZE5nkal", height: 737 },
+      { url: "https://www.facebook.com/SuparerkSteelSuphanburi/posts/pfbid0aNJ614p1oVTAuQPQdZduxhjEH83LiViAU1fLPpswNgFeRzSTLAuTarJChsADpDE7l", height: 591 },
+    ],
   },
   {
     branch: "กาญจนบุรี",
@@ -26,6 +32,15 @@ function pluginUrl(url: string, width: number) {
     show_facepile: "false",
   });
   return `https://www.facebook.com/plugins/page.php?${params.toString()}`;
+}
+
+function postPluginUrl(url: string, width: number) {
+  const params = new URLSearchParams({
+    href: url,
+    show_text: "true",
+    width: String(width),
+  });
+  return `https://www.facebook.com/plugins/post.php?${params.toString()}`;
 }
 
 export default function FacebookFeeds({ showIntro = true, stacked = false }: { showIntro?: boolean; stacked?: boolean }) {
@@ -59,14 +74,27 @@ export default function FacebookFeeds({ showIntro = true, stacked = false }: { s
                 <a href={page.url} target="_blank" rel="noreferrer" className="shrink-0 rounded-3xl bg-[#1877F2] px-4 py-3 text-sm font-black text-white transition hover:bg-[#1668d4]">เปิด Facebook ↗</a>
               </div>
 
-              <div ref={index === 0 ? feed : undefined} className={`flex min-h-[620px] overflow-hidden bg-white py-3 ${stacked ? "justify-start lg:order-1 lg:min-w-[500px]" : "justify-center"}`}>
-                {index === 0 ? (
-                  <div className="flex w-full max-w-[500px] flex-col items-center justify-center px-6 text-center">
-                    <p className="text-lg font-black text-zinc-900">ข่าวสารจากสาขาสุพรรณบุรี</p>
-                    <p className="mt-2 max-w-sm leading-7 text-zinc-600">ดูโพสต์และความเคลื่อนไหวล่าสุดได้ที่เพจ Facebook ของเรา</p>
-                    <a href={page.url} target="_blank" rel="noreferrer" className="mt-5 rounded-3xl bg-[#1877F2] px-5 py-3 text-sm font-black text-white transition hover:bg-[#1668d4]">ดูโพสต์สาขาสุพรรณบุรีบน Facebook ↗</a>
-                  </div>
-                ) : width > 0 && <iframe
+              <div ref={index === 0 ? feed : undefined} className={`${index === 0 ? "max-h-[620px] overflow-y-auto" : "min-h-[620px] overflow-hidden"} bg-white py-3 ${stacked ? "lg:order-1 lg:min-w-[500px]" : ""}`}>
+                {width > 0 && (index === 0 ? (
+                  <>
+                    <p className="sticky top-0 z-10 bg-white px-4 pb-2 text-center text-xs font-semibold text-zinc-500">เลื่อนเพื่อดูโพสต์เพิ่มเติม</p>
+                    <div className="flex flex-col items-center gap-4">
+                      {page.posts!.map((post, postIndex) => <iframe
+                        key={post.url}
+                        title={`${page.label} โพสต์ที่ ${postIndex + 1}`}
+                        src={postPluginUrl(post.url, width)}
+                        width={width}
+                        height={post.height}
+                        style={{ border: "none", overflow: "hidden", width: "100%", maxWidth: 500 }}
+                        scrolling="no"
+                        loading="lazy"
+                        frameBorder="0"
+                        allowFullScreen
+                        allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                      />)}
+                    </div>
+                  </>
+                ) : <div className="flex justify-center"><iframe
                   title={page.label}
                   src={pluginUrl(page.url, width)}
                   width={width}
@@ -77,7 +105,7 @@ export default function FacebookFeeds({ showIntro = true, stacked = false }: { s
                   frameBorder="0"
                   allowFullScreen
                   allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-                />}
+                /></div>)}
               </div>
             </article>
           ))}
