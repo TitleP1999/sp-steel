@@ -3,7 +3,7 @@ import Image from "next/image";
 import {motion} from "framer-motion";
 import {MapPin,ArrowUpRight} from "lucide-react";
 const branches=[
- {name:"สาขาสุพรรณบุรี",en:"SUPHAN BURI",logo:"/suparerk-logo-suphanburi.jpg",map:"https://maps.app.goo.gl/tddg4Y9Gv5Dd25cX8?g_st=il",side:-45},
+ {name:"สาขาสุพรรณบุรี",en:"SUPHAN BURI",logo:"/suparerk-logo-suphanburi.jpg",map:"https://www.google.com/maps?q=232+9+%E0%B8%AB%E0%B8%A1%E0%B8%B9%E0%B9%88+4+%E0%B8%95%E0%B8%B3%E0%B8%9A%E0%B8%A5%E0%B8%AA%E0%B8%99%E0%B8%B2%E0%B8%A1%E0%B8%8A%E0%B8%B1%E0%B8%A2+%E0%B8%AD%E0%B8%B3%E0%B9%80%E0%B8%A0%E0%B8%AD%E0%B9%80%E0%B8%A1%E0%B8%B7%E0%B8%AD%E0%B8%87%E0%B8%AA%E0%B8%B8%E0%B8%9E%E0%B8%A3%E0%B8%A3%E0%B8%93%E0%B8%9A%E0%B8%B8%E0%B8%A3%E0%B8%B5+%E0%B8%AA%E0%B8%B8%E0%B8%9E%E0%B8%A3%E0%B8%A3%E0%B8%93%E0%B8%9A%E0%B8%B8%E0%B8%A3%E0%B8%B5+72000&ftid=0x30e2393b254ffd8f:0x8ddbbd100b598347",side:-45},
  {name:"สาขากาญจนบุรี",en:"KANCHANABURI",logo:"/suparerk-logo-kanchanaburi.jpg",map:"https://maps.app.goo.gl/jTfe5Rd5fkLsmCnz8?g_st=il",side:45}
 ];
 export default function Branches(){

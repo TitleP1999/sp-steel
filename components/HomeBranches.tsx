@@ -2,7 +2,7 @@ import Image from "next/image";
 import { ExternalLink, MapPin, Phone } from "lucide-react";
 
 const branches = [
-  { name: "สาขาสุพรรณบุรี (สำนักงานใหญ่)", address: "สำนักงานใหญ่ เลขที่ 232/9 หมู่ที่ 4 ตำบลสนามชัย อำเภอเมืองสุพรรณบุรี จังหวัดสุพรรณบุรี", phone: "086-321-5445", backupPhone: "091-696-4747", image: "/branch-kanchanaburi-store.png", map: "https://maps.app.goo.gl/tddg4Y9Gv5Dd25cX8?g_st=il" },
+  { name: "สาขาสุพรรณบุรี (สำนักงานใหญ่)", address: "สำนักงานใหญ่ เลขที่ 232/9 หมู่ที่ 4 ตำบลสนามชัย อำเภอเมืองสุพรรณบุรี จังหวัดสุพรรณบุรี", phone: "086-321-5445", backupPhone: "091-696-4747", image: "/branch-kanchanaburi-store.png", map: "https://www.google.com/maps?q=232+9+%E0%B8%AB%E0%B8%A1%E0%B8%B9%E0%B9%88+4+%E0%B8%95%E0%B8%B3%E0%B8%9A%E0%B8%A5%E0%B8%AA%E0%B8%99%E0%B8%B2%E0%B8%A1%E0%B8%8A%E0%B8%B1%E0%B8%A2+%E0%B8%AD%E0%B8%B3%E0%B9%80%E0%B8%A0%E0%B8%AD%E0%B9%80%E0%B8%A1%E0%B8%B7%E0%B8%AD%E0%B8%87%E0%B8%AA%E0%B8%B8%E0%B8%9E%E0%B8%A3%E0%B8%A3%E0%B8%93%E0%B8%9A%E0%B8%B8%E0%B8%A3%E0%B8%B5+%E0%B8%AA%E0%B8%B8%E0%B8%9E%E0%B8%A3%E0%B8%A3%E0%B8%93%E0%B8%9A%E0%B8%B8%E0%B8%A3%E0%B8%B5+72000&ftid=0x30e2393b254ffd8f:0x8ddbbd100b598347" },
   { name: "สาขากาญจนบุรี", address: "สำนักงานสาขา 00001 เลขที่ 1089 หมู่ที่ 4 ตำบลท่าม่วง อำเภอท่าม่วง จังหวัดกาญจนบุรี", phone: "080-373-2231", backupPhone: "091-696-4747", image: "/branch-suphanburi-store.png", map: "https://maps.app.goo.gl/jTfe5Rd5fkLsmCnz8?g_st=il" },
 ];
 
