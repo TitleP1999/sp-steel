@@ -60,7 +60,13 @@ export default function FacebookFeeds({ showIntro = true, stacked = false }: { s
               </div>
 
               <div ref={index === 0 ? feed : undefined} className={`flex min-h-[620px] overflow-hidden bg-white py-3 ${stacked ? "justify-start lg:order-1 lg:min-w-[500px]" : "justify-center"}`}>
-                {width > 0 && <iframe
+                {index === 0 ? (
+                  <div className="flex w-full max-w-[500px] flex-col items-center justify-center px-6 text-center">
+                    <p className="text-lg font-black text-zinc-900">ข่าวสารจากสาขาสุพรรณบุรี</p>
+                    <p className="mt-2 max-w-sm leading-7 text-zinc-600">ดูโพสต์และความเคลื่อนไหวล่าสุดได้ที่เพจ Facebook ของเรา</p>
+                    <a href={page.url} target="_blank" rel="noreferrer" className="mt-5 rounded-3xl bg-[#1877F2] px-5 py-3 text-sm font-black text-white transition hover:bg-[#1668d4]">ดูโพสต์สาขาสุพรรณบุรีบน Facebook ↗</a>
+                  </div>
+                ) : width > 0 && <iframe
                   title={page.label}
                   src={pluginUrl(page.url, width)}
                   width={width}
