@@ -713,7 +713,7 @@ Object.assign(translations.en, {
   "เจ้าหน้าที่คลังสินค้า": "Warehouse Staff",
   "เจ้าหน้าที่จัดส่ง": "Delivery Staff",
   "เจ้าหน้าที่ธุรการ": "Administrative Officer",
-  "เจ้าหน้าที่": "Staff Member",
+  "เจ้าหน้าที่": "Staff",
   "ตำแหน่ง": "Position",
   "กรรมการผู้จัดการ": "Managing Director",
   "กรรมการ": "Director",
@@ -956,7 +956,7 @@ Object.assign(translations.zh, {
   "เจ้าหน้าที่คลังสินค้า": "仓库工作人员",
   "เจ้าหน้าที่จัดส่ง": "配送人员",
   "เจ้าหน้าที่ธุรการ": "行政人员",
-  "เจ้าหน้าที่": "工作人员",
+  "เจ้าหน้าที่": "员工",
   "ตำแหน่ง": "职位",
   "กรรมการผู้จัดการ": "总经理",
   "กรรมการ": "董事",
@@ -1049,6 +1049,10 @@ function localize(source: string, locale: Locale) {
     result = result.split(thai).join(translated);
   }
   return result;
+}
+
+export function translateContent(source: string, locale: Locale) {
+  return localize(source, locale);
 }
 
 function translateTextNode(node: Text, locale: Locale) {
