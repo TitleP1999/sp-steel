@@ -13,7 +13,7 @@ export default function HomeBranches() {
       <h2 className="mt-2 text-3xl font-black sm:text-4xl">2 สาขาใกล้คุณ พร้อมบริการ</h2>
       <div className="mt-7 grid gap-4 lg:grid-cols-2">
         {branches.map(branch => <article key={branch.name} className="relative min-h-[360px] overflow-hidden rounded-2xl border border-white/15 shadow-xl sm:min-h-[390px]">
-          <Image src={branch.image} alt={`หน้าร้าน${branch.name}`} fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover"/>
+          <Image src={branch.image} alt={`หน้าร้าน${branch.name}`} fill sizes="(max-width: 1024px) 100vw, 50vw" className="!rounded-none object-cover"/>
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/65 to-black/15"/>
           <div className="relative flex min-h-[360px] flex-col justify-end p-5 sm:min-h-[390px] sm:p-7">
             <h3 className="text-2xl font-black sm:text-3xl">{branch.name}</h3>
