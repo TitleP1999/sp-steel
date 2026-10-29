@@ -27,7 +27,7 @@ const branches = [
   {
     name: "สุพรรณบุรี",
     locationId: process.env.GOOGLE_BUSINESS_SUPHANBURI_LOCATION_ID,
-    mapsUrl: "https://maps.app.goo.gl/tddg4Y9Gv5Dd25cX8?g_st=il",
+    mapsUrl: "https://maps.app.goo.gl/b3791ua5LVAZ9zrS9",
   },
   {
     name: "กาญจนบุรี",

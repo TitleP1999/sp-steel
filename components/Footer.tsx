@@ -26,7 +26,7 @@ export default function Footer() {
             <p className="flex items-center gap-2 whitespace-nowrap text-xs font-black text-white xl:text-sm"><MapPin size={17} className="shrink-0 text-red-500"/>สาขาสุพรรณบุรี (สำนักงานใหญ่)</p>
             <p className="mt-2 pl-6 text-xs leading-5 text-zinc-400">232/9 หมู่ 4 ต.สนามชัย อ.เมืองสุพรรณบุรี<br/>จ.สุพรรณบุรี 72000</p>
             <p className="mt-2 flex items-center gap-2 pl-0 text-xs font-bold text-zinc-200"><Phone size={16} className="shrink-0 text-red-500"/><a href="tel:0863215445">086-321-5445</a><span className="text-zinc-600">|</span><a href="tel:0916964747">091-696-4747</a></p>
-            <a href="https://maps.app.goo.gl/tddg4Y9Gv5Dd25cX8?g_st=il" target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1.5 pl-6 text-xs font-black text-red-500 transition hover:text-red-400">ดูแผนที่ <ExternalLink size={12}/></a>
+            <a href="https://maps.app.goo.gl/b3791ua5LVAZ9zrS9" target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1.5 pl-6 text-xs font-black text-red-500 transition hover:text-red-400">ดูแผนที่ <ExternalLink size={12}/></a>
           </div>
           <div className="border-t border-white/15 py-6 sm:border-t-0 sm:px-8 lg:border-l lg:py-0">
             <p className="flex items-center gap-2 text-sm font-black text-white"><MapPin size={17} className="shrink-0 text-red-500"/>สาขากาญจนบุรี</p>

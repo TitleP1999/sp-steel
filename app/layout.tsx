@@ -43,8 +43,8 @@ const structuredData = {
       image: `${siteUrl}/suparerk-logo-suphanburi.jpg`, telephone: "+66-86-321-5445", priceRange: "฿฿",
       parentOrganization: { "@id": `${siteUrl}/#organization` },
       address: { "@type": "PostalAddress", streetAddress: "232/9 หมู่ 4 ตำบลสนามชัย", addressLocality: "อำเภอเมืองสุพรรณบุรี", addressRegion: "สุพรรณบุรี", postalCode: "72000", addressCountry: "TH" },
-      geo: { "@type": "GeoCoordinates", latitude: 14.473345, longitude: 100.1346707 },
-      hasMap: "https://maps.app.goo.gl/tddg4Y9Gv5Dd25cX8", areaServed: { "@type": "AdministrativeArea", name: "จังหวัดสุพรรณบุรี" },
+      geo: { "@type": "GeoCoordinates", latitude: 14.4815163, longitude: 100.1318772 },
+      hasMap: "https://maps.app.goo.gl/b3791ua5LVAZ9zrS9", areaServed: { "@type": "AdministrativeArea", name: "จังหวัดสุพรรณบุรี" },
       sameAs: ["https://www.facebook.com/SuparerkSteelSuphanburi"],
     },
     {
