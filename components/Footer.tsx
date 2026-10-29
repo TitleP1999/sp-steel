@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { ExternalLink, MapPin, Phone } from "lucide-react";
 import CurrentYear from "./CurrentYear";
 
@@ -41,6 +42,7 @@ export default function Footer() {
             <div className="mt-3 flex flex-col items-start gap-3">
               <a href={LINE_URL} target="_blank" rel="noopener noreferrer" aria-label="ติดต่อผ่าน LINE" className="inline-flex h-10 items-center gap-2 rounded-full bg-[#06C755] px-5 text-xs font-black text-white transition hover:-translate-y-0.5 hover:bg-[#05b34a]"><Image src="/line-logo.svg" alt="" width={26} height={26}/> LINE</a>
               <a href="https://linktr.ee/suparerksteel" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 text-xs font-black text-red-500 transition hover:text-red-400">ช่องทางติดต่อทั้งหมด <ExternalLink size={13}/></a>
+              <Link href="/privacy" className="text-xs font-bold text-zinc-300 underline underline-offset-4 transition hover:text-white">นโยบายความเป็นส่วนตัว</Link>
             </div>
           </div>
         </div>
