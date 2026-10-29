@@ -7,6 +7,7 @@ export type GoogleBusinessReview = {
   reviewedAt: string;
   branchName: string;
   googleMapsUrl: string;
+  photos: { url: string; label: string }[];
 };
 
 type GoogleReviewResponse = {
@@ -16,6 +17,7 @@ type GoogleReviewResponse = {
     comment?: string;
     createTime?: string;
     reviewer?: { displayName?: string };
+    reviewMediaItems?: Array<{ thumbnailUrl?: string; thumbnailLabel?: string; videoUrl?: string }>;
   }>;
   nextPageToken?: string;
 };
@@ -101,14 +103,23 @@ async function fetchLocationReviews(locationId: string, branchName: string, maps
       }
       const message = review.comment?.trim();
       const reviewedAt = review.createTime?.slice(0, 10);
-      if (!message || !reviewedAt || !review.reviewId) continue;
+      const photos = (review.reviewMediaItems ?? []).flatMap(media => {
+        if (media.videoUrl || !media.thumbnailUrl) return [];
+        try {
+          const url = new URL(media.thumbnailUrl);
+          if (url.protocol !== "https:" || !(url.hostname === "googleusercontent.com" || url.hostname.endsWith(".googleusercontent.com") || url.hostname === "ggpht.com" || url.hostname.endsWith(".ggpht.com"))) return [];
+          return [{ url: url.href, label: media.thumbnailLabel?.trim() || "รูปภาพจากรีวิวของลูกค้า" }];
+        } catch { return []; }
+      });
+      if ((!message && photos.length === 0) || !reviewedAt || !review.reviewId) continue;
       reviews.push({
         id: `${locationId}-${review.reviewId}`,
         customerName: review.reviewer?.displayName?.trim() || "ผู้ใช้ Google",
-        message,
+        message: message || "",
         reviewedAt,
         branchName,
         googleMapsUrl: mapsUrl,
+        photos,
       });
     }
 
