@@ -4,6 +4,7 @@ export type GoogleBusinessReview = {
   id: string;
   customerName: string;
   message: string;
+  rating: 4 | 5;
   reviewedAt: string;
   branchName: string;
   googleMapsUrl: string;
@@ -79,8 +80,7 @@ async function fetchLocationReviews(locationId: string, branchName: string, maps
   const reviews: GoogleBusinessReview[] = [];
   let pageToken: string | undefined;
 
-  // Ratings are requested in descending order, so stop after the first page
-  // that no longer contains five-star reviews.
+  // Ratings are requested in descending order, so stop when ratings fall below four stars.
   for (let page = 0; page < 20; page += 1) {
     const url = new URL(`https://mybusiness.googleapis.com/v4/${location}/reviews`);
     url.searchParams.set("pageSize", "50");
@@ -94,11 +94,11 @@ async function fetchLocationReviews(locationId: string, branchName: string, maps
     if (!response.ok) throw new Error(`Google reviews request failed (${response.status})`);
     const data = await response.json() as GoogleReviewResponse;
     const pageReviews = data.reviews ?? [];
-    let hasOnlyFiveStarReviews = true;
+    let hasOnlyEligibleReviews = true;
 
     for (const review of pageReviews) {
-      if (review.starRating !== "FIVE") {
-        hasOnlyFiveStarReviews = false;
+      if (review.starRating !== "FIVE" && review.starRating !== "FOUR") {
+        hasOnlyEligibleReviews = false;
         break;
       }
       const message = review.comment?.trim();
@@ -116,6 +116,7 @@ async function fetchLocationReviews(locationId: string, branchName: string, maps
         id: `${locationId}-${review.reviewId}`,
         customerName: review.reviewer?.displayName?.trim() || "ผู้ใช้ Google",
         message: message || "",
+        rating: review.starRating === "FIVE" ? 5 : 4,
         reviewedAt,
         branchName,
         googleMapsUrl: mapsUrl,
@@ -123,7 +124,7 @@ async function fetchLocationReviews(locationId: string, branchName: string, maps
       });
     }
 
-    if (!data.nextPageToken || !hasOnlyFiveStarReviews) break;
+    if (!data.nextPageToken || !hasOnlyEligibleReviews) break;
     pageToken = data.nextPageToken;
   }
 
