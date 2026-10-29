@@ -6,7 +6,7 @@ const formatDate = (value: string) => new Date(`${value}T00:00:00+07:00`).toLoca
 
 export default async function Reviews() {
   const { configured, items } = await getGoogleBusinessReviews();
-  return <main><PageHero eyebrow="GOOGLE REVIEWS" title="รีวิวจากลูกค้า" desc="รีวิวจาก Google ของทั้งสองสาขา แสดงรีวิว 4 และ 5 ดาว" backgroundImage="/steel-warehouse-background.jpg"/><section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:py-20">
+  return <main><PageHero eyebrow="GOOGLE REVIEWS" title="รีวิวจากลูกค้า" desc="รีวิวจาก Google ของทั้งสองสาขา" backgroundImage="/steel-warehouse-background.jpg"/><section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:py-20">
     {items.length ? <div className="space-y-16">{["สุพรรณบุรี", "กาญจนบุรี"].map(branch => {
       const reviews = items.filter(item => item.branchName === branch);
       return <section key={branch} aria-label={`รีวิวสาขา${branch}`}>
