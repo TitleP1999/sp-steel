@@ -1,12 +1,9 @@
 import { requireAdmin } from "../../lib/admin-session";
 import { getCatalog } from "../../lib/prices";
-import { getNews } from "../../lib/news";
 import AdminDashboard from "./AdminDashboard";
-import NewsEditor from "./NewsEditor";
+import DeleteQuoteButton from "./DeleteQuoteButton";
 import PriceEditor from "./PriceEditor";
 import { getQuoteRequests } from "../../lib/quote-requests";
-import { getReviews } from "../../lib/reviews";
-import ReviewEditor from "./ReviewEditor";
 import { getHomeProjects } from "../../lib/home-projects";
 import HomeProjectEditor from "./HomeProjectEditor";
 import { getExecutives } from "../../lib/executives";
@@ -16,14 +13,12 @@ import ProductGalleryEditor from "./ProductGalleryEditor";
 
 export default async function AdminPage() {
   requireAdmin();
-  const [catalog, news, reviews, quoteRequests, projects, executives, gallery] = await Promise.all([getCatalog(), getNews(), getReviews(), getQuoteRequests(), getHomeProjects(), getExecutives(), getProductGallery()]);
+  const [catalog, quoteRequests, projects, executives, gallery] = await Promise.all([getCatalog(), getQuoteRequests(), getHomeProjects(), getExecutives(), getProductGallery()]);
   return <AdminDashboard
     counts={{
       prices: catalog.products.length,
       quotes: quoteRequests.length,
       "product-gallery": gallery.items.length,
-      news: news.items.length,
-      reviews: reviews.items.length,
       "home-projects": projects.items.length,
       executives: executives.items.length,
     }}
@@ -39,12 +34,13 @@ export default async function AdminPage() {
         <div className="flex items-start justify-between gap-3"><div><h3 className="font-bold">{request.name}</h3><a className="mt-1 inline-block text-[#8b352d] underline" href={`tel:${request.phone.replace(/[^+\d]/g, "")}`}>{request.phone}</a></div><span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-800">รายการใหม่</span></div>
         <p className="mt-4 text-sm font-bold">สินค้าที่สนใจ</p><p className="mt-1 text-zinc-700">{request.product}</p>
         {request.details && <><p className="mt-4 text-sm font-bold">รายละเอียด</p><p className="mt-1 whitespace-pre-wrap text-sm leading-6 text-zinc-600">{request.details}</p></>}
-        <time className="mt-4 block border-t pt-3 text-xs text-zinc-500" dateTime={request.createdAt}>{new Date(request.createdAt).toLocaleString("th-TH", { timeZone: "Asia/Bangkok" })}</time>
+        <div className="mt-4 flex flex-wrap items-start justify-between gap-3 border-t pt-3">
+          <time className="text-xs text-zinc-500" dateTime={request.createdAt}>{new Date(request.createdAt).toLocaleString("th-TH", { timeZone: "Asia/Bangkok" })}</time>
+          <DeleteQuoteButton id={request.id} />
+        </div>
       </article>)}</div>}
     </section>,
       "product-gallery": <ProductGalleryEditor products={catalog.products} items={gallery.items} revision={gallery.revision} />,
-      news: <NewsEditor items={news.items} revision={news.revision} />,
-      reviews: <ReviewEditor items={reviews.items} revision={reviews.revision} />,
       "home-projects": <HomeProjectEditor items={projects.items} revision={projects.revision} />,
       executives: <ExecutiveEditor items={executives.items} revision={executives.revision} />,
     }}

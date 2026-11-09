@@ -27,7 +27,7 @@ export default function HomeContent({products,projects}:{products:Product[];proj
  <HomeProductStrip products={products}/>
  <BrandMarquee/>
  <HomeBranches/>
- <HomeProjects projects={projects}/>
+ {projects.length > 0 && <HomeProjects projects={projects}/>}
  <FacebookFeeds/>
  <HomeWhySections/>
  </main>

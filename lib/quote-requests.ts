@@ -63,7 +63,7 @@ async function readLocalQuotes(): Promise<QuoteRequest[]> {
   return items as QuoteRequest[];
 }
 
-async function saveLocalQuote(input: ReturnType<typeof validateQuoteRequest>) {
+async function changeLocalQuotes(change: (items: QuoteRequest[]) => boolean) {
   await mkdir(directory(), { recursive: true });
   const lockfile = path.join(directory(), "quote-requests.lock");
   let lock;
@@ -76,10 +76,7 @@ async function saveLocalQuote(input: ReturnType<typeof validateQuoteRequest>) {
   const temporary = path.join(directory(), `quote-requests-${randomUUID()}.tmp`);
   try {
     const items = await readLocalQuotes();
-    const cutoff = Date.now() - 15 * 60 * 1000;
-    const recentCount = input.phone ? items.filter(item => item.phone === input.phone && new Date(item.createdAt).getTime() > cutoff).length : 0;
-    if (recentCount >= 3) throw new QuoteRequestError("ส่งคำขอบ่อยเกินไป กรุณารอ 15 นาที หรือติดต่อฝ่ายขายโดยตรง");
-    items.push({ id: randomUUID(), ...input, status: "new", createdAt: new Date().toISOString() });
+    if (!change(items)) return;
     await writeFile(temporary, JSON.stringify(items, null, 2), { mode: 0o600 });
     await rename(temporary, filename());
   } finally {
@@ -87,6 +84,33 @@ async function saveLocalQuote(input: ReturnType<typeof validateQuoteRequest>) {
     await lock.close();
     await unlink(lockfile).catch(() => {});
   }
+}
+
+function saveLocalQuote(input: ReturnType<typeof validateQuoteRequest>) {
+  return changeLocalQuotes(items => {
+    const cutoff = Date.now() - 15 * 60 * 1000;
+    const recentCount = input.phone ? items.filter(item => item.phone === input.phone && new Date(item.createdAt).getTime() > cutoff).length : 0;
+    if (recentCount >= 3) throw new QuoteRequestError("ส่งคำขอบ่อยเกินไป กรุณารอ 15 นาที หรือติดต่อฝ่ายขายโดยตรง");
+    items.push({ id: randomUUID(), ...input, status: "new", createdAt: new Date().toISOString() });
+    return true;
+  });
+}
+
+export async function deleteQuoteRequest(id: string) {
+  if (typeof id !== "string" || !/^[\da-f]{8}(?:-[\da-f]{4}){3}-[\da-f]{12}$/i.test(id)) {
+    throw new QuoteRequestError("รหัสคำขอใบเสนอราคาไม่ถูกต้อง");
+  }
+  if (useDatabase()) {
+    await ensureSchema();
+    await database().query("DELETE FROM sp_quote_requests WHERE id = $1::uuid", [id]);
+    return;
+  }
+  await changeLocalQuotes(items => {
+    const index = items.findIndex(item => item.id === id);
+    if (index === -1) return false;
+    items.splice(index, 1);
+    return true;
+  });
 }
 
 export function validateQuoteRequest(form: FormData) {

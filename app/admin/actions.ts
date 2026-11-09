@@ -11,6 +11,7 @@ import { ReviewError, saveReviews } from "../../lib/reviews";
 import { HomeProjectError, saveHomeProjects } from "../../lib/home-projects";
 import { ExecutiveError, saveExecutives } from "../../lib/executives";
 import { ProductGalleryError, saveProductGallery } from "../../lib/product-gallery";
+import { QuoteRequestError, deleteQuoteRequest } from "../../lib/quote-requests";
 
 export async function login(_previous: { error: string }, form: FormData) {
   if (!authConfigured()) return { error: "ยังไม่ได้ตั้งค่าบัญชีแอดมิน กรุณาตั้งค่า ADMIN_USERNAME, ADMIN_PASSWORD_HASH และ ADMIN_SESSION_SECRET บนเซิร์ฟเวอร์" };
@@ -23,6 +24,19 @@ export async function login(_previous: { error: string }, form: FormData) {
 export async function logout() {
   cookies().delete(SESSION_COOKIE);
   redirect("/admin/login");
+}
+
+export async function removeQuoteRequest(id: string): Promise<{ error?: string }> {
+  requireAdmin();
+  try {
+    await deleteQuoteRequest(id);
+  } catch (error) {
+    if (error instanceof QuoteRequestError) return { error: error.message };
+    console.error("Quote request deletion failed", error);
+    return { error: "ลบคำขอไม่สำเร็จ กรุณาลองใหม่" };
+  }
+  revalidatePath("/admin");
+  return {};
 }
 
 export async function updatePrices(slug: string, prices: unknown, revision: string): Promise<{ error?: string; revision?: string }> {

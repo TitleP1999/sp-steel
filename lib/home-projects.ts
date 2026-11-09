@@ -12,6 +12,33 @@ export type HomeProjectItem = {
   published: boolean;
 };
 
+const defaultHomeProjects: HomeProjectItem[] = [
+  {
+    id: "steel-warehouse",
+    title: "คลังสินค้าเหล็ก",
+    summary: "พื้นที่จัดเก็บเหล็กสำหรับงานก่อสร้างและอุตสาหกรรม",
+    imageUrl: "/projects/steel-warehouse-project.png",
+    href: "",
+    published: true,
+  },
+  {
+    id: "suphanburi-warehouse",
+    title: "คลังสินค้า สาขาสุพรรณบุรี",
+    summary: "พร้อมให้บริการและจัดส่งสินค้าเหล็ก",
+    imageUrl: "/warehouse-branch-1-v1.png",
+    href: "",
+    published: true,
+  },
+  {
+    id: "kanchanaburi-warehouse",
+    title: "คลังสินค้า สาขากาญจนบุรี",
+    summary: "พร้อมให้บริการและจัดส่งสินค้าเหล็ก",
+    imageUrl: "/warehouse-branch-2-v1.png",
+    href: "",
+    published: true,
+  },
+];
+
 type HomeProjectData = { revision: string; updatedAt: string | null; items: HomeProjectItem[] };
 export class HomeProjectError extends Error {}
 
@@ -89,7 +116,9 @@ async function readDatabase(): Promise<HomeProjectData> {
 }
 
 export async function getHomeProjects() {
-  return useDatabase() ? readDatabase() : readFileData();
+  const data = await (useDatabase() ? readDatabase() : readFileData());
+  if (data.items.length || data.updatedAt !== null) return data;
+  return { ...data, items: defaultHomeProjects.map(item => ({ ...item })) };
 }
 
 export async function saveHomeProjects(items: unknown, revision: string) {

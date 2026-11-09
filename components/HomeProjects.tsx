@@ -8,33 +8,6 @@ import { ArrowLeft, ArrowRight, ExternalLink, X } from "lucide-react";
 import type { HomeProjectItem } from "../lib/home-projects";
 import { Reveal } from "./Motion";
 
-const sampleProjects: HomeProjectItem[] = [
-  {
-    id: "steel-warehouse",
-    title: "คลังสินค้าเหล็ก",
-    summary: "พื้นที่จัดเก็บเหล็กสำหรับงานก่อสร้างและอุตสาหกรรม",
-    imageUrl: "/projects/steel-warehouse-project.png",
-    href: "",
-    published: true,
-  },
-  {
-    id: "suphanburi-warehouse",
-    title: "คลังสินค้า สาขาสุพรรณบุรี",
-    summary: "พร้อมให้บริการและจัดส่งสินค้าเหล็ก",
-    imageUrl: "/warehouse-branch-1-v1.png",
-    href: "",
-    published: true,
-  },
-  {
-    id: "kanchanaburi-warehouse",
-    title: "คลังสินค้า สาขากาญจนบุรี",
-    summary: "พร้อมให้บริการและจัดส่งสินค้าเหล็ก",
-    imageUrl: "/warehouse-branch-2-v1.png",
-    href: "",
-    published: true,
-  },
-];
-
 function scrollToSlide(rail: HTMLDivElement | null, index: number) {
   const slide = rail?.children[index] as HTMLElement | undefined;
   if (!rail || !slide) return;
@@ -42,11 +15,10 @@ function scrollToSlide(rail: HTMLDivElement | null, index: number) {
   rail.scrollTo({ left, behavior: "smooth" });
 }
 
-export default function HomeProjects({ projects }: { projects: HomeProjectItem[] }) {
+export default function HomeProjects({ projects: slides }: { projects: HomeProjectItem[] }) {
   const rail = useRef<HTMLDivElement>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedProject, setSelectedProject] = useState<HomeProjectItem | null>(null);
-  const slides = projects.length ? projects : sampleProjects;
 
   useEffect(() => {
     if (!selectedProject) return;

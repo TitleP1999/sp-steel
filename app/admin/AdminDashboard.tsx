@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowUpRight, ClipboardList, Image, LayoutDashboard, LogOut, Newspaper, Star, Tag, Users, Warehouse } from "lucide-react";
+import { ArrowUpRight, ClipboardList, Image, LayoutDashboard, LogOut, Tag, Users, Warehouse } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { logout } from "./actions";
 
@@ -10,8 +10,6 @@ const menu = [
   { id: "prices", label: "ราคาเหล็ก", icon: Tag, description: "จัดการราคาเหล็กทุกขนาดในแค็ตตาล็อก" },
   { id: "quotes", label: "คำขอใบเสนอราคา", icon: ClipboardList, description: "ดูคำขอและข้อมูลติดต่อของลูกค้า" },
   { id: "product-gallery", label: "ภาพสินค้า", icon: Image, description: "จัดการภาพในหน้ารายละเอียดสินค้า" },
-  { id: "news", label: "ข่าวสาร", icon: Newspaper, description: "จัดการข่าวสารและกิจกรรม" },
-  { id: "reviews", label: "รีวิวลูกค้า", icon: Star, description: "จัดการรีวิวที่แสดงบนเว็บไซต์" },
   { id: "home-projects", label: "โครงการหน้าแรก", icon: Warehouse, description: "จัดการภาพโครงการและผลงาน" },
   { id: "executives", label: "ผู้บริหาร", icon: Users, description: "จัดการข้อมูลคณะกรรมการและผู้บริหาร" },
 ] as const;
