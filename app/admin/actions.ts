@@ -11,7 +11,8 @@ import { ReviewError, saveReviews } from "../../lib/reviews";
 import { getDefaultHomeProjects, HomeProjectError, saveHomeProjects } from "../../lib/home-projects";
 import { ExecutiveError, saveExecutives } from "../../lib/executives";
 import { ProductGalleryError, saveProductGallery } from "../../lib/product-gallery";
-import { QuoteRequestError, deleteQuoteRequest } from "../../lib/quote-requests";
+import { QuoteRequestError, deleteQuoteRequest, markQuoteRequestRead } from "../../lib/quote-requests";
+import { saveSiteContent, SiteContentError } from "../../lib/site-content";
 
 export async function login(_previous: { error: string }, form: FormData) {
   if (!authConfigured()) return { error: "ยังไม่ได้ตั้งค่าบัญชีแอดมิน กรุณาตั้งค่า ADMIN_USERNAME, ADMIN_PASSWORD_HASH และ ADMIN_SESSION_SECRET บนเซิร์ฟเวอร์" };
@@ -26,6 +27,19 @@ export async function logout() {
   redirect("/admin/login");
 }
 
+export async function updateSiteContent(content: unknown, revision: string): Promise<{ error?: string; revision?: string }> {
+  requireAdmin();
+  try {
+    const nextRevision = await saveSiteContent(content, revision);
+    revalidatePath("/", "layout");
+    return { revision: nextRevision };
+  } catch (error) {
+    if (error instanceof SiteContentError) return { error: error.message };
+    console.error("Site content save failed", error);
+    return { error: "บันทึกข้อมูลเว็บไซต์ไม่สำเร็จ กรุณาลองใหม่" };
+  }
+}
+
 export async function removeQuoteRequest(id: string): Promise<{ error?: string }> {
   requireAdmin();
   try {
@@ -37,6 +51,19 @@ export async function removeQuoteRequest(id: string): Promise<{ error?: string }
   }
   revalidatePath("/admin");
   return {};
+}
+
+export async function readQuoteRequest(id: string): Promise<{ error?: string }> {
+  requireAdmin();
+  try {
+    await markQuoteRequestRead(id);
+    revalidatePath("/admin");
+    return {};
+  } catch (error) {
+    if (error instanceof QuoteRequestError) return { error: error.message };
+    console.error("Quote request status update failed", error);
+    return { error: "เปลี่ยนสถานะไม่สำเร็จ กรุณาลองใหม่" };
+  }
 }
 
 export async function updatePrices(slug: string, prices: unknown, revision: string): Promise<{ error?: string; revision?: string }> {

@@ -1,3 +1,5 @@
+import { phoneHref, type SiteContent } from "../data/site-content";
+import { getSiteContent } from "../lib/site-content";
 import type { Metadata } from "next";
 import "./globals.css"; import Header from "../components/Header"; import Footer from "../components/Footer"; import FloatingContact from "../components/FloatingContact";
 import { QuoteSelectionProvider } from "../components/QuoteSelection";
@@ -21,7 +23,9 @@ export const metadata: Metadata = {
   },
 };
 
-const structuredData = {
+function structuredData({ branches, contact }: Pick<SiteContent, "branches" | "contact">) {
+  const [suphan, kanchan] = branches;
+  return {
   "@context": "https://schema.org",
   "@graph": [
     {
@@ -29,8 +33,8 @@ const structuredData = {
       name: "บริษัท ศุภฤกษ์ สตีล จำกัด", alternateName: "SUPARERK STEEL CO., LTD.", url: siteUrl,
       logo: { "@type": "ImageObject", url: `${siteUrl}/suparerk-logo-transparent.png`, width: 1774, height: 887 },
       taxID: "0725563001575",
-      contactPoint: [{ "@type": "ContactPoint", telephone: "+66-91-696-4747", contactType: "sales", areaServed: "TH", availableLanguage: ["th"] }],
-      sameAs: ["https://www.facebook.com/SuparerkSteelSuphanburi", "https://www.facebook.com/SuparerkSteelKanchanaburi"],
+      contactPoint: [{ "@type": "ContactPoint", telephone: phoneHref(contact.phone).slice(4), contactType: "sales", areaServed: "TH", availableLanguage: ["th"] }],
+      sameAs: branches.map(branch => branch.facebook),
       department: [{ "@id": `${siteUrl}/#suphanburi` }, { "@id": `${siteUrl}/#kanchanaburi` }],
     },
     {
@@ -40,27 +44,29 @@ const structuredData = {
     },
     {
       "@type": ["Store", "LocalBusiness"], "@id": `${siteUrl}/#suphanburi`,
-      name: "ศุภฤกษ์ สตีล สาขาสุพรรณบุรี", url: `${siteUrl}/contact#branch-suphanburi`,
-      image: `${siteUrl}/suparerk-logo-suphanburi.jpg`, telephone: "+66-86-321-5445", priceRange: "฿฿",
+      name: "ศุภฤกษ์ สตีล " + suphan.name, url: `${siteUrl}/contact#branch-suphanburi`,
+      image: `${siteUrl}/suparerk-logo-suphanburi.jpg`, telephone: phoneHref(suphan.phone).slice(4), priceRange: "฿฿",
       parentOrganization: { "@id": `${siteUrl}/#organization` },
-      address: { "@type": "PostalAddress", streetAddress: "232/9 หมู่ 4 ตำบลสนามชัย", addressLocality: "อำเภอเมืองสุพรรณบุรี", addressRegion: "สุพรรณบุรี", postalCode: "72000", addressCountry: "TH" },
-      geo: { "@type": "GeoCoordinates", latitude: 14.4815163, longitude: 100.1318772 },
-      hasMap: "https://maps.app.goo.gl/b3791ua5LVAZ9zrS9", areaServed: { "@type": "AdministrativeArea", name: "จังหวัดสุพรรณบุรี" },
-      sameAs: ["https://www.facebook.com/SuparerkSteelSuphanburi"],
+      address: { "@type": "PostalAddress", streetAddress: suphan.address, addressCountry: "TH" },
+      hasMap: suphan.map, areaServed: { "@type": "AdministrativeArea", name: "จังหวัดสุพรรณบุรี" },
+      sameAs: [suphan.facebook],
     },
     {
       "@type": ["Store", "LocalBusiness"], "@id": `${siteUrl}/#kanchanaburi`,
-      name: "ศุภฤกษ์ สตีล สาขากาญจนบุรี", url: `${siteUrl}/contact#branch-kanchanaburi`,
-      image: `${siteUrl}/suparerk-logo-kanchanaburi.jpg`, telephone: "+66-80-373-2231", priceRange: "฿฿",
+      name: "ศุภฤกษ์ สตีล " + kanchan.name, url: `${siteUrl}/contact#branch-kanchanaburi`,
+      image: `${siteUrl}/suparerk-logo-kanchanaburi.jpg`, telephone: phoneHref(kanchan.phone).slice(4), priceRange: "฿฿",
       parentOrganization: { "@id": `${siteUrl}/#organization` },
-      address: { "@type": "PostalAddress", streetAddress: "1089 หมู่ 4 ตำบลท่าม่วง", addressLocality: "อำเภอท่าม่วง", addressRegion: "กาญจนบุรี", postalCode: "71110", addressCountry: "TH" },
+      address: { "@type": "PostalAddress", streetAddress: kanchan.address, addressCountry: "TH" },
       hasMap: "https://maps.app.goo.gl/jTfe5Rd5fkLsmCnz8", areaServed: { "@type": "AdministrativeArea", name: "จังหวัดกาญจนบุรี" },
-      sameAs: ["https://www.facebook.com/SuparerkSteelKanchanaburi"],
+      sameAs: [kanchan.facebook],
     },
   ],
-};
+  };
+}
 
-export default function Layout({children}:{children:React.ReactNode}){
+export default async function Layout({children}:{children:React.ReactNode}){
+  const { content: { branches, contact } } = await getSiteContent();
+  const floatingBranches = branches.map(({ id, shortName, facebook, phone }) => ({ id, shortName, facebook, phone }));
   const measurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "G-YPD392Y20D";
-  return <html lang="th"><body><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(structuredData).replace(/</g,"\\u003c")}}/><LanguageProvider><QuoteSelectionProvider><StorefrontChrome top={<Header/>} bottom={<><Footer/><FloatingContact/></>}>{children}</StorefrontChrome></QuoteSelectionProvider></LanguageProvider>{measurementId ? <GoogleAnalytics measurementId={measurementId} /> : null}</body></html>;
+  return <html lang="th"><body><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(structuredData({ branches, contact })).replace(/</g,"\\u003c")}}/><LanguageProvider><QuoteSelectionProvider><StorefrontChrome top={<Header line={contact.line}/>} bottom={<><Footer branches={branches} contact={contact}/><FloatingContact line={contact.line} branches={floatingBranches}/></>}>{children}</StorefrontChrome></QuoteSelectionProvider></LanguageProvider>{measurementId ? <GoogleAnalytics measurementId={measurementId} /> : null}</body></html>;
 }

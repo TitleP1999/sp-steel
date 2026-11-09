@@ -1,18 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 
-const pages = [
-  {
-    branch: "สุพรรณบุรี",
-    label: "SUPARERK STEEL สุพรรณบุรี",
-    url: "https://www.facebook.com/SuparerkSteelSuphanburi",
-  },
-  {
-    branch: "กาญจนบุรี",
-    label: "SUPARERK STEEL กาญจนบุรี",
-    url: "https://www.facebook.com/SuparerkSteelKanchanaburi",
-  },
-];
+import { defaultSiteContent, type SiteBranch } from "../data/site-content";
 
 function pluginUrl(url: string, width: number) {
   const params = new URLSearchParams({
@@ -28,7 +17,8 @@ function pluginUrl(url: string, width: number) {
   return `https://www.facebook.com/plugins/page.php?${params.toString()}`;
 }
 
-export default function FacebookFeeds({ showIntro = true, stacked = false }: { showIntro?: boolean; stacked?: boolean }) {
+export default function FacebookFeeds({ showIntro = true, stacked = false, branches = defaultSiteContent.branches }: { showIntro?: boolean; stacked?: boolean; branches?: Pick<SiteBranch, "id" | "shortName" | "facebook">[] }) {
+  const pages = branches.map(branch => ({ id: branch.id, branch: branch.shortName, label: "SUPARERK STEEL " + branch.shortName, url: branch.facebook }));
   const feed = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(0);
   useEffect(() => {
@@ -50,7 +40,7 @@ export default function FacebookFeeds({ showIntro = true, stacked = false }: { s
 
         <div className={`${showIntro ? "mt-12" : ""} grid gap-7 ${stacked ? "grid-cols-1" : "lg:grid-cols-2"}`}>
           {pages.map((page, index) => (
-            <article key={page.branch} className={`overflow-hidden rounded-3xl border border-zinc-200 bg-[#faf9f7] shadow-sm ${stacked ? "lg:grid lg:grid-cols-[500px_minmax(260px,1fr)]" : ""}`}>
+            <article key={page.id} className={`overflow-hidden rounded-3xl border border-zinc-200 bg-[#faf9f7] shadow-sm ${stacked ? "lg:grid lg:grid-cols-[500px_minmax(260px,1fr)]" : ""}`}>
               <div className={`flex flex-col items-start justify-between gap-4 px-5 py-4 sm:px-6 ${stacked ? "border-b border-zinc-200 lg:order-2 lg:justify-center lg:border-b-0 lg:border-l lg:px-10" : "border-b border-zinc-200 sm:flex-row sm:items-center"}`}>
                 <div>
                   <p className="text-xs font-black tracking-[.16em] text-[#8b352d]">FACEBOOK</p>

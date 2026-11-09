@@ -7,6 +7,11 @@ const net = require('node:net');
 const { spawn } = require('node:child_process');
 const { once } = require('node:events');
 const { randomBytes, scryptSync } = require('node:crypto');
+const ts = require('typescript');
+require.extensions['.ts'] = (module, file) => module._compile(ts.transpileModule(fs.readFileSync(file, 'utf8'), {
+  compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 },
+}).outputText, file);
+const { defaultSiteContent } = require('../data/site-content.ts');
 
 async function main() {
   const root = path.resolve(__dirname, '..');
@@ -18,7 +23,7 @@ async function main() {
   const base = `http://127.0.0.1:${port}`;
   const password = randomBytes(18).toString('hex');
   const salt = randomBytes(16).toString('hex');
-  const env = { ...process.env, NODE_ENV: 'production', PRICE_DATA_DIR: directory, ADMIN_USERNAME: 'http-test', ADMIN_PASSWORD_HASH: `${salt}:${scryptSync(password, salt, 64).toString('hex')}`, ADMIN_SESSION_SECRET: randomBytes(48).toString('hex') };
+  const env = { ...process.env, NODE_ENV: 'production', PRICE_DATA_DIR: directory, SITE_CONTENT_DATA_DIR: directory, QUOTE_REQUEST_DATA_DIR: directory, ADMIN_USERNAME: 'http-test', ADMIN_PASSWORD_HASH: `${salt}:${scryptSync(password, salt, 64).toString('hex')}`, ADMIN_SESSION_SECRET: randomBytes(48).toString('hex') };
   let server;
   let logs = '';
   async function start() {
@@ -63,6 +68,13 @@ async function main() {
     assert.ok(id, `Built action ${name} found`); return id;
   }
   const saveId = actionId('updatePrices');
+  async function adminAction(id, args, cookie) {
+    return fetch(base + '/admin', {
+      method: 'POST', redirect: 'manual',
+      headers: { 'Next-Action': id, 'Content-Type': 'text/plain;charset=UTF-8', Accept: 'text/x-component', Origin: base, ...(cookie ? { Cookie: cookie } : {}) },
+      body: JSON.stringify(args),
+    });
+  }
   async function save(cookie, values, revision, origin = base) {
     return fetch(base + '/admin', { method: 'POST', redirect: 'manual', headers: { 'Next-Action': saveId, 'Content-Type': 'text/plain;charset=UTF-8', Accept: 'text/x-component', Origin: origin, ...(cookie ? { Cookie: cookie } : {}) }, body: JSON.stringify(['c-channel', values, revision]) });
   }
@@ -83,6 +95,38 @@ async function main() {
     const cookie = setCookie.split(';')[0];
     const admin = await fetch(base + '/admin', { headers: { Cookie: cookie } });
     assert.equal(admin.status, 200); assert.match(await admin.text(), /จัดการราคาเหล็ก/);
+    const siteFile = path.join(directory, 'site-content.json');
+    const siteAction = actionId('updateSiteContent');
+    const site = structuredClone(defaultSiteContent);
+    site.home.heading = 'Editable Homepage Banner';
+    site.contact.title = 'Editable Contact Page';
+    site.branches[0].phone = '089-555-1234';
+    await (await adminAction(siteAction, [site, 'initial'])).text();
+    assert.equal(fs.existsSync(siteFile), false);
+    const badSite = structuredClone(site);
+    badSite.branches[0].embed = 'https://example.com/maps/embed';
+    await (await adminAction(siteAction, [badSite, 'initial'], cookie)).text();
+    assert.equal(fs.existsSync(siteFile), false);
+    const contentSaved = await adminAction(siteAction, [site, 'initial'], cookie);
+    assert.equal(contentSaved.status, 200);
+    await contentSaved.text();
+    assert.equal(JSON.parse(fs.readFileSync(siteFile, 'utf8')).content.contact.title, site.contact.title);
+    for (const [route, heading] of [['/', site.home.heading], ['/contact', site.contact.title]]) {
+      const response = await fetch(base + route);
+      assert.equal(response.status, 200);
+      const html = await response.text();
+      assert.ok(html.includes(heading), `${route} displays the saved heading`);
+      assert.ok(html.includes('tel:0895551234'), `${route} displays the shared phone`);
+    }
+    const quoteFile = path.join(directory, 'quote-requests.json');
+    const quoteId = '21a2c4de-cc56-4d17-9729-238b95a5229b';
+    fs.writeFileSync(quoteFile, JSON.stringify([{ id: quoteId, name: 'Test request', phone: '', product: 'Steel', details: '', status: 'new', createdAt: new Date().toISOString() }]));
+    const readAction = actionId('readQuoteRequest');
+    await (await adminAction(readAction, [quoteId])).text();
+    assert.equal(JSON.parse(fs.readFileSync(quoteFile, 'utf8'))[0].status, 'new');
+    await (await adminAction(readAction, [quoteId], cookie)).text();
+    assert.equal(JSON.parse(fs.readFileSync(quoteFile, 'utf8'))[0].status, 'contacted');
+    assert.match(await (await fetch(base + '/admin', { headers: { Cookie: cookie } })).text(), /ดูแล้ว/);
     const csrf = await save(cookie, [1,2,3,4], 'initial', 'https://attacker.invalid'); await csrf.text();
     assert.equal(fs.existsSync(path.join(directory, 'prices.json')), false);
     await (await save(cookie, [-1,2,3,4], 'initial')).text();
@@ -100,7 +144,7 @@ async function main() {
     await logout.text(); assert.match(logout.headers.get('set-cookie'), /sp-steel-admin=;/);
     await stop(); await start();
     assert.match(await (await fetch(base + '/products/c-channel')).text(), /12,345\.67/);
-    console.log('PASS: protected page/action, login failure/success, secure cookie, CSRF, validation, price and quote-only persistence, storefront pages, conflict, logout and server restart.');
+    console.log('PASS: admin auth, price publishing, shared homepage/contact content, quote read status, conflict handling, logout and restart.');
   } finally { await stop(); fs.rmSync(directory, { recursive: true, force: true }); }
 }
 main().catch(error => { console.error(error); process.exitCode = 1; });

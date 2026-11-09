@@ -9,9 +9,10 @@ type Props = {
   required?: boolean;
   disabled?: boolean;
   previewClassName?: string;
+  maxDataLength?: number;
 };
 
-async function optimizeImage(file: File) {
+async function optimizeImage(file: File, maxDataLength: number) {
   if (!/^image\/(jpeg|png)$/i.test(file.type)) throw new Error("รองรับเฉพาะไฟล์ JPEG และ PNG");
   if (file.size > 12 * 1024 * 1024) throw new Error("ไฟล์ต้นฉบับต้องมีขนาดไม่เกิน 12 MB");
   const bitmap = await createImageBitmap(file);
@@ -19,19 +20,26 @@ async function optimizeImage(file: File) {
   const canvas = document.createElement("canvas");
   canvas.width = Math.max(1, Math.round(bitmap.width * scale));
   canvas.height = Math.max(1, Math.round(bitmap.height * scale));
-  canvas.getContext("2d")!.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+  const context = canvas.getContext("2d")!;
+  context.fillStyle = "#fff";
+  context.fillRect(0, 0, canvas.width, canvas.height);
+  context.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
   bitmap.close();
-  return canvas.toDataURL("image/jpeg", .78);
+  for (const quality of [.78, .68, .58, .48, .38]) {
+    const result = canvas.toDataURL("image/jpeg", quality);
+    if (result.length <= maxDataLength) return result;
+  }
+  throw new Error("รูปยังใหญ่เกินไปหลังย่อ กรุณาเลือกรูปขนาดเล็กลง");
 }
 
-export default function ImageFilePicker({ label, value, onChange, required = false, disabled = false, previewClassName = "h-52" }: Props) {
+export default function ImageFilePicker({ label, value, onChange, required = false, disabled = false, previewClassName = "h-52", maxDataLength = Infinity }: Props) {
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState("");
 
   async function choose(file?: File) {
     if (!file) return;
     setProcessing(true); setError("");
-    try { onChange(await optimizeImage(file)); }
+    try { onChange(await optimizeImage(file, maxDataLength)); }
     catch (cause) { setError(cause instanceof Error ? cause.message : "อ่านไฟล์รูปไม่สำเร็จ"); }
     finally { setProcessing(false); }
   }

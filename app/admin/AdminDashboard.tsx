@@ -10,7 +10,7 @@ const menu = [
   { id: "prices", label: "ราคาเหล็ก", icon: Tag, description: "จัดการราคาเหล็กทุกขนาดในแค็ตตาล็อก" },
   { id: "quotes", label: "คำขอใบเสนอราคา", icon: ClipboardList, description: "ดูคำขอและข้อมูลติดต่อของลูกค้า" },
   { id: "product-gallery", label: "ภาพสินค้า", icon: Image, description: "จัดการภาพในหน้ารายละเอียดสินค้า" },
-  { id: "home-projects", label: "โครงการหน้าแรก", icon: Warehouse, description: "จัดการภาพโครงการและผลงาน" },
+  { id: "site-content", label: "หน้าแรก / ติดต่อเรา", icon: Warehouse, description: "แก้แบนเนอร์ ข้อมูลสาขา ช่องทางติดต่อ และผลงาน" },
   { id: "executives", label: "ผู้บริหาร", icon: Users, description: "จัดการข้อมูลคณะกรรมการและผู้บริหาร" },
 ] as const;
 
@@ -65,7 +65,7 @@ export default function AdminDashboard({ panels, counts }: { panels: Record<Pane
             return <button key={id} type="button" onClick={() => select(id)} className="group border border-zinc-200 bg-white p-5 text-left !rounded-xl hover:border-[#8b352d]">
               <span className="flex items-center justify-between text-[#8b352d]"><Icon size={21} aria-hidden="true" /><ArrowUpRight size={16} aria-hidden="true" /></span>
               <span className="mt-4 block font-bold">{label}</span>
-              <span className="mt-1 block text-2xl font-black tabular-nums">{counts[id] ?? 0}</span>
+              {counts[id] !== undefined && <span className="mt-1 block text-2xl font-black tabular-nums">{counts[id]}</span>}
               <span className="mt-2 block text-sm text-zinc-600">{description}</span>
             </button>;
           })}

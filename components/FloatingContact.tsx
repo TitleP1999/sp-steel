@@ -6,20 +6,15 @@ import { MessageCircle, Phone, X } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useQuoteSelection } from "./QuoteSelection";
 
-const LINE = "https://lin.ee/Yurg5Hy";
-const branches = {
-  suphanburi: { label: "สุพรรณบุรี", facebook: "https://www.facebook.com/SuparerkSteelSuphanburi", phone: "tel:0863215445" },
-  kanchanaburi: { label: "กาญจนบุรี", facebook: "https://www.facebook.com/SuparerkSteelKanchanaburi", phone: "tel:0803732231" },
-};
+import { phoneHref, type SiteBranch } from "../data/site-content";
 
 type Submenu = "facebook" | "phone" | null;
 
-export default function FloatingContact() {
+export default function FloatingContact({ line, branches }: { line: string; branches: Pick<SiteBranch, "id" | "shortName" | "facebook" | "phone">[] }) {
   const [open, setOpen] = useState(false);
   const [submenu, setSubmenu] = useState<Submenu>(null);
   const reduceMotion = useReducedMotion();
   const { items } = useQuoteSelection();
-  const branchList = Object.values(branches);
   const toggleMenu = () => {
     setOpen(value => !value);
     setSubmenu(null);
@@ -34,12 +29,12 @@ export default function FloatingContact() {
         transition={{ duration: reduceMotion ? 0 : .22 }}
         className="flex flex-col items-end gap-3"
       >
-        <a href={LINE} target="_blank" rel="noreferrer" aria-label="ติดต่อผ่าน LINE" className="group relative grid h-14 w-14 place-items-center rounded-full shadow-xl transition hover:-translate-y-1 hover:scale-105"><span className="pointer-events-none absolute right-full mr-3 whitespace-nowrap rounded-xl bg-[#202124] px-3 py-2 text-xs font-bold text-white opacity-0 shadow-lg transition group-hover:opacity-100">ติดต่อผ่าน LINE</span><Image src="/line-logo.svg" alt="" width={56} height={56}/></a>
+        <a href={line} target="_blank" rel="noreferrer" aria-label="ติดต่อผ่าน LINE" className="group relative grid h-14 w-14 place-items-center rounded-full shadow-xl transition hover:-translate-y-1 hover:scale-105"><span className="pointer-events-none absolute right-full mr-3 whitespace-nowrap rounded-xl bg-[#202124] px-3 py-2 text-xs font-bold text-white opacity-0 shadow-lg transition group-hover:opacity-100">ติดต่อผ่าน LINE</span><Image src="/line-logo.svg" alt="" width={56} height={56}/></a>
 
         <div className="flex items-center gap-2">
           <AnimatePresence>
             {submenu === "facebook" && <motion.div initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 8 }} className="flex gap-2">
-              {branchList.map(branch => <a key={branch.label} href={branch.facebook} target="_blank" rel="noreferrer" className="flex min-h-11 items-center gap-2 whitespace-nowrap rounded-full bg-[#1877F2] px-3 text-xs font-black text-white shadow-xl transition hover:bg-[#1668d4]"><Image src="/facebook-icon.png" alt="" width={20} height={20}/>{branch.label}</a>)}
+              {branches.map(branch => <a key={branch.id} href={branch.facebook} target="_blank" rel="noreferrer" className="flex min-h-11 items-center gap-2 whitespace-nowrap rounded-full bg-[#1877F2] px-3 text-xs font-black text-white shadow-xl transition hover:bg-[#1668d4]"><Image src="/facebook-icon.png" alt="" width={20} height={20}/>{branch.shortName}</a>)}
             </motion.div>}
           </AnimatePresence>
           <button type="button" onClick={() => setSubmenu(value => value === "facebook" ? null : "facebook")} aria-expanded={submenu === "facebook"} aria-label="เลือก Facebook ของแต่ละสาขา" className={`group relative grid h-14 w-14 shrink-0 place-items-center rounded-full bg-[#1877F2] text-white shadow-xl transition hover:-translate-y-1 hover:scale-105 ${submenu === "facebook" ? "ring-4 ring-[#1877F2]/25" : ""}`}><span className="pointer-events-none absolute right-full mr-3 whitespace-nowrap rounded-xl bg-[#202124] px-3 py-2 text-xs font-bold text-white opacity-0 shadow-lg transition group-hover:opacity-100">Facebook</span><Image src="/facebook-icon.png" alt="" width={38} height={38}/></button>
@@ -48,7 +43,7 @@ export default function FloatingContact() {
         <div className="flex items-center gap-2">
           <AnimatePresence>
             {submenu === "phone" && <motion.div initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 8 }} className="flex gap-2">
-              {branchList.map(branch => <a key={branch.label} href={branch.phone} className="flex min-h-11 items-center gap-2 whitespace-nowrap rounded-full bg-[#8b352d] px-3 text-xs font-black text-white shadow-xl transition hover:bg-[#67251f]"><Phone size={16}/>{branch.label}</a>)}
+              {branches.map(branch => <a key={branch.id} href={phoneHref(branch.phone)} className="flex min-h-11 items-center gap-2 whitespace-nowrap rounded-full bg-[#8b352d] px-3 text-xs font-black text-white shadow-xl transition hover:bg-[#67251f]"><Phone size={16}/>{branch.shortName}</a>)}
             </motion.div>}
           </AnimatePresence>
           <button type="button" onClick={() => setSubmenu(value => value === "phone" ? null : "phone")} aria-expanded={submenu === "phone"} aria-label="เลือกเบอร์โทรศัพท์ของแต่ละสาขา" className={`group relative grid h-14 w-14 shrink-0 place-items-center rounded-full bg-[#8b352d] text-white shadow-xl transition hover:-translate-y-1 hover:scale-105 ${submenu === "phone" ? "ring-4 ring-[#8b352d]/25" : ""}`}><span className="pointer-events-none absolute right-full mr-3 whitespace-nowrap rounded-xl bg-[#202124] px-3 py-2 text-xs font-bold text-white opacity-0 shadow-lg transition group-hover:opacity-100">โทรศัพท์</span><Phone size={24}/></button>

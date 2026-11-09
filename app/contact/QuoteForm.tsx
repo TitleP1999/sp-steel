@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import { Copy, ExternalLink } from "lucide-react";
 import { SelectedQuoteProducts, useQuoteSelection } from "../../components/QuoteSelection";
 
-export default function QuoteForm() {
+export default function QuoteForm({ line }: { line: string }) {
   const detailsRef = useRef<HTMLTextAreaElement>(null);
   const productRef = useRef<HTMLInputElement>(null);
   const [quoteCopyMessage, setQuoteCopyMessage] = useState("");
@@ -54,7 +54,7 @@ export default function QuoteForm() {
     <p className="mt-3 text-xs leading-5 text-zinc-400">คัดลอกข้อความ แล้วเปิด LINE เพื่อส่งรายการสินค้าให้ฝ่ายขายได้ทันที</p>
     <div className="mt-4 flex w-full flex-col items-stretch gap-2 sm:w-auto sm:flex-row sm:items-center sm:gap-3">
       <button type="button" onClick={() => void copyQuoteMessage()} className="inline-flex min-h-12 w-full items-center justify-center gap-2 whitespace-nowrap rounded-full bg-white px-4 py-3 text-sm font-black text-[#202124] transition hover:bg-zinc-100 sm:w-auto sm:px-6 sm:text-base"><Copy className="h-[18px] w-[18px] shrink-0"/><span>{quoteCopyMessage || "คัดลอกข้อความสำหรับส่ง LINE"}</span></button>
-      <a href="https://lin.ee/Yurg5Hy" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-12 w-full items-center justify-center gap-2 whitespace-nowrap rounded-full bg-[#06C755] px-4 py-3 text-sm font-black text-white transition hover:bg-[#05b34a] sm:w-auto sm:px-6 sm:text-base">เปิด LINE <ExternalLink className="h-[17px] w-[17px]"/></a>
+      <a href={line} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-12 w-full items-center justify-center gap-2 whitespace-nowrap rounded-full bg-[#06C755] px-4 py-3 text-sm font-black text-white transition hover:bg-[#05b34a] sm:w-auto sm:px-6 sm:text-base">เปิด LINE <ExternalLink className="h-[17px] w-[17px]"/></a>
     </div>
   </form>;
 }

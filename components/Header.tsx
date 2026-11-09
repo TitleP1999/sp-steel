@@ -9,9 +9,8 @@ import { categories, products } from "../data/products";
 import { LanguageSwitcher } from "./LanguageProvider";
 
 const basic = [["/", "หน้าแรก"], ["/about", "เกี่ยวกับเรา"], ["/news", "ข่าวสาร"]];
-const LINE_URL = "https://lin.ee/Yurg5Hy";
 
-export default function Header() {
+export default function Header({ line }: { line: string }) {
   const pathname = usePathname();
   const router = useRouter();
   const [open, setOpen] = useState(false);
@@ -63,7 +62,7 @@ export default function Header() {
 
   return <>
     <div className="bg-[#202124] px-4 py-1.5 text-[9px] font-bold leading-4 tracking-widest text-zinc-400 sm:px-6 sm:py-2 sm:text-[10px]"><div className="mx-auto flex max-w-7xl items-center justify-between gap-3"><span className="min-w-0 truncate">2026 • SUPARERK STEEL CO., LTD.<span className="hidden sm:inline"> • STEEL FOR CONSTRUCTION & INDUSTRY</span></span><LanguageSwitcher compact /></div></div>
-    <a href={LINE_URL} target="_blank" rel="noopener noreferrer" className="mx-4 my-2 flex min-h-11 items-center justify-center gap-2 rounded-3xl bg-[#06C755] px-4 py-2 text-sm font-black text-white shadow-md transition hover:bg-[#05b34a] md:hidden"><Image src="/line-logo.svg" alt="" width={22} height={22} />ขอใบเสนอราคาผ่าน LINE</a>
+    <a href={line} target="_blank" rel="noopener noreferrer" className="mx-4 my-2 flex min-h-11 items-center justify-center gap-2 rounded-3xl bg-[#06C755] px-4 py-2 text-sm font-black text-white shadow-md transition hover:bg-[#05b34a] md:hidden"><Image src="/line-logo.svg" alt="" width={22} height={22} />ขอใบเสนอราคาผ่าน LINE</a>
     <header ref={header} className="sticky top-0 z-[80] border-b border-white/20 bg-[#b51f2e] text-white shadow-sm">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-4 sm:h-20 sm:px-6">
         <Link href="/" onClick={() => { setOpen(false); setMega(false); }} className="flex min-w-0 items-center">
@@ -76,7 +75,7 @@ export default function Header() {
           {basic.slice(2).map(([href, label]) => <Nav key={href} href={href} label={label} active={pathname === href} />)}
           <Nav href="/contact" label="ติดต่อเรา" active={pathname === "/contact"} />
           <Nav href="/reviews" label="รีวิวจากลูกค้า" active={pathname === "/reviews"} />
-          <a href={LINE_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-3xl bg-[#06C755] px-3 py-2.5 text-[10px] font-black leading-6 text-white shadow-sm transition hover:bg-[#05b34a] xl:px-4 xl:py-3 xl:text-xs"><Image src="/line-logo.svg" alt="" width={20} height={20} className="shrink-0" />ขอใบเสนอราคาผ่าน LINE</a>
+          <a href={line} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-3xl bg-[#06C755] px-3 py-2.5 text-[10px] font-black leading-6 text-white shadow-sm transition hover:bg-[#05b34a] xl:px-4 xl:py-3 xl:text-xs"><Image src="/line-logo.svg" alt="" width={20} height={20} className="shrink-0" />ขอใบเสนอราคาผ่าน LINE</a>
         </nav>
         <button ref={toggle} type="button" aria-label={open ? "ปิดเมนู" : "เปิดเมนู"} aria-expanded={open} aria-controls="mobile-navigation" onClick={() => setOpen(!open)} className="grid h-11 w-11 shrink-0 place-items-center rounded-3xl border border-white/40 text-white hover:bg-white/10 md:hidden">{open ? <X /> : <Menu />}</button>
       </div>

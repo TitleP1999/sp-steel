@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import ProductMotion from "../../../components/ProductMotion";
+import { getSiteContent } from "../../../lib/site-content";
 import { getCatalog } from "../../../lib/prices";
 import { getProductGallery } from "../../../lib/product-gallery";
 import { siteUrl } from "../../../lib/seo";
@@ -24,7 +25,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 }
 
 export default async function ProductPage({ params }: { params: { slug: string } }) {
-  const [{ products }, gallery] = await Promise.all([getCatalog(), getProductGallery()]);
+  const [{ products }, gallery, { content }] = await Promise.all([getCatalog(), getProductGallery(), getSiteContent()]);
   const product = products.find((item) => item.slug === params.slug);
   if (!product) return notFound();
   const productUrl = `${siteUrl}/products/${product.slug}`;
@@ -44,6 +45,6 @@ export default async function ProductPage({ params }: { params: { slug: string }
   return <main>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd).replace(/</g, "\\u003c") }} />
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd).replace(/</g, "\\u003c") }} />
-    <ProductMotion product={product} gallery={gallery.items.filter((item) => item.productSlug === product.slug && item.published)} />
+    <ProductMotion product={product} line={content.contact.line} gallery={gallery.items.filter((item) => item.productSlug === product.slug && item.published)} />
   </main>;
 }

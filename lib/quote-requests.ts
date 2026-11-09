@@ -96,10 +96,29 @@ function saveLocalQuote(input: ReturnType<typeof validateQuoteRequest>) {
   });
 }
 
-export async function deleteQuoteRequest(id: string) {
+function validateQuoteId(id: string) {
   if (typeof id !== "string" || !/^[\da-f]{8}(?:-[\da-f]{4}){3}-[\da-f]{12}$/i.test(id)) {
     throw new QuoteRequestError("รหัสคำขอใบเสนอราคาไม่ถูกต้อง");
   }
+}
+
+export async function markQuoteRequestRead(id: string) {
+  validateQuoteId(id);
+  if (useDatabase()) {
+    await ensureSchema();
+    await database().query("UPDATE sp_quote_requests SET status = 'contacted' WHERE id = $1::uuid AND status = 'new'", [id]);
+    return;
+  }
+  await changeLocalQuotes(items => {
+    const item = items.find(quote => quote.id === id);
+    if (item?.status !== "new") return false;
+    item.status = "contacted";
+    return true;
+  });
+}
+
+export async function deleteQuoteRequest(id: string) {
+  validateQuoteId(id);
   if (useDatabase()) {
     await ensureSchema();
     await database().query("DELETE FROM sp_quote_requests WHERE id = $1::uuid", [id]);
