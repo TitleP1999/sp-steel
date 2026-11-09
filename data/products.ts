@@ -1,8 +1,10 @@
-export type ProductOption={size:string;price:number;previousPrice?:number|null;changePercent?:number|null};
+import { tisconStirrupRows } from "../lib/tiscon-superlinks";
+
+export type ProductOption={size:string;price:number|null;previousPrice?:number|null;changePercent?:number|null};
 export type Product={
  slug:string; code:string; name:string; en:string; category:string;
  short:string; description:string; uses:string[]; specs:string[]; image:string; brand?:"TIS"|"TATA"|"SYS";
- price:number; options:ProductOption[];
+ price:number|null; options:ProductOption[];
 };
 const productCatalog:Omit<Product,"price"|"options">[]=[
  {slug:"c-channel",code:"C-TIS",name:"เหล็กตัวซี มอก.",en:"TIS Lip Channel Steel",category:"เหล็กรูปพรรณขึ้นรูปเย็น",short:"เหล็กตัวซีมาตรฐาน มอก. สำหรับโครงหลังคา แป และโครงสร้าง",description:"เหล็กรูปตัว C มาตรฐานอุตสาหกรรมไทย นิยมใช้ในงานโครงหลังคา แป โรงเรือน และงานโครงสร้างทั่วไป",uses:["โครงหลังคา","แป","โรงเรือน","งานโครงสร้าง"],specs:["มาตรฐาน มอก.","มีหลายขนาดและความหนา","ตรวจสอบสต๊อกก่อนสั่งซื้อ"],image:"/products/c-channel-catalog-v2.png"},
@@ -36,7 +38,6 @@ const productCatalog:Omit<Product,"price"|"options">[]=[
  {slug:"wire-mesh",code:"MESH",name:"ไวร์เมช",en:"Welded Wire Mesh",category:"สินค้าสำเร็จรูปและฮาร์ดแวร์",short:"ตะแกรงเหล็กสำเร็จรูปสำหรับพื้นและงานคอนกรีต",description:"ตะแกรงเหล็กเชื่อมสำเร็จรูป ช่วยลดขั้นตอนการผูกเหล็กหน้างาน เหมาะกับงานพื้นและคอนกรีต",uses:["พื้นคอนกรีต","ถนน","ลาน","งานสำเร็จรูป"],specs:["หลายขนาดช่อง","หลายขนาดลวด","สอบถามขนาดแผ่นและสต๊อก"],image:"/products/wire-mesh-catalog-v2.png"}
 ];
 
-const mockPrices=[10,20,30,40];
 const sizes:Record<string,string[]>={
  "c-channel":["60×30×10 มม. หนา 1.6 มม.","75×45×15 มม. หนา 2.0 มม.","100×50×20 มม. หนา 2.3 มม.","150×75×20 มม. หนา 3.2 มม."],
  "galvanized-c-channel":["60×30×10 มม. หนา 1.6 มม.","75×45×15 มม. หนา 2.0 มม.","100×50×20 มม. หนา 2.3 มม.","150×75×20 มม. หนา 3.2 มม."],
@@ -69,8 +70,12 @@ const sizes:Record<string,string[]>={
  "wire-mesh":["ลวด 4 มม. ช่อง 20×20 ซม.","ลวด 6 มม. ช่อง 20×20 ซม.","ลวด 6 มม. ช่อง 15×15 ซม.","ลวด 9 มม. ช่อง 20×20 ซม."]
 };
 export const products:Product[]=productCatalog.map(product=>{
- const options=(sizes[product.slug]??["ขนาดมาตรฐาน"]).map((size,index)=>({size,price:mockPrices[index]??10*(index+1)}));
- return {...product,options,price:options[0].price};
+ const listedSizes = sizes[product.slug] ?? ["ขนาดมาตรฐาน"];
+ const productSizes = product.slug === "tiscon-superlinks"
+   ? Array.from(new Set([...listedSizes, ...tisconStirrupRows.map(row => row.size)]))
+   : listedSizes;
+ const options=productSizes.map(size=>({size,price:null}));
+ return {...product,options,price:null};
 });
 export const categories=["เหล็กรูปพรรณขึ้นรูปเย็น","เหล็กรูปพรรณรีดร้อน","เหล็กแผ่น","เหล็กเสริมคอนกรีต","สินค้าสำเร็จรูปและฮาร์ดแวร์"];
 export function getProduct(slug:string){return products.find(p=>p.slug===slug)}

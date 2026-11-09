@@ -1,8 +1,7 @@
-import Link from "next/link";
 import { requireAdmin } from "../../lib/admin-session";
 import { getCatalog } from "../../lib/prices";
 import { getNews } from "../../lib/news";
-import { logout } from "./actions";
+import AdminDashboard from "./AdminDashboard";
 import NewsEditor from "./NewsEditor";
 import PriceEditor from "./PriceEditor";
 import { getQuoteRequests } from "../../lib/quote-requests";
@@ -18,19 +17,23 @@ import ProductGalleryEditor from "./ProductGalleryEditor";
 export default async function AdminPage() {
   requireAdmin();
   const [catalog, news, reviews, quoteRequests, projects, executives, gallery] = await Promise.all([getCatalog(), getNews(), getReviews(), getQuoteRequests(), getHomeProjects(), getExecutives(), getProductGallery()]);
-  return <main className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
-    <div className="flex flex-wrap items-center justify-between gap-4"><div><p className="text-sm font-bold tracking-widest text-[#8b352d]">SUPARERK STEEL · ADMIN</p><h1 className="mt-2 text-3xl font-black">จัดการเว็บไซต์</h1></div><div className="flex flex-wrap items-center gap-5"><a href="#product-gallery" className="underline">ภาพสินค้า</a><a href="#executives" className="underline">ผู้บริหาร</a><a href="#home-projects" className="underline">โครงการหน้าแรก</a><a href="#quote-requests" className="underline">คำขอใบเสนอราคา</a><Link href="/news" className="underline">ดูข่าวสาร</Link><Link href="/reviews" className="underline">ดูรีวิว</Link><Link href="/steel-prices" className="underline">ดูราคาเหล็กวันนี้</Link><Link href="/products" className="underline">ดูหน้าร้าน</Link><form action={logout}><button className="rounded border px-4 py-2">ออกจากระบบ</button></form></div></div>
-    <p className="mt-4 text-zinc-600">จัดการข่าวสาร รีวิว และแก้ราคาสินค้าตามขนาด ราคาที่บันทึกจะแสดงทั้งหน้าสินค้าและหน้า “ราคาเหล็กวันนี้”</p>
-    <ProductGalleryEditor products={catalog.products} items={gallery.items} revision={gallery.revision} />
-    <NewsEditor items={news.items} revision={news.revision} />
-    {news.updatedAt && <p className="mt-4 text-sm text-zinc-500">ข่าวสารบันทึกล่าสุด: {new Date(news.updatedAt).toLocaleString("th-TH", { timeZone: "Asia/Bangkok" })}</p>}
-    <ReviewEditor items={reviews.items} revision={reviews.revision} />
-    {reviews.updatedAt && <p className="mt-4 text-sm text-zinc-500">รีวิวบันทึกล่าสุด: {new Date(reviews.updatedAt).toLocaleString("th-TH", { timeZone: "Asia/Bangkok" })}</p>}
-    <HomeProjectEditor items={projects.items} revision={projects.revision} />
-    {projects.updatedAt && <p className="mt-4 text-sm text-zinc-500">โครงการหน้าแรกบันทึกล่าสุด: {new Date(projects.updatedAt).toLocaleString("th-TH", { timeZone: "Asia/Bangkok" })}</p>}
-    <ExecutiveEditor items={executives.items} revision={executives.revision} />
-    {executives.updatedAt && <p className="mt-4 text-sm text-zinc-500">ข้อมูลผู้บริหารบันทึกล่าสุด: {new Date(executives.updatedAt).toLocaleString("th-TH", { timeZone: "Asia/Bangkok" })}</p>}
-    <section className="mt-14 scroll-mt-24 border-t pt-10" id="quote-requests">
+  return <AdminDashboard
+    counts={{
+      prices: catalog.products.length,
+      quotes: quoteRequests.length,
+      "product-gallery": gallery.items.length,
+      news: news.items.length,
+      reviews: reviews.items.length,
+      "home-projects": projects.items.length,
+      executives: executives.items.length,
+    }}
+    panels={{
+      prices: <section>
+        <p className="text-sm leading-6 text-zinc-600">ราคาที่บันทึกจะแสดงบนหน้าร้านตามขนาด เว้นช่องว่างเพื่อแสดง “สอบถามราคา”</p>
+        {catalog.updatedAt && <p className="mt-2 text-sm text-zinc-500">บันทึกล่าสุด {new Date(catalog.updatedAt).toLocaleString("th-TH", { timeZone: "Asia/Bangkok" })}</p>}
+        <PriceEditor products={catalog.products} revision={catalog.revision} />
+      </section>,
+      quotes: <section id="quote-requests">
       <div className="flex flex-wrap items-end justify-between gap-3"><div><p className="text-sm font-bold tracking-widest text-[#8b352d]">QUOTATION REQUESTS</p><h2 className="mt-1 text-2xl font-black">คำขอใบเสนอราคา</h2></div><p className="text-sm text-zinc-500">ล่าสุด {quoteRequests.length} รายการ</p></div>
       {!quoteRequests.length ? <p className="mt-5 rounded-lg border bg-white p-6 text-zinc-500">ยังไม่มีคำขอใบเสนอราคา</p> : <div className="mt-5 grid gap-4 md:grid-cols-2">{quoteRequests.map(request => <article key={request.id} className="rounded-lg border bg-white p-5">
         <div className="flex items-start justify-between gap-3"><div><h3 className="font-bold">{request.name}</h3><a className="mt-1 inline-block text-[#8b352d] underline" href={`tel:${request.phone.replace(/[^+\d]/g, "")}`}>{request.phone}</a></div><span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-800">รายการใหม่</span></div>
@@ -38,14 +41,12 @@ export default async function AdminPage() {
         {request.details && <><p className="mt-4 text-sm font-bold">รายละเอียด</p><p className="mt-1 whitespace-pre-wrap text-sm leading-6 text-zinc-600">{request.details}</p></>}
         <time className="mt-4 block border-t pt-3 text-xs text-zinc-500" dateTime={request.createdAt}>{new Date(request.createdAt).toLocaleString("th-TH", { timeZone: "Asia/Bangkok" })}</time>
       </article>)}</div>}
-    </section>
-    <section className="mt-14 border-t pt-10">
-      <h2 className="text-2xl font-black">จัดการราคาเหล็ก</h2>
-      <p className="mt-2 text-zinc-600">แก้ราคาตามขนาด แล้วกดบันทึกในสินค้านั้น ราคาจะใช้ในหน้าแรก หน้ารวมสินค้า หน้ารายละเอียดสินค้า และหน้า “ราคาเหล็กวันนี้”</p>
-      {catalog.unpricedCount > 0 && <p className="mt-5 rounded border border-amber-300 bg-amber-50 p-4 text-sm">ยังมี {catalog.unpricedCount} สินค้าที่ใช้ราคาตัวอย่างจากเว็บเดิม กรุณาตรวจสอบและแก้ไขทุกรายการก่อนใช้งานจริง</p>}
-      {catalog.updatedAt && <p className="mt-4 text-sm text-zinc-500">บันทึกล่าสุด: {new Date(catalog.updatedAt).toLocaleString("th-TH", { timeZone: "Asia/Bangkok" })}</p>}
-      <div className="my-10 border-t" />
-      <PriceEditor products={catalog.products} revision={catalog.revision} />
-    </section>
-  </main>;
+    </section>,
+      "product-gallery": <ProductGalleryEditor products={catalog.products} items={gallery.items} revision={gallery.revision} />,
+      news: <NewsEditor items={news.items} revision={news.revision} />,
+      reviews: <ReviewEditor items={reviews.items} revision={reviews.revision} />,
+      "home-projects": <HomeProjectEditor items={projects.items} revision={projects.revision} />,
+      executives: <ExecutiveEditor items={executives.items} revision={executives.revision} />,
+    }}
+  />;
 }

@@ -45,12 +45,21 @@ async function main() {
     return fetch(base + '/admin/login', { method: 'POST', body: form, headers: { Origin: base }, redirect: 'manual' });
   }
   const manifest = JSON.parse(fs.readFileSync(path.join(root, '.next/server/server-reference-manifest.json'), 'utf8'));
-  const compiled = fs.readFileSync(path.join(root, '.next/server/app/admin/page.js'), 'utf8');
+  const serverDir = path.join(root, '.next/server');
+  const compiled = [
+    path.join(serverDir, 'app/admin/page.js'),
+    ...fs.readdirSync(path.join(serverDir, 'chunks'))
+      .filter(file => file.endsWith('.js'))
+      .map(file => path.join(serverDir, 'chunks', file)),
+  ].map(file => fs.readFileSync(file, 'utf8'));
   function actionId(name) {
-    const id = Object.keys(manifest.node).find(id => {
-      const index = compiled.indexOf(id);
-      return index >= 0 && compiled.slice(index, index + 180).includes(`e=>e.${name}`);
-    });
+    const id = Object.keys(manifest.node).find(id =>
+      manifest.node[id].workers['app/admin/page'] &&
+      compiled.some(source => {
+        const index = source.indexOf(id);
+        return index >= 0 && source.slice(index, index + 180).match(/\.then\(\w+=>\w+\.(\w+)\)/)?.[1] === name;
+      })
+    );
     assert.ok(id, `Built action ${name} found`); return id;
   }
   const saveId = actionId('updatePrices');
@@ -78,10 +87,10 @@ async function main() {
     assert.equal(fs.existsSync(path.join(directory, 'prices.json')), false);
     await (await save(cookie, [-1,2,3,4], 'initial')).text();
     assert.equal(fs.existsSync(path.join(directory, 'prices.json')), false);
-    const saved = await save(cookie, [12345.67,23456,34567,45678], 'initial');
+    const saved = await save(cookie, [12345.67,null,34567,45678], 'initial');
     assert.equal(saved.status, 200); await saved.text();
-    assert.equal(JSON.parse(fs.readFileSync(path.join(directory,'prices.json'),'utf8')).prices['c-channel'][0], 12345.67);
-    for (const route of ['/', '/products', '/products/c-channel']) {
+    assert.deepEqual(JSON.parse(fs.readFileSync(path.join(directory,'prices.json'),'utf8')).prices['c-channel'], [12345.67,null,34567,45678]);
+    for (const route of ['/', '/products', '/products/c-channel', '/steel-prices']) {
       const response = await fetch(base + route); assert.equal(response.status, 200);
       assert.match(await response.text(), /12,345\.67/, `${route} renders updated price`);
     }
@@ -91,7 +100,7 @@ async function main() {
     await logout.text(); assert.match(logout.headers.get('set-cookie'), /sp-steel-admin=;/);
     await stop(); await start();
     assert.match(await (await fetch(base + '/products/c-channel')).text(), /12,345\.67/);
-    console.log('PASS: protected page/action, login failure/success, secure cookie, CSRF, validation, persisted save, all three storefront pages, conflict, logout and server restart.');
+    console.log('PASS: protected page/action, login failure/success, secure cookie, CSRF, validation, price and quote-only persistence, storefront pages, conflict, logout and server restart.');
   } finally { await stop(); fs.rmSync(directory, { recursive: true, force: true }); }
 }
 main().catch(error => { console.error(error); process.exitCode = 1; });

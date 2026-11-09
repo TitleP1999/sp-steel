@@ -3,6 +3,7 @@ import "./globals.css"; import Header from "../components/Header"; import Footer
 import { QuoteSelectionProvider } from "../components/QuoteSelection";
 import { LanguageProvider } from "../components/LanguageProvider";
 import GoogleAnalytics from "../components/GoogleAnalytics";
+import StorefrontChrome from "../components/StorefrontChrome";
 import { defaultDescription, defaultOgImage, siteName, siteUrl } from "../lib/seo";
 
 export const metadata: Metadata = {
@@ -61,5 +62,5 @@ const structuredData = {
 
 export default function Layout({children}:{children:React.ReactNode}){
   const measurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "G-YPD392Y20D";
-  return <html lang="th"><body><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(structuredData).replace(/</g,"\\u003c")}}/><LanguageProvider><QuoteSelectionProvider><Header/>{children}<Footer/><FloatingContact/></QuoteSelectionProvider></LanguageProvider>{measurementId ? <GoogleAnalytics measurementId={measurementId} /> : null}</body></html>;
+  return <html lang="th"><body><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(structuredData).replace(/</g,"\\u003c")}}/><LanguageProvider><QuoteSelectionProvider><StorefrontChrome top={<Header/>} bottom={<><Footer/><FloatingContact/></>}>{children}</StorefrontChrome></QuoteSelectionProvider></LanguageProvider>{measurementId ? <GoogleAnalytics measurementId={measurementId} /> : null}</body></html>;
 }
