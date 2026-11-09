@@ -117,8 +117,12 @@ async function readDatabase(): Promise<HomeProjectData> {
 
 export async function getHomeProjects() {
   const data = await (useDatabase() ? readDatabase() : readFileData());
-  if (data.items.length || data.updatedAt !== null) return data;
-  return { ...data, items: defaultHomeProjects.map(item => ({ ...item })) };
+  if (data.items.length) return data;
+  return { ...data, items: getDefaultHomeProjects() };
+}
+
+export function getDefaultHomeProjects() {
+  return defaultHomeProjects.map(item => ({ ...item }));
 }
 
 export async function saveHomeProjects(items: unknown, revision: string) {

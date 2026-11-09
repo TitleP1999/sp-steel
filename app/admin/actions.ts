@@ -8,7 +8,7 @@ import { requireAdmin } from "../../lib/admin-session";
 import { PriceError, savePrices } from "../../lib/prices";
 import { NewsError, saveNews } from "../../lib/news";
 import { ReviewError, saveReviews } from "../../lib/reviews";
-import { HomeProjectError, saveHomeProjects } from "../../lib/home-projects";
+import { getDefaultHomeProjects, HomeProjectError, saveHomeProjects } from "../../lib/home-projects";
 import { ExecutiveError, saveExecutives } from "../../lib/executives";
 import { ProductGalleryError, saveProductGallery } from "../../lib/product-gallery";
 import { QuoteRequestError, deleteQuoteRequest } from "../../lib/quote-requests";
@@ -80,13 +80,13 @@ export async function updateReviews(items: unknown, revision: string): Promise<{
   }
 }
 
-export async function updateHomeProjects(items: unknown, revision: string): Promise<{ error?: string; revision?: string }> {
+export async function updateHomeProjects(items: unknown, revision: string): Promise<{ error?: string; revision?: string; restoredItems?: ReturnType<typeof getDefaultHomeProjects> }> {
   requireAdmin();
   try {
     const nextRevision = await saveHomeProjects(items, revision);
     revalidatePath("/");
     revalidatePath("/admin");
-    return { revision: nextRevision };
+    return { revision: nextRevision, restoredItems: Array.isArray(items) && items.length === 0 ? getDefaultHomeProjects() : undefined };
   } catch (error) {
     if (error instanceof HomeProjectError) return { error: error.message };
     console.error("Home project storage write failed", error);

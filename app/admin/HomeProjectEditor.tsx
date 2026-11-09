@@ -24,13 +24,21 @@ export default function HomeProjectEditor({ items: initialItems, revision: initi
     try {
       const result = await updateHomeProjects(items, revision);
       if (result.error) setMessage({ text: result.error, error: true });
-      else if (result.revision) { setRevision(result.revision); setSaved(copyItems(items)); setMessage({ text: "บันทึกโครงการแล้ว หน้าแรกจะแสดงตามลำดับนี้เฉพาะรายการที่เผยแพร่", error: false }); }
+      else if (result.revision) {
+        setRevision(result.revision);
+        if (result.restoredItems) setItems(copyItems(result.restoredItems));
+        setSaved(copyItems(result.restoredItems ?? items));
+        setMessage({
+          text: result.restoredItems ? "คืนผลงานตั้งต้นแล้ว เพราะไม่มีรายการที่บันทึกไว้" : "บันทึกโครงการแล้ว หน้าแรกจะแสดงตามลำดับนี้เฉพาะรายการที่เผยแพร่",
+          error: false,
+        });
+      }
     } catch { setMessage({ text: "บันทึกไม่สำเร็จ กรุณาตรวจสอบการเชื่อมต่อหรือเข้าสู่ระบบใหม่", error: true }); }
     finally { setPending(false); }
   }
   return <section className="mt-14 border-t pt-10" id="home-projects">
     <div className="mb-5 flex flex-wrap items-end justify-between gap-3"><div><h2 className="text-2xl font-black">จัดการโครงการหน้าแรก</h2><p className="mt-1 text-sm text-zinc-600">เพิ่มรูป ชื่อ รายละเอียด ลิงก์ และเรียงลำดับโครงการที่แสดงบนหน้าแรก</p></div><p className="text-sm text-zinc-500">{items.length} รายการ{dirty && " · มีข้อมูลที่ยังไม่บันทึก"}</p></div>
-    {!items.length && <p className="rounded-lg border bg-white p-6 text-center text-zinc-600">ยังไม่มีโครงการ กด “เพิ่มโครงการ” เพื่อเริ่มต้น</p>}
+    {!items.length && <p className="rounded-lg border bg-white p-6 text-center text-zinc-600">เมื่อบันทึกรายการว่าง ระบบจะคืนผลงานตั้งต้น หากต้องการซ่อนผลงาน ให้เอาเครื่องหมายเผยแพร่ออก</p>}
     <form onSubmit={event => { event.preventDefault(); void save(); }} className="space-y-5">
       {items.map((item, index) => <article key={item.id} className="rounded-lg border bg-white p-5 sm:p-7">
         <div className="mb-5 flex flex-wrap items-center justify-between gap-3"><h3 className="font-bold">โครงการรายการที่ {index + 1}</h3><div className="flex items-center gap-4"><button type="button" disabled={pending || index === 0} onClick={() => moveItem(index, -1)} className="text-sm underline disabled:opacity-30">เลื่อนขึ้น</button><button type="button" disabled={pending || index === items.length - 1} onClick={() => moveItem(index, 1)} className="text-sm underline disabled:opacity-30">เลื่อนลง</button><button type="button" disabled={pending} onClick={() => removeItem(item.id)} className="text-sm text-red-700 underline disabled:opacity-40">ลบ</button></div></div>
